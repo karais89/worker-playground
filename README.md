@@ -1,0 +1,136 @@
+# CLI Worker Playground
+
+메인이 조사와 구현의 상세 로그를 읽는 대신 **작업을 나누고 짧은 결과를 검토**하도록 만드는 최소 구현입니다. Python 표준 라이브러리만 사용합니다. 서버, DB, 에이전트 프레임워크는 없습니다.
+
+- `worker.py`: Codex CLI 워커 실행·병렬 처리·세션 재개·결과 및 사용량 기록
+- `team.py`: 메인 계획 → 워커 배치 → 같은 메인 세션의 최종 검토
+- `bench.py`: 같은 메인 모델의 단독 실행과 워커 사용 실행 비교
+
+## 준비
+
+Python 3.11 이상, Git, 로그인된 Codex CLI가 필요합니다. 이 구현은 **Codex CLI 0.160.0**의 옵션과 JSONL 형식을 기준으로 합니다. `codex --version`과 `codex login status`로 확인하세요. ChatGPT CLI 인증을 사용하며 별도 API 서버나 API 키는 필요하지 않습니다.
+
+워커 기본값은 `gpt-6.1-sol` / `high`입니다. 실제 사용 가능한 모델은 로그인한 계정에 따릅니다. 메인은 Astra High 또는 Sol 6.1 High로 선택할 수 있습니다.
+
+## 메인에게 작업 맡기기
+
+작업 내용을 UTF-8 파일 `task.txt`에 작성한 뒤 실행합니다. Python이 메인과 워커를 각각 Codex CLI 프로세스로 실행합니다. Windows에서 메인 샌드박스 안에 다시 워커 CLI를 띄울 때 발생한 네트워크 문제를 피하기 위한 구조입니다.
+
+```powershell
+python team.py task.txt --cwd C:/path/to/project --main-model gpt-6-astra --worker-model gpt-6.1-sol --output runs/team-01
+```
+
+메인을 Sol로 바꾸려면 `--main-model gpt-6.1-sol`로 지정합니다. 양쪽 effort 기본값은 `high`입니다.
+
+1. 메인은 최소한의 읽기 전용 조사 후 역할과 파일 범위가 있는 0~3개의 작업을 반환합니다.
+2. Python이 워커 배치를 실행합니다. 실행 대기는 Python이 처리하므로 메인이 로그를 반복 조회할 필요가 없습니다.
+3. 같은 메인 세션을 재개해 짧은 결과를 전달합니다. 메인은 필요한 코드와 테스트를 확인하고 작은 결함을 수정하거나 남은 문제를 보고합니다.
+
+현재는 이 3단계를 한 번 실행하는 구조입니다. 무한 재시도나 팀 재편성 루프는 없습니다. 워커 0명을 선택한 작은 작업은 마지막 단계에서 메인이 직접 처리합니다. 다음 사용자 작업은 새 `team.py` 실행이며, 작업 사이의 메인 대화 자동 연결은 아직 구현하지 않았습니다. 같은 워커의 후속 수정은 아래 `resume` 명령을 사용할 수 있습니다.
+
+## 워커를 직접 실행하기
+
+작업을 직접 나누고 싶으면 다음 형태의 `tasks.json`을 작성합니다. `team.py`는 이 목록을 메인의 계획에서 자동 생성합니다. `cwd`의 상대 경로는 **tasks.json의 위치**를 기준으로 합니다. `scope`는 cwd 기준의 파일 또는 디렉터리이며 glob은 지원하지 않습니다.
+
+```json
+{
+  "tasks": [
+    {
+      "id": "parser",
+      "role": "implement",
+      "cwd": "C:/path/to/project",
+      "scope": ["src/parser.py", "tests/test_parser.py"],
+      "prompt": "입력 문자열의 앞뒤 공백을 제거한 뒤 파싱하도록 수정하고 회귀 테스트를 추가하세요.",
+      "acceptance": ["기존 입력 동작을 유지한다", "관련 테스트가 통과한다"]
+    },
+    {
+      "id": "review",
+      "role": "review",
+      "cwd": "C:/path/to/project",
+      "scope": ["src/parser.py", "tests/test_parser.py"],
+      "prompt": "앞선 구현의 변경과 테스트를 읽고 실제 결함이 있는지 검토하세요. 파일은 수정하지 마세요."
+    }
+  ]
+}
+```
+
+```powershell
+python worker.py run tasks.json --model gpt-6.1-sol --effort high --output runs/change-01
+```
+
+독립적인 scope는 최대 3개까지 동시에 실행합니다. 파일 범위가 겹치고 하나라도 구현 역할이면 입력 순서대로 실행하므로 위 예제의 리뷰는 구현 뒤에 시작합니다. 겹치지 않는 파일이라도 논리적 의존 관계가 있으면 별도 배치로 실행하세요.
+
+`research`, `review`는 read-only, `implement`는 workspace-write 샌드박스로 실행합니다. 역할 선택과 작업 분해는 메인이 담당합니다. Python 실행기는 작업 목록을 스케줄링할 뿐, 추가 모델을 호출해 분류하지 않습니다.
+
+최대 동시 실행 수와 개별 워커 제한 시간은 `--concurrency 1..3`, `--timeout 600`으로 조절합니다. 실패한 워커가 있어도 다른 워커 결과는 보존하며 전체 실행은 실패 코드로 끝납니다. 출력 폴더는 매번 새 경로를 사용합니다.
+
+## 같은 워커에게 후속 지시
+
+UTF-8 텍스트 파일 `followup.txt`를 작성한 뒤 실행합니다.
+
+```powershell
+python worker.py resume runs/change-01/parser followup.txt --output runs/change-02-parser
+```
+
+저장한 정확한 세션 ID, 모델, effort, cwd로 재개합니다. 동일한 `CODEX_HOME`에서 실행해야 합니다. 다음 후속 지시는 최신 결과 폴더인 `runs/change-02-parser`를 대상으로 합니다. 오래된 결과를 다시 재개하면 중복 집계를 피하기 위해 거부합니다. 같은 세션을 이 실행기 밖에서 재개하면 사용량 차이에 외부 작업이 섞일 수 있으므로, 측정하는 세션은 실행기로만 이어가세요.
+
+세션을 유지해도 전체 문맥 비용이 사라지는 것은 아닙니다. 같은 작업의 수정·질의에 재개를 사용하고, 무관한 작업은 새 워커로 시작합니다.
+
+## 결과와 토큰
+
+메인은 표준 출력 또는 배치의 `summary.json`부터 읽습니다. 워커별 폴더에는 다음이 남습니다.
+
+| 파일 | 용도 |
+|---|---|
+| `report.json` | 요약, 상태, 실제 관찰한 변경 파일·실행 명령, 사용량 |
+| `changes.patch` | 실행 전후 파일 차이. 바이너리와 일부 개행은 표시용이며 적용 가능한 패치를 보장하지 않음 |
+| `session.json` | 재개할 세션 ID와 누적 사용량 |
+| `events.jsonl`, `stderr.log` | 문제 발생 시 확인할 원본 로그 |
+| `task.json`, `prompt.txt`, `command.json` | 실행 입력과 실제 CLI 인자 |
+
+`worker_claims`는 모델의 자기 보고입니다. 명령 종료 코드는 `observed_commands`, 파일 변경은 `observed_changed_files`와 구분합니다. 워커의 `completed`만으로 코드 품질을 판정하지 마세요.
+
+Codex의 `turn.completed.usage`는 **세션 누적값**입니다. 최초 실행에서는 그대로 사용하고, 재개에서는 이전 누적값을 빼서 이번 호출의 `usage`를 기록합니다. `cumulative_usage`도 별도로 보존합니다. 이 동작과 관련된 [Codex 이슈](https://github.com/openai/codex/issues/16213)를 참고했습니다.
+
+- 총 토큰 = 입력 + 출력. 캐시 입력은 입력의 일부이고 추론 출력은 출력의 일부이므로 다시 더하지 않습니다.
+- 입력, 캐시 입력, 출력, 확인 가능한 추론 출력과 재개 차이를 따로 기록합니다.
+- 로그 누락, 알 수 없는 값, 타임아웃은 사용량을 0으로 처리하지 않고 `null`로 남깁니다.
+- 이 수치는 **CLI가 보고한 토큰**이며 ChatGPT 요금제 한도 소모율이나 청구 금액이 아닙니다.
+
+## 벤치마크
+
+실행기 자체 테스트에는 모델 호출이 없습니다.
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+호스트에서 연결과 결과를 점검하려면:
+
+```powershell
+python bench.py --diagnostic --case modules --main-model gpt-6.1-sol
+```
+
+각 실행은 새 Git 저장소, 새 세션, 새 Codex 프로필에서 시작합니다. 로그인 정보만 잠시 복사하고 프로필의 스킬·메모리·플러그인·후크는 비활성화합니다. 런타임 프로필은 종료 시 제거됩니다. 프로세스를 강제 종료하면 출력 폴더의 `.runtime-profile-*`이 남을 수 있으므로 인증 파일을 포함한 그 폴더는 공유하지 마세요. 일반 결과 로그에도 작업 코드가 포함될 수 있습니다.
+
+**새 프로필만으로 새 OS 환경이 되지는 않습니다.** 실제 절감 판단은 새 VM/컨테이너에서 동일한 CLI 버전·모델·도구를 설치하고 진행합니다. 설치와 VM 생성은 이 실행기의 범위에 포함하지 않았습니다. 아래 옵션은 실행자가 새 환경임을 명시하는 기록용 표지이며, 자동으로 VM을 만들거나 격리를 검증하지 않습니다.
+
+```powershell
+python bench.py --isolated-environment fresh-vm-image-id --case all --repeats 2 --main-model gpt-6-astra --worker-model gpt-6.1-sol
+```
+
+3개 과제 × 단독/팀 2개 방식 × 2회 = 12회 메인 실행입니다. 반복마다 A/B 실행 순서를 바꿉니다. 메인을 바꿀 때는 단독/팀 양쪽을 함께 바꿔 새 비교를 만듭니다. 비교 도중 모델을 섞지 않습니다.
+
+과제는 작은 버그 수정, 독립 모듈 2개 구현, 조사 후 중첩 설정 병합 수정입니다. 채점 코드는 작업 프롬프트와 작업 저장소에 넣지 않고 외부에서 실행합니다. 이는 작은 합성 과제 진단이며 공개 벤치마크 점수나 실제 대형 저장소 성능을 대신하지 않습니다. 호스트 진단에서는 에이전트가 바깥 파일을 읽지 못하도록 강하게 격리된 채점기가 아닙니다.
+
+`summary.json`은 메인·워커 토큰과 통과 여부를 분리합니다. 메인 토큰의 중앙값으로 `(단독 - 팀) / 단독`을 계산하되, 실패·미측정·워커 호출 없음·범위 위반이 있으면 비교값을 내지 않습니다. 호스트 진단의 값은 `diagnostic_reduction`에만 남고 `isolated_main_reduction`은 항상 `null`입니다. 캐시 효과와 실행 시간도 원본 결과에서 함께 확인하세요. 2회 반복은 예비 측정이며 통계적인 증명이 아닙니다.
+
+## 현재 범위와 제한
+
+- 같은 작업 트리에서 서로 다른 파일을 수정하는 방식입니다. worktree 생성·자동 병합은 없습니다. 메인은 워커 실행 중 같은 파일을 편집하지 않아야 합니다.
+- 다른 실행기의 동시 접근은 Git 작업 트리별 잠금으로 거부합니다. 강제 종료 후 잠금이 남으면 안내된 파일의 PID가 종료됐는지 확인한 뒤 해당 잠금 파일만 제거하세요.
+- `scope`는 스케줄링 규약입니다. 파일별 OS 권한 경계가 아닙니다. 종료 후 Git이 추적하거나 무시하지 않은 일반 파일의 범위 위반을 검사합니다. ignored 파일, 심볼릭 링크, 저장소 밖 변경은 이 검사에 포함하지 않습니다. 병렬 워커 사이의 위반 주체를 확정하지 않습니다.
+- OpenCode는 아직 연결하지 않았습니다. Codex 인자 생성과 이벤트 해석을 `build_command` / `parse_events`에 모아두었습니다. OpenCode로 바꿀 때 실제 CLI의 세션·사용량 의미를 검증하고 이 경계를 교체합니다.
+- 전역 설정이나 Codex Desktop의 메인 모델을 변경하지 않습니다. 메인 모델은 해당 CLI 세션 또는 벤치마크 옵션에서 선택합니다.
+
+구조 참고: [OMP](https://github.com/can1357/oh-my-pi), [Pi의 subagent 예제](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions/subagent). 작업 프로세스 분리와 작은 결과 반환 아이디어를 참고했고 소스 코드는 복사하지 않았습니다.
