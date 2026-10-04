@@ -1,0 +1,1871 @@
+{
+  "complete_cases": [
+    "bug",
+    "modules"
+  ],
+  "blocked_runs": [
+    {
+      "case": "investigate",
+      "arm": "legacy",
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-2-legacy",
+      "errors": [
+        "Your workspace is out of credits. Add credits to continue."
+      ]
+    },
+    {
+      "case": "investigate",
+      "arm": "solo",
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-2-solo",
+      "errors": [
+        "Your workspace is out of credits. Add credits to continue."
+      ]
+    },
+    {
+      "case": "repository",
+      "arm": "solo",
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/repository-1-solo",
+      "errors": [
+        "Your workspace is out of credits. Add credits to continue."
+      ]
+    },
+    {
+      "case": "repository",
+      "arm": "legacy",
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/repository-1-legacy",
+      "errors": [
+        "Your workspace is out of credits. Add credits to continue."
+      ]
+    },
+    {
+      "case": "repository",
+      "arm": "team",
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/repository-1-team",
+      "errors": [
+        "Your workspace is out of credits. Add credits to continue."
+      ]
+    }
+  ],
+  "completion_note": "16 eligible runs; 5 runs failed after workspace credit exhaustion. No overall or repository-task savings conclusion.",
+  "environment": {
+    "source_commit": "2ee466a3031be70b190780d7b43f076564aa1646",
+    "source_clean": true,
+    "python": "3.12.3",
+    "cli": "codex-cli 0.160.0",
+    "git": "git version 2.43.0",
+    "kernel": "5.15.167.4-microsoft-standard-WSL2",
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "wsl_config": "[automount]\nenabled=false\n[interop]\nenabled=false\nappendWindowsPath=false\n",
+    "windows_drive_mounted": false,
+    "uid": "1000",
+    "cli_package_sha256": "37a41d61c3399182b8c727b77090cc7a1566bd849d0f09070a0bbc6fec4c58dc",
+    "distro": "WorkerPlaygroundRouting20261004",
+    "rootfs_sha256": "c1e67ef7b17a6300e136118bd1dc04725009cb376c1aad10abcf8cd453628d58",
+    "rootfs_url": "https://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.4-base-amd64.tar.gz",
+    "prompt_python": "Python 3.12.3",
+    "preflight_correction": "installed python-is-python3 before corrected experiment"
+  },
+  "manifest": {
+    "source_commit": "2ee466a3031be70b190780d7b43f076564aa1646",
+    "baseline_commit": "20fb8cb3a5c9b0da285dbc2885102b0500ed211a",
+    "cli": "codex-cli 0.160.0",
+    "prompt_python": "Python 3.12.3",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "isolated_environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "source_sha256": {
+      "team.py": "49c55dd0a1d89bfcab564cca17f066e2fbdc1f0d973030afcb7793a8e8c8fbd3",
+      "worker.py": "2b4672b0f5b44640682173d5f876442906459ca00bfb987e6e4d107ed595e4ce",
+      "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+      "benchmarks/routing_experiment.py": "4f6b9d189bae553735402e838ac8cc746e29701f7c351ecd5b3b0022acf1fb4a"
+    },
+    "fixture_sha256": "04a113ad441d210d4fd0643542b992f962519ad4965e3eb4d90c657d54712bfb",
+    "protocol": "bug/modules/investigate: solo,legacy,team then reverse; repository: solo,legacy,team once"
+  },
+  "totals": {
+    "complete_cases": {
+      "solo": {
+        "input_tokens": 234719,
+        "cached_input_tokens": 170240,
+        "uncached_input_tokens": 64479,
+        "output_tokens": 5864,
+        "total_tokens": 240583,
+        "worker_tokens": 0,
+        "worker_invocations": 0,
+        "seconds": 240.712,
+        "runs": 4,
+        "main_commands": 19
+      },
+      "legacy": {
+        "input_tokens": 254316,
+        "cached_input_tokens": 176128,
+        "uncached_input_tokens": 78188,
+        "output_tokens": 2681,
+        "total_tokens": 256997,
+        "worker_tokens": 324400,
+        "worker_invocations": 6,
+        "seconds": 373.43,
+        "runs": 4,
+        "main_commands": 17,
+        "routing_tokens": 145296,
+        "routing_commands": 9,
+        "review_tokens": 111701,
+        "main_reduction_vs_solo": -0.06822593450077519,
+        "main_reduction_vs_legacy": 0.0,
+        "combined_ratio_vs_solo": 2.416617134211478,
+        "uncached_main_ratio_vs_solo": 1.1496382013846438
+      },
+      "team": {
+        "input_tokens": 156160,
+        "cached_input_tokens": 48512,
+        "uncached_input_tokens": 107648,
+        "output_tokens": 2161,
+        "total_tokens": 158321,
+        "worker_tokens": 238610,
+        "worker_invocations": 4,
+        "seconds": 382.203,
+        "runs": 4,
+        "main_commands": 8,
+        "routing_tokens": 50318,
+        "routing_commands": 0,
+        "review_tokens": 108003,
+        "main_reduction_vs_solo": 0.3419277338797837,
+        "main_reduction_vs_legacy": 0.3839577893905376,
+        "combined_ratio_vs_solo": 1.6498713541688315,
+        "uncached_main_ratio_vs_solo": 1.5610508508309284
+      }
+    }
+  },
+  "runs": [
+    {
+      "case": "bug",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 50837,
+        "cached_input_tokens": 36608,
+        "output_tokens": 1077,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 51914,
+        "uncached_input_tokens": 14229
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 48.813
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/bug-1-solo",
+      "main_phases": {
+        "bug-1-solo": {
+          "commands": 4,
+          "cumulative_usage": {
+            "input_tokens": 50837,
+            "cached_input_tokens": 36608,
+            "output_tokens": 1077,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 51914,
+            "uncached_input_tokens": 14229
+          }
+        }
+      }
+    },
+    {
+      "case": "bug",
+      "arm": "legacy",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 62797,
+        "cached_input_tokens": 36224,
+        "output_tokens": 602,
+        "reasoning_output_tokens": 36,
+        "total_tokens": 63399,
+        "uncached_input_tokens": 26573
+      },
+      "worker_usage": {
+        "input_tokens": 50174,
+        "cached_input_tokens": 46720,
+        "output_tokens": 1188,
+        "total_tokens": 51362
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 93.909
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/bug-1-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 35723,
+            "cached_input_tokens": 23296,
+            "output_tokens": 409,
+            "reasoning_output_tokens": 36,
+            "total_tokens": 36132,
+            "uncached_input_tokens": 12427
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 62797,
+            "cached_input_tokens": 36224,
+            "output_tokens": 602,
+            "reasoning_output_tokens": 36,
+            "total_tokens": 63399,
+            "uncached_input_tokens": 26573
+          }
+        }
+      }
+    },
+    {
+      "case": "bug",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 38857,
+        "cached_input_tokens": 23168,
+        "output_tokens": 513,
+        "reasoning_output_tokens": 20,
+        "total_tokens": 39370,
+        "uncached_input_tokens": 15689
+      },
+      "worker_usage": {
+        "input_tokens": 65134,
+        "cached_input_tokens": 58752,
+        "output_tokens": 1391,
+        "total_tokens": 66525
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 93.768
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/bug-1-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": {
+            "input_tokens": 12231,
+            "cached_input_tokens": 0,
+            "output_tokens": 305,
+            "reasoning_output_tokens": 20,
+            "total_tokens": 12536,
+            "uncached_input_tokens": 12231
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 38857,
+            "cached_input_tokens": 23168,
+            "output_tokens": 513,
+            "reasoning_output_tokens": 20,
+            "total_tokens": 39370,
+            "uncached_input_tokens": 15689
+          }
+        }
+      }
+    },
+    {
+      "case": "bug",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 38619,
+        "cached_input_tokens": 12544,
+        "output_tokens": 475,
+        "reasoning_output_tokens": 28,
+        "total_tokens": 39094,
+        "uncached_input_tokens": 26075
+      },
+      "worker_usage": {
+        "input_tokens": 64144,
+        "cached_input_tokens": 58240,
+        "output_tokens": 1175,
+        "total_tokens": 65319
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 82.011
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/bug-2-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": {
+            "input_tokens": 12228,
+            "cached_input_tokens": 0,
+            "output_tokens": 262,
+            "reasoning_output_tokens": 28,
+            "total_tokens": 12490,
+            "uncached_input_tokens": 12228
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 38619,
+            "cached_input_tokens": 12544,
+            "output_tokens": 475,
+            "reasoning_output_tokens": 28,
+            "total_tokens": 39094,
+            "uncached_input_tokens": 26075
+          }
+        }
+      }
+    },
+    {
+      "case": "bug",
+      "arm": "legacy",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 62837,
+        "cached_input_tokens": 46720,
+        "output_tokens": 583,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 63420,
+        "uncached_input_tokens": 16117
+      },
+      "worker_usage": {
+        "input_tokens": 37973,
+        "cached_input_tokens": 34688,
+        "output_tokens": 1066,
+        "total_tokens": 39039
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 82.617
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/bug-2-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 3,
+          "cumulative_usage": {
+            "input_tokens": 35825,
+            "cached_input_tokens": 23296,
+            "output_tokens": 406,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 36231,
+            "uncached_input_tokens": 12529
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 62837,
+            "cached_input_tokens": 46720,
+            "output_tokens": 583,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 63420,
+            "uncached_input_tokens": 16117
+          }
+        }
+      }
+    },
+    {
+      "case": "bug",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 50742,
+        "cached_input_tokens": 24320,
+        "output_tokens": 1038,
+        "reasoning_output_tokens": 18,
+        "total_tokens": 51780,
+        "uncached_input_tokens": 26422
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 48.259
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/bug-2-solo",
+      "main_phases": {
+        "bug-2-solo": {
+          "commands": 4,
+          "cumulative_usage": {
+            "input_tokens": 50742,
+            "cached_input_tokens": 24320,
+            "output_tokens": 1038,
+            "reasoning_output_tokens": 18,
+            "total_tokens": 51780,
+            "uncached_input_tokens": 26422
+          }
+        }
+      }
+    },
+    {
+      "case": "modules",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 51608,
+        "cached_input_tokens": 36736,
+        "output_tokens": 1767,
+        "reasoning_output_tokens": 122,
+        "total_tokens": 53375,
+        "uncached_input_tokens": 14872
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 67.06
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/modules-1-solo",
+      "main_phases": {
+        "modules-1-solo": {
+          "commands": 4,
+          "cumulative_usage": {
+            "input_tokens": 51608,
+            "cached_input_tokens": 36736,
+            "output_tokens": 1767,
+            "reasoning_output_tokens": 122,
+            "total_tokens": 53375,
+            "uncached_input_tokens": 14872
+          }
+        }
+      }
+    },
+    {
+      "case": "modules",
+      "arm": "legacy",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 64714,
+        "cached_input_tokens": 47360,
+        "output_tokens": 800,
+        "reasoning_output_tokens": 81,
+        "total_tokens": 65514,
+        "uncached_input_tokens": 17354
+      },
+      "worker_usage": {
+        "input_tokens": 113854,
+        "cached_input_tokens": 104960,
+        "output_tokens": 2259,
+        "total_tokens": 116113
+      },
+      "worker_invocations": 2,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 95.66
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/modules-1-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 36000,
+            "cached_input_tokens": 23424,
+            "output_tokens": 595,
+            "reasoning_output_tokens": 81,
+            "total_tokens": 36595,
+            "uncached_input_tokens": 12576
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 64714,
+            "cached_input_tokens": 47360,
+            "output_tokens": 800,
+            "reasoning_output_tokens": 81,
+            "total_tokens": 65514,
+            "uncached_input_tokens": 17354
+          }
+        }
+      }
+    },
+    {
+      "case": "modules",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 39295,
+        "cached_input_tokens": 0,
+        "output_tokens": 538,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 39833,
+        "uncached_input_tokens": 39295
+      },
+      "worker_usage": {
+        "input_tokens": 51607,
+        "cached_input_tokens": 47104,
+        "output_tokens": 1847,
+        "total_tokens": 53454
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 101.66
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/modules-1-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": {
+            "input_tokens": 12268,
+            "cached_input_tokens": 0,
+            "output_tokens": 328,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12596,
+            "uncached_input_tokens": 12268
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 39295,
+            "cached_input_tokens": 0,
+            "output_tokens": 538,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 39833,
+            "uncached_input_tokens": 39295
+          }
+        }
+      }
+    },
+    {
+      "case": "modules",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 39389,
+        "cached_input_tokens": 12800,
+        "output_tokens": 635,
+        "reasoning_output_tokens": 128,
+        "total_tokens": 40024,
+        "uncached_input_tokens": 26589
+      },
+      "worker_usage": {
+        "input_tokens": 51488,
+        "cached_input_tokens": 36608,
+        "output_tokens": 1824,
+        "total_tokens": 53312
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 104.764
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/modules-2-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": {
+            "input_tokens": 12265,
+            "cached_input_tokens": 0,
+            "output_tokens": 431,
+            "reasoning_output_tokens": 128,
+            "total_tokens": 12696,
+            "uncached_input_tokens": 12265
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 39389,
+            "cached_input_tokens": 12800,
+            "output_tokens": 635,
+            "reasoning_output_tokens": 128,
+            "total_tokens": 40024,
+            "uncached_input_tokens": 26589
+          }
+        }
+      }
+    },
+    {
+      "case": "modules",
+      "arm": "legacy",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 63968,
+        "cached_input_tokens": 45824,
+        "output_tokens": 696,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 64664,
+        "uncached_input_tokens": 18144
+      },
+      "worker_usage": {
+        "input_tokens": 115263,
+        "cached_input_tokens": 92544,
+        "output_tokens": 2623,
+        "total_tokens": 117886
+      },
+      "worker_invocations": 2,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 101.244
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/modules-2-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 35844,
+            "cached_input_tokens": 22144,
+            "output_tokens": 494,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 36338,
+            "uncached_input_tokens": 13700
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 63968,
+            "cached_input_tokens": 45824,
+            "output_tokens": 696,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 64664,
+            "uncached_input_tokens": 18144
+          }
+        }
+      }
+    },
+    {
+      "case": "modules",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 81532,
+        "cached_input_tokens": 72576,
+        "output_tokens": 1982,
+        "reasoning_output_tokens": 95,
+        "total_tokens": 83514,
+        "uncached_input_tokens": 8956
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 76.58
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/modules-2-solo",
+      "main_phases": {
+        "modules-2-solo": {
+          "commands": 7,
+          "cumulative_usage": {
+            "input_tokens": 81532,
+            "cached_input_tokens": 72576,
+            "output_tokens": 1982,
+            "reasoning_output_tokens": 95,
+            "total_tokens": 83514,
+            "uncached_input_tokens": 8956
+          }
+        }
+      }
+    },
+    {
+      "case": "investigate",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 70688,
+        "cached_input_tokens": 63360,
+        "output_tokens": 2162,
+        "reasoning_output_tokens": 347,
+        "total_tokens": 72850,
+        "uncached_input_tokens": 7328
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 82.584
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-1-solo",
+      "main_phases": {
+        "investigate-1-solo": {
+          "commands": 6,
+          "cumulative_usage": {
+            "input_tokens": 70688,
+            "cached_input_tokens": 63360,
+            "output_tokens": 2162,
+            "reasoning_output_tokens": 347,
+            "total_tokens": 72850,
+            "uncached_input_tokens": 7328
+          }
+        }
+      }
+    },
+    {
+      "case": "investigate",
+      "arm": "legacy",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 76979,
+        "cached_input_tokens": 59136,
+        "output_tokens": 786,
+        "reasoning_output_tokens": 77,
+        "total_tokens": 77765,
+        "uncached_input_tokens": 17843
+      },
+      "worker_usage": {
+        "input_tokens": 67661,
+        "cached_input_tokens": 62080,
+        "output_tokens": 2764,
+        "total_tokens": 70425
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 148.934
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-1-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 3,
+          "cumulative_usage": {
+            "input_tokens": 48008,
+            "cached_input_tokens": 35328,
+            "output_tokens": 594,
+            "reasoning_output_tokens": 77,
+            "total_tokens": 48602,
+            "uncached_input_tokens": 12680
+          }
+        },
+        "review": {
+          "commands": 2,
+          "cumulative_usage": {
+            "input_tokens": 76979,
+            "cached_input_tokens": 59136,
+            "output_tokens": 786,
+            "reasoning_output_tokens": 77,
+            "total_tokens": 77765,
+            "uncached_input_tokens": 17843
+          }
+        }
+      }
+    },
+    {
+      "case": "investigate",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 54346,
+        "cached_input_tokens": 27008,
+        "output_tokens": 596,
+        "reasoning_output_tokens": 71,
+        "total_tokens": 54942,
+        "uncached_input_tokens": 27338
+      },
+      "worker_usage": {
+        "input_tokens": 80299,
+        "cached_input_tokens": 74496,
+        "output_tokens": 2498,
+        "total_tokens": 82797
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 133.05
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-1-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": {
+            "input_tokens": 12250,
+            "cached_input_tokens": 0,
+            "output_tokens": 311,
+            "reasoning_output_tokens": 46,
+            "total_tokens": 12561,
+            "uncached_input_tokens": 12250
+          }
+        },
+        "review": {
+          "commands": 4,
+          "cumulative_usage": {
+            "input_tokens": 54346,
+            "cached_input_tokens": 27008,
+            "output_tokens": 596,
+            "reasoning_output_tokens": 71,
+            "total_tokens": 54942,
+            "uncached_input_tokens": 27338
+          }
+        }
+      }
+    },
+    {
+      "case": "investigate",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 54305,
+        "cached_input_tokens": 35328,
+        "output_tokens": 569,
+        "reasoning_output_tokens": 11,
+        "total_tokens": 54874,
+        "uncached_input_tokens": 18977
+      },
+      "worker_usage": {
+        "input_tokens": 81668,
+        "cached_input_tokens": 64768,
+        "output_tokens": 2351,
+        "total_tokens": 84019
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 123.281
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-2-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": {
+            "input_tokens": 12252,
+            "cached_input_tokens": 0,
+            "output_tokens": 296,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12548,
+            "uncached_input_tokens": 12252
+          }
+        },
+        "review": {
+          "commands": 4,
+          "cumulative_usage": {
+            "input_tokens": 54305,
+            "cached_input_tokens": 35328,
+            "output_tokens": 569,
+            "reasoning_output_tokens": 11,
+            "total_tokens": 54874,
+            "uncached_input_tokens": 18977
+          }
+        }
+      }
+    },
+    {
+      "case": "investigate",
+      "arm": "legacy",
+      "valid": false,
+      "passed": false,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": null,
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 1,
+      "actual_delegation": false,
+      "changed_files": [],
+      "execution": {
+        "exit_code": 1,
+        "termination": "exited",
+        "seconds": 9.015
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-2-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 1,
+          "cumulative_usage": null
+        }
+      }
+    },
+    {
+      "case": "investigate",
+      "arm": "solo",
+      "valid": false,
+      "passed": false,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": null,
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [],
+      "execution": {
+        "exit_code": 1,
+        "termination": "exited",
+        "seconds": 4.318
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/investigate-2-solo",
+      "main_phases": {
+        "investigate-2-solo": {
+          "commands": 0,
+          "cumulative_usage": null
+        }
+      }
+    },
+    {
+      "case": "repository",
+      "arm": "solo",
+      "valid": false,
+      "passed": false,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": null,
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [],
+      "execution": {
+        "exit_code": 1,
+        "termination": "exited",
+        "seconds": 4.168
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/repository-1-solo",
+      "main_phases": {
+        "repository-1-solo": {
+          "commands": 0,
+          "cumulative_usage": null
+        }
+      }
+    },
+    {
+      "case": "repository",
+      "arm": "legacy",
+      "valid": false,
+      "passed": false,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": null,
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 1,
+      "actual_delegation": false,
+      "changed_files": [],
+      "execution": {
+        "exit_code": 1,
+        "termination": "exited",
+        "seconds": 3.973
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/repository-1-legacy",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": null
+        }
+      }
+    },
+    {
+      "case": "repository",
+      "arm": "team",
+      "valid": false,
+      "passed": false,
+      "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7-python-alias",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": null,
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 1,
+      "actual_delegation": false,
+      "changed_files": [],
+      "execution": {
+        "exit_code": 1,
+        "termination": "exited",
+        "seconds": 4.374
+      },
+      "artifacts": "/home/bench/playground/bench-runs/routing-sol-high-v2/repository-1-team",
+      "main_phases": {
+        "plan": {
+          "commands": 0,
+          "cumulative_usage": null
+        }
+      }
+    }
+  ],
+  "comparisons": {
+    "legacy": [
+      {
+        "case": "bug",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 51847.0,
+        "team_main_median": 63409.5,
+        "diagnostic_reduction": -0.22301193897428973,
+        "isolated_main_reduction": -0.22301193897428973
+      },
+      {
+        "case": "investigate",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": false,
+        "delegation_observed": false,
+        "delegated_team_runs": 1,
+        "solo_main_median": null,
+        "team_main_median": null,
+        "diagnostic_reduction": null,
+        "isolated_main_reduction": null
+      },
+      {
+        "case": "modules",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 68444.5,
+        "team_main_median": 65089.0,
+        "diagnostic_reduction": 0.04902512254454339,
+        "isolated_main_reduction": 0.04902512254454339
+      },
+      {
+        "case": "repository",
+        "solo_runs": 1,
+        "team_runs": 1,
+        "all_passed": false,
+        "delegation_observed": false,
+        "delegated_team_runs": 0,
+        "solo_main_median": null,
+        "team_main_median": null,
+        "diagnostic_reduction": null,
+        "isolated_main_reduction": null
+      }
+    ],
+    "team": [
+      {
+        "case": "bug",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 51847.0,
+        "team_main_median": 39232.0,
+        "diagnostic_reduction": 0.24331205277065215,
+        "isolated_main_reduction": 0.24331205277065215
+      },
+      {
+        "case": "investigate",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": false,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": null,
+        "team_main_median": null,
+        "diagnostic_reduction": null,
+        "isolated_main_reduction": null
+      },
+      {
+        "case": "modules",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 68444.5,
+        "team_main_median": 39928.5,
+        "diagnostic_reduction": 0.4166295319565487,
+        "isolated_main_reduction": 0.4166295319565487
+      },
+      {
+        "case": "repository",
+        "solo_runs": 1,
+        "team_runs": 1,
+        "all_passed": false,
+        "delegation_observed": false,
+        "delegated_team_runs": 0,
+        "solo_main_median": null,
+        "team_main_median": null,
+        "diagnostic_reduction": null,
+        "isolated_main_reduction": null
+      }
+    ]
+  },
+  "excluded_environment_diagnostic": {
+    "reason": "python command absent; entire initial protocol stopped and repeated after python-is-python3 installation; not pooled with corrected runs",
+    "completed_runs": [
+      {
+        "case": "bug",
+        "arm": "solo",
+        "valid": true,
+        "passed": true,
+        "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7",
+        "isolation_basis": "operator-attested-VM-or-container",
+        "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+        "requested_main_model": "gpt-6.1-sol",
+        "requested_worker_model": "gpt-6.1-sol",
+        "requested_effort": "high",
+        "requested_worker_effort": "high",
+        "observed_model_contexts": [
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          }
+        ],
+        "main_usage": {
+          "input_tokens": 80286,
+          "cached_input_tokens": 74752,
+          "output_tokens": 1359,
+          "reasoning_output_tokens": 60,
+          "total_tokens": 81645,
+          "uncached_input_tokens": 5534
+        },
+        "worker_usage": {
+          "input_tokens": 0,
+          "cached_input_tokens": 0,
+          "output_tokens": 0,
+          "total_tokens": 0
+        },
+        "worker_invocations": 0,
+        "worker_failures": 0,
+        "worker_batch_failures": 0,
+        "actual_delegation": false,
+        "changed_files": [
+          "flags.py",
+          "test_flags.py"
+        ],
+        "execution": {
+          "exit_code": 0,
+          "termination": "exited",
+          "seconds": 61.726
+        },
+        "artifacts": "/home/bench/playground/bench-runs/routing-sol-high/bug-1-solo",
+        "main_phases": {
+          "bug-1-solo": {
+            "commands": 8,
+            "cumulative_usage": {
+              "input_tokens": 80286,
+              "cached_input_tokens": 74752,
+              "output_tokens": 1359,
+              "reasoning_output_tokens": 60,
+              "total_tokens": 81645,
+              "uncached_input_tokens": 5534
+            }
+          }
+        }
+      },
+      {
+        "case": "bug",
+        "arm": "legacy",
+        "valid": true,
+        "passed": true,
+        "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7",
+        "isolation_basis": "operator-attested-VM-or-container",
+        "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+        "requested_main_model": "gpt-6.1-sol",
+        "requested_worker_model": "gpt-6.1-sol",
+        "requested_effort": "high",
+        "requested_worker_effort": "high",
+        "observed_model_contexts": [
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          },
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          },
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          }
+        ],
+        "main_usage": {
+          "input_tokens": 62816,
+          "cached_input_tokens": 46720,
+          "output_tokens": 642,
+          "reasoning_output_tokens": 0,
+          "total_tokens": 63458,
+          "uncached_input_tokens": 16096
+        },
+        "worker_usage": {
+          "input_tokens": 51293,
+          "cached_input_tokens": 37248,
+          "output_tokens": 1371,
+          "total_tokens": 52664
+        },
+        "worker_invocations": 1,
+        "worker_failures": 0,
+        "worker_batch_failures": 0,
+        "actual_delegation": true,
+        "changed_files": [
+          "flags.py",
+          "test_flags.py"
+        ],
+        "execution": {
+          "exit_code": 0,
+          "termination": "exited",
+          "seconds": 94.46
+        },
+        "artifacts": "/home/bench/playground/bench-runs/routing-sol-high/bug-1-legacy",
+        "main_phases": {
+          "plan": {
+            "commands": 2,
+            "cumulative_usage": {
+              "input_tokens": 35711,
+              "cached_input_tokens": 23296,
+              "output_tokens": 365,
+              "reasoning_output_tokens": 0,
+              "total_tokens": 36076,
+              "uncached_input_tokens": 12415
+            }
+          },
+          "review": {
+            "commands": 3,
+            "cumulative_usage": {
+              "input_tokens": 62816,
+              "cached_input_tokens": 46720,
+              "output_tokens": 642,
+              "reasoning_output_tokens": 0,
+              "total_tokens": 63458,
+              "uncached_input_tokens": 16096
+            }
+          }
+        }
+      },
+      {
+        "case": "bug",
+        "arm": "team",
+        "valid": true,
+        "passed": true,
+        "environment": "wsl2-fresh-routing-ubuntu24.04.4-c1e67ef7",
+        "isolation_basis": "operator-attested-VM-or-container",
+        "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+        "requested_main_model": "gpt-6.1-sol",
+        "requested_worker_model": "gpt-6.1-sol",
+        "requested_effort": "high",
+        "requested_worker_effort": "high",
+        "observed_model_contexts": [
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          },
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          },
+          {
+            "model": "gpt-6.1-sol",
+            "effort": "high"
+          }
+        ],
+        "main_usage": {
+          "input_tokens": 52882,
+          "cached_input_tokens": 36736,
+          "output_tokens": 646,
+          "reasoning_output_tokens": 18,
+          "total_tokens": 53528,
+          "uncached_input_tokens": 16146
+        },
+        "worker_usage": {
+          "input_tokens": 79507,
+          "cached_input_tokens": 73216,
+          "output_tokens": 1708,
+          "total_tokens": 81215
+        },
+        "worker_invocations": 1,
+        "worker_failures": 0,
+        "worker_batch_failures": 0,
+        "actual_delegation": true,
+        "changed_files": [
+          "flags.py",
+          "test_flags.py"
+        ],
+        "execution": {
+          "exit_code": 0,
+          "termination": "exited",
+          "seconds": 112.873
+        },
+        "artifacts": "/home/bench/playground/bench-runs/routing-sol-high/bug-1-team",
+        "main_phases": {
+          "plan": {
+            "commands": 0,
+            "cumulative_usage": {
+              "input_tokens": 12209,
+              "cached_input_tokens": 0,
+              "output_tokens": 266,
+              "reasoning_output_tokens": 0,
+              "total_tokens": 12475,
+              "uncached_input_tokens": 12209
+            }
+          },
+          "review": {
+            "commands": 6,
+            "cumulative_usage": {
+              "input_tokens": 52882,
+              "cached_input_tokens": 36736,
+              "output_tokens": 646,
+              "reasoning_output_tokens": 18,
+              "total_tokens": 53528,
+              "uncached_input_tokens": 16146
+            }
+          }
+        }
+      }
+    ],
+    "interrupted_run": "bench-runs/routing-sol-high/bug-2-team"
+  }
+}

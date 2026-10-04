@@ -1,6 +1,6 @@
 # 초기 구현 검증 — 2026-10-04
 
-아래는 첫 구현 시점의 기록입니다. 후속 수정 `4dca2df`는 Windows와 새 Linux 환경에서 테스트 31개를 통과했고, 새 WSL 환경의 12회 비교도 완료했습니다. 최신 결과는 [BENCHMARK.md](BENCHMARK.md)를 참고하세요.
+아래는 첫 구현 시점의 기록입니다. 후속 수정 `4dca2df`는 Windows와 새 Linux 환경에서 테스트 31개를 통과했고, 새 WSL 환경의 12회 비교도 완료했습니다. 추가 수정 `b2e5621`은 Windows와 새 Linux 환경에서 테스트 34개를 통과했습니다. 배정 정책 비교는 21회 중 16회 완료 후 크레딧 소진으로 막혔으며 완결된 두 과제만 절감 판단에 사용했습니다. 최신 결과는 [BENCHMARK.md](BENCHMARK.md)를 참고하세요.
 
 환경: Windows, Python 3.13.14, Codex CLI 0.160.0, ChatGPT CLI 로그인.
 

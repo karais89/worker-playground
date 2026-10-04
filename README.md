@@ -2,7 +2,7 @@
 
 메인이 조사와 구현의 상세 로그를 읽는 대신 **작업을 나누고 짧은 결과를 검토**하도록 만드는 최소 구현입니다. Python 표준 라이브러리만 사용합니다. 서버, DB, 에이전트 프레임워크는 없습니다.
 
-현재 실측에서는 메인 토큰이 0.24%만 줄어 절약 효과가 확인되지 않았습니다. 새 환경에서 수행한 [12회 비교 결과와 한계](BENCHMARK.md)를 먼저 참고하세요.
+배정 정책 수정 후 완결된 두 과제에서 메인 총 토큰은 단독 대비 34.2% 줄었습니다. 다만 비캐시 메인 토큰은 56.1% 늘었으며 크레딧 소진으로 나머지 비교는 미완료입니다. [새 환경 비교 결과와 한계](BENCHMARK.md)를 참고하세요. 초기 구성의 0.24% 감소 기록도 보존했습니다.
 
 - `worker.py`: Codex CLI 워커 실행·병렬 처리·세션 재개·결과 및 사용량 기록
 - `team.py`: 요청만 보고 위임 → 워커 배치 → 같은 메인 세션의 최종 검토. 아주 작은 작업은 첫 턴에서 직접 완료
@@ -133,7 +133,7 @@ python bench.py --isolated-environment fresh-vm-image-id --case all --repeats 2 
 
 `summary.json`은 메인·워커 토큰과 통과 여부를 분리합니다. 메인 토큰의 중앙값으로 `(단독 - 팀) / 단독`을 계산하되, 실패·미측정·범위 위반이 있거나 양쪽 실행 횟수가 다르면 비교값을 내지 않습니다. 워커 0명을 선택한 정상 실행도 자동 분배 정책의 결과로 포함하며, 실제 위임 횟수는 별도로 표시합니다. 호스트 진단의 값은 `diagnostic_reduction`에만 남고 `isolated_main_reduction`은 항상 `null`입니다. 캐시 효과와 실행 시간도 원본 결과에서 함께 확인하세요. 2회 반복은 예비 측정이며 통계적인 증명이 아닙니다.
 
-사전 탐색 이동만 비교하는 고정 실험은 `benchmarks/routing_experiment.py`입니다. 새 환경에서 `python benchmarks/routing_experiment.py --auth-file /path/to/auth.json --isolated-environment fresh-image-id --output bench-runs/routing`으로 실행합니다. 단독·기존 팀(`20fb8cb`)·수정 팀을 같은 모델(Sol 6.1 High)로 비교합니다. 기존 3과제는 방식별 2회씩 순서를 뒤집어 총 18회, 고정한 이 저장소의 이전 버전에 CLI 동시 실행 옵션을 추가하는 과제는 방식별 1회씩 총 3회입니다. 마지막 과제는 대형 저장소 벤치마크가 아닌 보조 사례입니다. 기존 `worker.py`가 달라지면 이 비교 스크립트는 실행을 거부합니다. 결과를 보고 프롬프트를 바꿔 같은 실험에 섞지 않습니다.
+배정 정책을 비교하는 고정 실험은 `benchmarks/routing_experiment.py`입니다. 새 환경에서 `python benchmarks/routing_experiment.py --auth-file /path/to/auth.json --isolated-environment fresh-image-id --output bench-runs/routing`으로 실행합니다. 단독·기존 팀(`20fb8cb`)·수정 팀을 같은 모델(Sol 6.1 High)로 비교합니다. 기존 3과제는 방식별 2회씩 순서를 뒤집어 총 18회, 고정한 이 저장소의 이전 버전에 CLI 동시 실행 옵션을 추가하는 과제는 방식별 1회씩 총 3회입니다. 마지막 과제는 대형 저장소 벤치마크가 아닌 보조 사례입니다. 기존 `worker.py`가 달라지면 이 비교 스크립트는 실행을 거부합니다. 결과를 보고 프롬프트를 바꿔 같은 실험에 섞지 않습니다.
 
 ## 현재 범위와 제한
 
