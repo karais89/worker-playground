@@ -55,7 +55,36 @@ def load_config(overrides): return merge(DEFAULTS, overrides)
             bench.prepare_case(repo, bench.CASES[name])
             for path, contents in files.items():
                 (repo / path).write_text(contents, encoding="utf-8")
+            (repo / "test_solution.py").write_text("import unittest\nclass Tests(unittest.TestCase):\n    def test_contract(self):\n        exec(" + repr(bench.CASES[name]["grade"]) + ")\n", encoding="utf-8")
             self.assertTrue(bench.grade(repo, bench.CASES[name])["passed"], name)
+
+    def test_correct_function_with_missing_or_failing_tests_is_rejected(self):
+        repo = self.root / "case"
+        case = dict(files={"solution.py": "VALUE = 42\n"}, grade="from solution import VALUE\nassert VALUE == 42")
+        bench.prepare_case(repo, case)
+        missing = bench.grade(repo, case)
+        self.assertTrue(missing["functional"]["passed"])
+        self.assertFalse(missing["passed"])
+        (repo / "test_solution.py").write_text("import unittest\nclass Tests(unittest.TestCase):\n    def test_bad(self):\n        self.fail('deliberate failure')\n")
+        failing = bench.grade(repo, case)
+        self.assertTrue(failing["functional"]["passed"])
+        self.assertFalse(failing["generated_tests"]["passed"])
+        self.assertFalse(failing["passed"])
+
+    def test_nonrecursive_deepcopy_and_update_mutant_is_rejected(self):
+        repo = self.root / "mutant"
+        bench.prepare_case(repo, bench.CASES["investigate"])
+        (repo / "loader.py").write_text('''from copy import deepcopy
+from config import DEFAULTS
+def load_config(overrides):
+    result = deepcopy(DEFAULTS)
+    for key, value in overrides.items():
+        if isinstance(result.get(key), dict) and isinstance(value, dict):
+            result[key].update(deepcopy(value))
+        else: result[key] = deepcopy(value)
+    return result
+''')
+        self.assertFalse(bench.grade(repo, bench.CASES["investigate"])["functional"]["passed"])
 
     def rows(self):
         common = dict(case="bug", valid=True, passed=True, actual_delegation=True,
@@ -68,13 +97,22 @@ def load_config(overrides): return merge(DEFAULTS, overrides)
         self.assertAlmostEqual(comparison["diagnostic_reduction"], .4)
         self.assertIsNone(comparison["isolated_main_reduction"])
 
-    def test_failures_missing_usage_or_no_delegation_invalidate_comparison(self):
-        for key, value in (("passed", False), ("valid", False), ("actual_delegation", False),
+    def test_failures_or_missing_usage_invalidate_comparison(self):
+        for key, value in (("passed", False), ("valid", False),
                            ("worker_usage", None), ("worker_failures", 1), ("worker_batch_failures", 1)):
             rows = copy.deepcopy(self.rows())
             rows[1][key] = value
             comparison = bench.summarize(rows, False)["comparisons"][0]
             self.assertIsNone(comparison["isolated_main_reduction"], key)
+
+    def test_zero_worker_policy_is_eligible_without_claiming_delegation(self):
+        rows = self.rows()
+        rows[1].update(actual_delegation=False, worker_usage=None)
+        comparison = bench.summarize(rows, False)["comparisons"][0]
+        self.assertAlmostEqual(comparison["isolated_main_reduction"], .4)
+        self.assertFalse(comparison["delegation_observed"])
+        self.assertEqual(comparison["delegated_team_runs"], 0)
+        self.assertTrue(bench.eligible(rows[1]))
 
     def test_profile_is_fresh_and_credentials_removed_even_on_failure(self):
         source = self.root / "auth-source.json"

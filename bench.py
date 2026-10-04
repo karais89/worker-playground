@@ -18,6 +18,7 @@ import worker
 import team
 
 ROOT = Path(__file__).resolve().parent
+TEST_INSTRUCTION = " Add standard-library unittest tests discoverable with python -m unittest discover -s . and make them pass."
 CASES = {
     "bug": {
         "files": {"flags.py": "def parse_flag(value):\n    return bool(value)\n"},
@@ -53,7 +54,7 @@ assert data == [-2, 1, 4.5]
     },
     "investigate": {
         "files": {
-            "config.py": "DEFAULTS = {'server': {'host': 'localhost', 'port': 80}, 'debug': False}\n",
+            "config.py": "DEFAULTS = {'server': {'host': 'localhost', 'port': 80, 'tls': {'enabled': False, 'options': {'versions': ['1.2'], 'verify': True}}}, 'debug': False}\n",
             "loader.py": "from config import DEFAULTS\n\ndef load_config(overrides):\n    result = DEFAULTS.copy()\n    result.update(overrides)\n    return result\n",
         },
         "prompt": "Investigate why load_config loses nested defaults. Fix loader.load_config(overrides) to recursively merge dictionaries: overriding one nested key preserves others; non-dictionaries replace old values. Returned mutable structures must not alias DEFAULTS or overrides. Add regression tests.",
@@ -62,7 +63,7 @@ from config import DEFAULTS
 from loader import load_config
 overrides = {'server': {'port': 443}, 'extra': {'items': [1,2]}}
 a = load_config(overrides)
-assert a['server'] == {'host':'localhost','port':443}
+assert a['server']['host'] == 'localhost' and a['server']['port'] == 443
 assert a['debug'] is False
 a['server']['host'] = 'changed'
 a['extra']['items'].append(3)
@@ -70,6 +71,17 @@ assert DEFAULTS['server']['host'] == 'localhost'
 assert overrides['extra']['items'] == [1,2]
 assert load_config({'server': None})['server'] is None
 assert load_config({})['server']['port'] == 80
+nested = {'server': {'tls': {'options': {'versions': ['1.3']}}}}
+b = load_config(nested)
+assert b['server']['tls']['enabled'] is False
+assert b['server']['tls']['options'] == {'versions': ['1.3'], 'verify': True}
+b['server']['tls']['options']['versions'].append('changed')
+assert nested['server']['tls']['options']['versions'] == ['1.3']
+assert DEFAULTS['server']['tls']['options']['versions'] == ['1.2']
+c = load_config({})
+c['server']['tls']['options']['versions'].append('changed')
+assert DEFAULTS['server']['tls']['options']['versions'] == ['1.2']
+assert load_config({'server': {'tls': {'options': None}}})['server']['tls']['options'] is None
 """,
     },
 }
@@ -144,20 +156,28 @@ def runtime_profile(output):
 
 def grade(repo, case):
     # Grader code is never written to the agent's repository or prompt.
-    program = "import sys\nsys.path.insert(0, " + repr(str(repo)) + ")\n" + case["grade"]
-    try:
-        result = subprocess.run([sys.executable, "-I", "-c", program], cwd=repo,
-                                capture_output=True, timeout=30)
-        return dict(passed=result.returncode == 0, exit_code=result.returncode,
-                    stdout=result.stdout.decode("utf-8", "replace"), stderr=result.stderr.decode("utf-8", "replace"))
-    except subprocess.TimeoutExpired:
-        return dict(passed=False, exit_code=None, stderr="grader timeout")
+    prefix = "import sys\nsys.path.insert(0, " + repr(str(repo)) + ")\n"
+    def check(program):
+        try:
+            result = subprocess.run([sys.executable, "-I", "-c", prefix + program], cwd=repo,
+                                    capture_output=True, timeout=30)
+            return dict(passed=result.returncode == 0, exit_code=result.returncode,
+                        stdout=result.stdout.decode("utf-8", "replace"), stderr=result.stderr.decode("utf-8", "replace"))
+        except subprocess.TimeoutExpired:
+            return dict(passed=False, exit_code=None, stderr="grader timeout")
+    functional = check(case["grade"])
+    generated = check('''import unittest
+suite = unittest.defaultTestLoader.discover('.', pattern='test*.py')
+result = unittest.TextTestRunner(verbosity=2).run(suite)
+sys.exit(0 if result.wasSuccessful() and result.testsRun > len(result.skipped) else 1)
+''')
+    return dict(passed=functional["passed"] and generated["passed"], functional=functional, generated_tests=generated)
 
 
 def main_prompt(case):
     common = ("Complete this coding task. Do not commit or change git configuration. "
               "Run relevant tests. Do not use native subagents. Stay inside the project and supplied artifact directories. "
-              "Return the final report using the supplied schema.\nTask: " + case["prompt"] + "\n")
+              "Return the final report using the supplied schema.\nTask: " + case["prompt"] + TEST_INSTRUCTION + "\n")
     return common + "Work directly without delegating or launching another AI CLI."
 
 
@@ -173,7 +193,7 @@ def run_one(case_name, arm, output, args):
         before = worker.snapshot(repo, ["."])
         if arm == "team":
             started = time.monotonic()
-            coordination = team.run_team(case["prompt"], repo, output / "coordination", [cli],
+            coordination = team.run_team(case["prompt"] + TEST_INSTRUCTION, repo, output / "coordination", [cli],
                                          args.main_model, args.worker_model, args.effort,
                                          args.worker_effort, args.timeout, env)
             valid = coordination["main_valid"] and coordination["status"] == "completed"
@@ -223,7 +243,8 @@ def run_one(case_name, arm, output, args):
                       profile_config_sha256=config_hash, requested_main_model=args.main_model,
                       requested_worker_model=args.worker_model, requested_effort=args.effort,
                       requested_worker_effort=args.worker_effort, observed_model_contexts=model_contexts,
-                      main_usage=main_usage, worker_usage=worker.total_usage(reports),
+                      main_usage=main_usage, worker_usage=worker.total_usage(reports) if reports else {
+                          k: 0 for k in ("input_tokens", "cached_input_tokens", "output_tokens", "total_tokens")},
                       worker_invocations=len(reports), worker_failures=sum(r["status"] != "completed" for r in reports),
                       worker_batch_failures=batch_failures,
                       actual_delegation=bool(reports), changed_files=changed, execution=execution,
@@ -232,20 +253,25 @@ def run_one(case_name, arm, output, args):
         return result
 
 
+def eligible(row):
+    return (row["valid"] and row["passed"] and row["main_usage"] is not None
+            and not row["worker_failures"] and not row.get("worker_batch_failures", 0)
+            and (not row["actual_delegation"] or row["worker_usage"] is not None))
+
+
 def summarize(results, diagnostic):
     comparisons = []
     for name in sorted({r["case"] for r in results}):
         rows = [r for r in results if r["case"] == name]
         solo = [r for r in rows if r["arm"] == "solo"]
         team = [r for r in rows if r["arm"] == "team"]
-        measurable = bool(solo and team) and all(r["valid"] and r["passed"] for r in rows)
+        measurable = bool(solo and team) and len(solo) == len(team) and all(eligible(r) for r in rows)
         delegated = bool(team) and all(r["actual_delegation"] for r in team)
-        measurable = measurable and delegated and all(r["worker_usage"] is not None and not r["worker_failures"]
-                                                      and not r.get("worker_batch_failures", 0) for r in team)
         a = statistics.median(r["main_usage"]["total_tokens"] for r in solo) if measurable else None
         b = statistics.median(r["main_usage"]["total_tokens"] for r in team) if measurable else None
         comparisons.append(dict(case=name, solo_runs=len(solo), team_runs=len(team),
                                 all_passed=all(r["passed"] for r in rows), delegation_observed=delegated,
+                                delegated_team_runs=sum(bool(r["actual_delegation"]) for r in team),
                                 solo_main_median=a, team_main_median=b,
                                 diagnostic_reduction=1-b/a if measurable and a else None,
                                 isolated_main_reduction=1-b/a if measurable and a and not diagnostic else None))
@@ -294,9 +320,7 @@ def main(argv=None):
                     worker.write_json(output / "summary.json", summarize(results, args.diagnostic))
         print(json.dumps(summarize(results, args.diagnostic)["comparisons"], indent=2))
         print(f"Artifacts: {output}")
-        return 0 if all(r["valid"] and r["passed"] and (r["arm"] == "solo" or (
-            r["actual_delegation"] and not r["worker_failures"] and not r["worker_batch_failures"]
-            and r["worker_usage"] is not None)) for r in results) else 1
+        return 0 if all(eligible(r) for r in results) else 1
     except (ValueError, OSError, subprocess.SubprocessError) as error:
         print(f"bench: {error}", file=sys.stderr)
         return 2

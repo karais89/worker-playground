@@ -52,6 +52,11 @@ def invoke(cli, cwd, output, prompt, schema, model, effort, timeout, env, sessio
 
 def run_team(prompt, cwd, output, cli=None, main_model="gpt-6-astra", worker_model=worker.DEFAULT_MODEL,
              effort="high", worker_effort="high", timeout=600, env=None):
+    with worker.directory_lock(worker.git_root(cwd)):
+        return _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker_effort, timeout, env)
+
+
+def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker_effort, timeout, env):
     cwd, output = Path(cwd).resolve(), Path(output).resolve()
     if timeout <= 0:
         raise ValueError("timeout must be positive")
@@ -82,14 +87,15 @@ def run_team(prompt, cwd, output, cli=None, main_model="gpt-6-astra", worker_mod
         worker.write_json(output / "tasks.json", {"tasks": [dict(t, cwd=str(cwd)) for t in raw]})
         tasks = worker.load_tasks(output / "tasks.json")
         batch = worker.run_batch(tasks, output / "workers", cli=cli, model=worker_model,
-                                 effort=worker_effort, timeout=timeout, env=env)
+                                 effort=worker_effort, timeout=timeout, env=env,
+                                 _held_roots=(worker.git_root(cwd),))
     final = invoke(cli, cwd, output / "review", (
         "Continue as the main coordinator. Review the short worker results below and only the necessary "
         "changed code. Do not repeat broad exploration. Verify the user's acceptance criteria and relevant "
         "tests; repair small defects or report blocked if substantial work remains. If there were no workers, "
         "complete the original task directly now. Do not launch AI CLIs or native subagents. Do not commit. "
         "Return a concise final report using the supplied schema.\nWorker results:\n" +
-        json.dumps(batch, ensure_ascii=False)), worker.REPORT_SCHEMA, main_model, effort, timeout, env,
+        worker.main_report(batch)), worker.REPORT_SCHEMA, main_model, effort, timeout, env,
         session_id=plan["events"]["session_id"])
     worker.write_json(output / "review/execution.json", final["execution"])
     report = final["final"]

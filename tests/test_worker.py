@@ -6,6 +6,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import worker
@@ -105,6 +106,33 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(worker.read_json(self.root / "out/a/report.json")["usage"]["total_tokens"], 13)
         with self.assertRaises(ValueError):
             worker.resume_task(self.root / "out/a", self.root / "stale", "stale", 10)
+
+    def test_launch_failure_does_not_consume_resumable_session(self):
+        self.batch([self.task()])
+        prior = self.root / "out/a"
+        real_run = worker.run_process
+        def fail_launch(*args, **kwargs):
+            with patch.object(worker.subprocess, "Popen", side_effect=FileNotFoundError("missing CLI")):
+                return real_run(*args, **kwargs)
+        with patch.object(worker, "run_process", side_effect=fail_launch):
+            failed = worker.resume_task(prior, self.root / "failed", "retry later", 10)
+        self.assertEqual(failed["execution"]["termination"], "launch_failed")
+        self.assertNotIn("resumed_to", worker.read_json(prior / "session.json"))
+        retried = worker.resume_task(prior, self.root / "retried", "retry now", 10)
+        self.assertEqual(retried["status"], "completed")
+        self.assertEqual(retried["usage"]["total_tokens"], 24)
+
+    def test_main_handoff_has_total_byte_limit_and_full_report_pointer(self):
+        batch = dict(status="failed", artifacts=str(self.root / "out"), tasks=[
+            dict(id="large", status="failed", summary="한글\\\"" * 1000,
+                 issues=["x" * 5000] * 100, observed_changed_files=["file.py"] * 10000)])
+        result = worker.main_report(batch)
+        self.assertLessEqual(len(result.encode("utf-8")), worker.MAIN_REPORT_LIMIT)
+        compact = json.loads(result)
+        self.assertTrue(compact["truncated"])
+        self.assertEqual(compact["status"], "failed")
+        self.assertEqual(compact["details"], str(self.root / "out/summary.json"))
+        self.assertEqual(len(batch["tasks"][0]["issues"]), 100)
 
     def test_directory_scope_contains_files_on_windows(self):
         result = self.batch([self.task(scope=["pkg"], files={"pkg/file.py": "answer = 42\n"})])

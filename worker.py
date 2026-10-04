@@ -5,7 +5,6 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from contextlib import ExitStack, contextmanager
 import difflib
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -13,12 +12,12 @@ import re
 import signal
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 import uuid
 
 DEFAULT_MODEL = "gpt-6.1-sol"
+MAIN_REPORT_LIMIT = 6000  # UTF-8 bytes; full reports remain on disk.
 ROLES = {
     "research": "Investigate only. Do not change files. Return conclusions with file/line evidence.",
     "implement": "Implement the assigned change and run relevant checks. Stay in the assigned scope.",
@@ -50,6 +49,26 @@ def write_json(path: Path, value):
 
 def read_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8-sig"))
+
+
+def main_report(batch):
+    """Bound the entire handoff, including file lists, issues and JSON escaping."""
+    if batch is None:
+        return "No workers were dispatched."
+    text = json.dumps(batch, ensure_ascii=False)
+    if len(text.encode("utf-8")) <= MAIN_REPORT_LIMIT:
+        return text
+    compact = dict(status=batch["status"], truncated=True,
+                   details=str(Path(batch["artifacts"]) / "summary.json"),
+                   tasks=[dict(id=t.get("id"), status=t["status"], summary=t.get("summary", "")[:240])
+                          for t in batch["tasks"][:3]])
+    text = json.dumps(compact, ensure_ascii=False)
+    if len(text.encode("utf-8")) > MAIN_REPORT_LIMIT:
+        compact["tasks"] = []
+        text = json.dumps(compact, ensure_ascii=False)
+    if len(text.encode("utf-8")) > MAIN_REPORT_LIMIT:
+        raise ValueError("artifact path exceeds the main report budget")
+    return text
 
 
 def normalize_scope(value: str) -> str:
@@ -301,9 +320,9 @@ def save_diff(before, after, output):
 
 @contextmanager
 def directory_lock(key):
-    root = Path(tempfile.gettempdir()) / "cli-worker-locks"
-    root.mkdir(exist_ok=True)
-    path = root / (hashlib.sha256(str(key).encode()).hexdigest() + ".lock")
+    # Git's metadata directory is shared even when callers use different TEMP/HOME profiles.
+    result = subprocess.run(["git", "rev-parse", "--absolute-git-dir"], cwd=key, capture_output=True, check=True)
+    path = Path(result.stdout.decode("utf-8").strip()) / "cli-worker.lock"
     try:
         fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
     except FileExistsError:
@@ -389,6 +408,10 @@ def resume_task(prior, output, followup, timeout):
         result = execute_task(session["task"], output, session["cli"], session["model"],
                               session["effort"], timeout, session_id=session["session_id"],
                               followup=followup, previous_usage=session.get("cumulative_usage"), excluded=(prior,))
+        if result["execution"]["termination"] == "launch_failed":
+            # No subprocess existed, so the old session and accounting remain untouched.
+            session.pop("resumed_to")
+            write_json(prior / "session.json", session)
         violations = scope_violations(root, before, snapshot(root, ["."], (output, prior)), [session["task"]])
         result["scope_violations"] = violations
         if violations:
@@ -404,7 +427,8 @@ def total_usage(results):
             for key in ("input_tokens", "cached_input_tokens", "output_tokens", "total_tokens")}
 
 
-def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concurrency=3, timeout=600, env=None):
+def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concurrency=3, timeout=600, env=None,
+              _held_roots=()):
     if not 1 <= concurrency <= 3 or timeout <= 0:
         raise ValueError("concurrency must be 1..3 and timeout must be positive")
     cli = cli or ["codex"]
@@ -415,7 +439,8 @@ def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concu
     with ExitStack() as locks:
         roots = sorted({git_root(t["cwd"]) for t in tasks})
         for root in roots:
-            locks.enter_context(directory_lock(root))
+            if root not in _held_roots:  # Only the host coordinator passes its already-held lock.
+                locks.enter_context(directory_lock(root))
         baselines = {root: snapshot(root, ["."], (output,)) for root in roots}
         with ThreadPoolExecutor(max_workers=concurrency) as pool:
             pending, running = list(tasks), {}
