@@ -79,6 +79,10 @@ def validate():
             reference(name, repo)
             good = bench.grade(repo, case)
             assert good["passed"], (name, good)
+            for path in repo.glob("test_*.py"):
+                path.rename(repo / "tests" / path.name)
+            nested = bench.grade(repo, case)
+            assert nested["passed"], (name, nested)
             if name == "atomic_import":
                 path = repo/"taskdesk/service.py"
                 text = path.read_text().replace('validate_record(record))', 'validate_record(record))\n                self.store.connection.commit()')
@@ -91,7 +95,7 @@ def validate():
             path.write_text(text, encoding="utf-8")
             bad = bench.grade(repo, case)
             assert not bad["functional"]["passed"] and bad["generated_tests"]["passed"], (name,bad)
-            evidence.append(dict(case=name, unchanged_rejected=True, reference_passed=True, mutant_rejected=True))
+            evidence.append(dict(case=name, unchanged_rejected=True, reference_passed=True, root_and_tests_locations_passed=True, mutant_rejected=True))
     return evidence
 
 
