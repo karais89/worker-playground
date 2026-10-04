@@ -378,41 +378,45 @@ def execute_task(task, output, cli, model, effort, timeout, cancel=None, session
     write_json(output / "report.json", result)
     write_json(output / "session.json", dict(session_id=events["session_id"], task=task,
                                               model=model, effort=effort, cli=cli,
-                                              codex_home=(env or os.environ).get("CODEX_HOME"),
+                                              codex_home=(env if env is not None else os.environ).get("CODEX_HOME"),
                                               cumulative_usage=events["usage"],
                                               previous_session_id=session_id))
     return result
 
 
-def resume_task(prior, output, followup, timeout):
+def resume_task(prior, output, followup, timeout, *, env=None, _held_roots=(), _excluded=()):
     session = read_json(prior / "session.json")
     if not session.get("session_id"):
         raise ValueError("prior execution has no resumable session")
-    if session.get("codex_home") != os.environ.get("CODEX_HOME"):
+    if session.get("codex_home") != (env if env is not None else os.environ).get("CODEX_HOME"):
         raise ValueError("resume must use the same CODEX_HOME as the original run")
     if session.get("resumed_to"):
         raise ValueError("resume the newest result instead: " + session["resumed_to"])
     if timeout <= 0:
         raise ValueError("timeout must be positive")
     root = git_root(session["task"]["cwd"])
-    with directory_lock(root):
+    with ExitStack() as locks:
+        if root not in _held_roots:
+            locks.enter_context(directory_lock(root))
         # Check again under the lock, then reserve this link before spending tokens.
         session = read_json(prior / "session.json")
         if session.get("resumed_to"):
             raise ValueError("session already resumed: " + session["resumed_to"])
         if output.exists():
             raise ValueError(f"output already exists: {output}")
-        before = snapshot(root, ["."], (output, prior))
+        excluded = (output, prior, *_excluded)
+        before = snapshot(root, ["."], excluded)
         session["resumed_to"] = str(output)
         write_json(prior / "session.json", session)
         result = execute_task(session["task"], output, session["cli"], session["model"],
                               session["effort"], timeout, session_id=session["session_id"],
-                              followup=followup, previous_usage=session.get("cumulative_usage"), excluded=(prior,))
+                              followup=followup, previous_usage=session.get("cumulative_usage"),
+                              excluded=excluded, env=env)
         if result["execution"]["termination"] == "launch_failed":
             # No subprocess existed, so the old session and accounting remain untouched.
             session.pop("resumed_to")
             write_json(prior / "session.json", session)
-        violations = scope_violations(root, before, snapshot(root, ["."], (output, prior)), [session["task"]])
+        violations = scope_violations(root, before, snapshot(root, ["."], excluded), [session["task"]])
         result["scope_violations"] = violations
         if violations:
             result["status"] = "failed"
@@ -425,6 +429,11 @@ def total_usage(results):
         return None
     return {key: sum(r["usage"][key] for r in results)
             for key in ("input_tokens", "cached_input_tokens", "output_tokens", "total_tokens")}
+
+
+def task_summary(result):
+    return {key: result.get(key) for key in ("id", "role", "status", "summary", "observed_changed_files",
+                                           "observed_commands", "issues", "usage", "artifacts")}
 
 
 def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concurrency=3, timeout=600, env=None,
@@ -473,7 +482,7 @@ def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concu
             violations.extend(scope_violations(root, before, snapshot(root, ["."], (output,)), tasks))
     ordered = [results[t["id"]] for t in tasks]
     summary = dict(status="completed" if all(r["status"] == "completed" for r in ordered) and not violations else "failed",
-                   tasks=[{k: r.get(k) for k in ("id", "role", "status", "summary", "observed_changed_files", "issues", "usage", "artifacts")} for r in ordered],
+                   tasks=[task_summary(r) for r in ordered],
                    usage=total_usage(ordered), scope_violations=violations, artifacts=str(output))
     write_json(output / "summary.json", summary)
     return summary

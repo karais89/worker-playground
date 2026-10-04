@@ -1,4 +1,4 @@
-"""Small CLI coordinator: delegate before exploring, or finish a trivial task directly."""
+"""CLI director: delegate, inspect read-only, and optionally continue workers once."""
 from __future__ import annotations
 
 import argparse
@@ -29,13 +29,24 @@ PLAN_SCHEMA = {
     },
 }
 
+REVIEW_SCHEMA = {
+    **worker.REPORT_SCHEMA,
+    "required": [*worker.REPORT_SCHEMA["required"], "followups"],
+    "properties": {**worker.REPORT_SCHEMA["properties"], "followups": {
+        "type": "array", "maxItems": 3, "items": {
+            "type": "object", "additionalProperties": False, "required": ["id", "prompt"],
+            "properties": {"id": {"type": "string"}, "prompt": {"type": "string"}},
+        },
+    }},
+}
+
 
 def invoke(cli, cwd, output, prompt, schema, model, effort, timeout, env, session_id=None):
     output.mkdir(parents=True, exist_ok=False)
     worker.write_json(output / "schema.json", schema)
     # The first turn may finish a trivial task directly. Delegated work must be
     # assigned before exploration; this is a prompt policy, not a tool sandbox.
-    task = dict(cwd=str(cwd), role="implement")
+    task = dict(cwd=str(cwd), role="review" if session_id else "implement")
     command = worker.build_command(cli, task, model, effort, output, session_id)
     worker.write_json(output / "command.json", command)
     (output / "prompt.txt").write_text(prompt, encoding="utf-8")
@@ -101,30 +112,97 @@ def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker
                       worker_status=None, main_report=direct_report, artifacts=str(output))
         worker.write_json(output / "summary.json", result)
         return result
-    batch = None
-    if raw:
-        worker.write_json(output / "tasks.json", {"tasks": [dict(t, cwd=str(cwd)) for t in raw]})
-        tasks = worker.load_tasks(output / "tasks.json")
-        batch = worker.run_batch(tasks, output / "workers", cli=cli, model=worker_model,
-                                 effort=worker_effort, timeout=timeout, env=env,
-                                 _held_roots=(worker.git_root(cwd),))
-    final = invoke(cli, cwd, output / "review", (
-        "Continue as the main coordinator. Review the short worker results below and only the necessary "
-        "changed code. Do not repeat broad exploration. Verify the user's acceptance criteria and relevant "
-        "tests; repair small defects or report blocked if substantial work remains. "
-        "Do not launch AI CLIs or native subagents. Do not commit. "
-        "Return a concise final report using the supplied schema.\nWorker results:\n" +
-        worker.main_report(batch)), worker.REPORT_SCHEMA, main_model, effort, timeout, env,
-        session_id=plan["events"]["session_id"])
-    worker.write_json(output / "review/execution.json", final["execution"])
+    worker.write_json(output / "tasks.json", {"tasks": [dict(t, cwd=str(cwd)) for t in raw]})
+    tasks = worker.load_tasks(output / "tasks.json")
+    batch = worker.run_batch(tasks, output / "workers", cli=cli, model=worker_model,
+                             effort=worker_effort, timeout=timeout, env=env,
+                             _held_roots=(worker.git_root(cwd),))
+    # One bounded feedback round; each selected worker keeps its original session,
+    # model, permissions and scope. The coordinator never repairs code itself.
+    usage_parts = [{"usage": batch["usage"]}]
+    repair_count = 0
+    for round_index in range(2):
+        review_dir = output / ("review" if round_index == 0 else "review-final")
+        final = invoke(cli, cwd, review_dir, (
+            "Continue as the director in read-only mode. Read necessary changed files and tests to verify "
+            "the user requirements. Do not repeat broad exploration, edit files, run tests/builds, launch "
+            "AI CLIs or native subagents, or commit. Workers perform execution and corrections. "
+            "Use observed_commands for evidence of command exit codes; worker summaries are claims, "
+            "and an exit code alone does not prove correctness. Inspect relevant code. "
+            "If corrections or additional checks are needed, return status=blocked and followups with "
+            "existing worker IDs and concrete instructions within their original scope and role. "
+            "Never assign edits to a research/review worker. Do not create new workers. "
+            "Otherwise return followups=[] and the final report. " +
+            ("There is ONE feedback round available. " if round_index == 0 else
+             "No feedback rounds remain. Return followups=[]; report blocked if anything remains unresolved. ") +
+            "\nWorker results:\n" + worker.main_report(batch)), REVIEW_SCHEMA,
+            main_model, effort, timeout, env, session_id=plan["events"]["session_id"])
+        worker.write_json(review_dir / "execution.json", final["execution"])
+        review = final["final"]
+        followups = review.get("followups") if final["valid"] and worker.validate_report(review) else None
+        known = {t["id"]: t for t in batch["tasks"]}
+        if (not isinstance(followups, list) or len(followups) > 3
+                or any(not isinstance(f, dict) or not isinstance(f.get("id"), str) or f["id"] not in known
+                       or not isinstance(f.get("prompt"), str) or not f["prompt"].strip() for f in followups)
+                or len({f["id"] for f in followups}) != len(followups)
+                or (followups and review["status"] != "blocked")):
+            final["valid"] = False
+            break
+        if not followups:
+            break
+        if round_index or batch.get("scope_violations"):
+            review["issues"].append("Feedback budget exhausted or scope violation prevents continuation.")
+            break
+        # Validate every continuation before spending tokens. Interrupted or
+        # unmeasured sessions are not automatically retried.
+        continuation_started = False
+        try:
+            for followup in followups:
+                prior = Path(known[followup["id"]]["artifacts"])
+                previous = worker.read_json(prior / "report.json")
+                session = worker.read_json(prior / "session.json")
+                if (previous["execution"]["termination"] != "exited" or previous["execution"]["exit_code"] != 0
+                        or previous.get("runtime_errors") or not previous.get("session_identity_ok")
+                        or previous.get("usage") is None or not session.get("session_id")
+                        or session.get("resumed_to")):
+                    raise ValueError("Worker did not finish in a safely resumable state.")
+            for followup in followups:
+                ident = followup["id"]
+                continuation_started = True
+                repair_count += 1
+                resumed = worker.resume_task(Path(known[ident]["artifacts"]), output / "followups" / ident,
+                                             followup["prompt"], timeout, env=env,
+                                             _held_roots=(worker.git_root(cwd),), _excluded=(output,))
+                usage_parts.append(resumed)
+                known[ident] = worker.task_summary(resumed)
+                batch["tasks"] = list(known.values())
+                batch["usage"] = worker.total_usage(usage_parts)
+                batch["artifacts"] = str(output / "followups")
+                batch.setdefault("scope_violations", []).extend(resumed.get("scope_violations", []))
+                batch["status"] = "completed" if all(t["status"] == "completed" for t in known.values()) and not batch["scope_violations"] else "failed"
+                worker.write_json(output / "followups/summary.json", batch)
+                continuation_started = False
+                if resumed["status"] == "failed":
+                    raise ValueError("Worker continuation failed; inspect its artifacts.")
+        except (ValueError, OSError, KeyError) as error:
+            if continuation_started:
+                batch["usage"] = None  # An exception may have hidden a started invocation.
+                batch["status"] = "failed"
+                worker.write_json(output / "followups/summary.json", batch)
+            review["issues"].append(str(error))
+            break
     report = final["final"]
     valid = plan["valid"] and final["valid"] and worker.validate_report(report)
-    result = dict(status=report["status"] if valid else "failed",
+    status = report["status"] if valid else "failed"
+    if status == "completed" and batch["status"] != "completed":
+        status = "failed"
+    result = dict(status=status,
                   summary=report["summary"][:1200] if valid else "Main review failed; inspect artifacts.",
                   main_valid=valid, main_session_id=final["events"]["session_id"],
                   # The resumed session total already includes planning; do not add it twice.
                   main_usage=final["events"]["usage"] if valid else None,
                   worker_usage=batch["usage"] if batch else None,
+                  repair_invocations=repair_count,
                   actual_delegation=bool(batch), worker_status=batch["status"] if batch else None,
                   main_report=report, artifacts=str(output))
     worker.write_json(output / "summary.json", result)
