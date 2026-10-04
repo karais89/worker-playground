@@ -1,0 +1,1645 @@
+{
+  "environment": {
+    "source_commit": "2362ad6462e83b82412d148bc07f2df24b9d4b85",
+    "cli": "codex-cli 0.160.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "git": "git version 2.43.0",
+    "kernel": "5.15.167.4-microsoft-standard-WSL2",
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "wsl_config": "[automount]\nenabled=false\n[interop]\nenabled=false\nappendWindowsPath=false\n",
+    "windows_drive_mounted": false,
+    "uid": 1000,
+    "cli_package_sha256": "37a41d61c3399182b8c727b77090cc7a1566bd849d0f09070a0bbc6fec4c58dc",
+    "distro": "WorkerPlaygroundProject20261004",
+    "rootfs_sha256": "c1e67ef7b17a6300e136118bd1dc04725009cb376c1aad10abcf8cd453628d58",
+    "preflight_correction": "Independent unittest loaders for Python 3.12 discovery; corrected before any model invocation",
+    "protocol_correction": "Root-only new-test grader corrected to accept tests/; initial solo plus interrupted team preserved, excluded; all cases restarted with fresh repos/profiles"
+  },
+  "manifest": {
+    "source_commit": "2362ad6462e83b82412d148bc07f2df24b9d4b85",
+    "source_sha256": {
+      "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+      "team.py": "1c2a369bf5b637046becb2b1a6fb700aea3dcf6ae335a8c935a58c76741c6817",
+      "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+      "benchmarks/project_cases.py": "4b220cd50d1f39b92d0061a5455e20183ea94bddd208a78b845cf11c7607433e",
+      "benchmarks/project_experiment.py": "bcbb84cb0acea49264c77f2e3f2026f36f325c239c815a354babfb46174dc43a",
+      "benchmarks/validate_project_cases.py": "06fc7e1c6f8af154c85c732950707a06a796d67714a4c7b0045a096879e1e6aa"
+    },
+    "fixture_sha256": "9e21f355930f015ee72d4a22604dc92fb2205ea0616f147c8088862135824b4c",
+    "model": "gpt-6.1-sol",
+    "worker_model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout": 600,
+    "cli": "codex-cli 0.160.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+    "schedule": [
+      [
+        "atomic_import",
+        1,
+        "solo"
+      ],
+      [
+        "atomic_import",
+        1,
+        "team"
+      ],
+      [
+        "atomic_import",
+        2,
+        "team"
+      ],
+      [
+        "atomic_import",
+        2,
+        "solo"
+      ],
+      [
+        "paged_listing",
+        1,
+        "solo"
+      ],
+      [
+        "paged_listing",
+        1,
+        "team"
+      ],
+      [
+        "paged_listing",
+        2,
+        "team"
+      ],
+      [
+        "paged_listing",
+        2,
+        "solo"
+      ],
+      [
+        "independent_utilities",
+        1,
+        "solo"
+      ],
+      [
+        "independent_utilities",
+        1,
+        "team"
+      ],
+      [
+        "independent_utilities",
+        2,
+        "team"
+      ],
+      [
+        "independent_utilities",
+        2,
+        "solo"
+      ]
+    ],
+    "grader_controls": [
+      {
+        "case": "atomic_import",
+        "unchanged_rejected": true,
+        "reference_passed": true,
+        "root_and_tests_locations_passed": true,
+        "mutant_rejected": true
+      },
+      {
+        "case": "paged_listing",
+        "unchanged_rejected": true,
+        "reference_passed": true,
+        "root_and_tests_locations_passed": true,
+        "mutant_rejected": true
+      },
+      {
+        "case": "independent_utilities",
+        "unchanged_rejected": true,
+        "reference_passed": true,
+        "root_and_tests_locations_passed": true,
+        "mutant_rejected": true
+      }
+    ],
+    "scope": "Synthetic 11-file TaskDesk simulation, not a real OSS repository or public benchmark",
+    "stopping": "Stop on CLI credit/usage limit errors; preserve other failures without retries"
+  },
+  "resume_environment": {
+    "source_commit": "2362ad6462e83b82412d148bc07f2df24b9d4b85",
+    "source_hashes": {
+      "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+      "team.py": "1c2a369bf5b637046becb2b1a6fb700aea3dcf6ae335a8c935a58c76741c6817",
+      "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+      "benchmarks/project_cases.py": "4b220cd50d1f39b92d0061a5455e20183ea94bddd208a78b845cf11c7607433e",
+      "benchmarks/project_experiment.py": "bcbb84cb0acea49264c77f2e3f2026f36f325c239c815a354babfb46174dc43a",
+      "benchmarks/validate_project_cases.py": "06fc7e1c6f8af154c85c732950707a06a796d67714a4c7b0045a096879e1e6aa"
+    },
+    "windows_drive_mounted": false,
+    "uid": 1000,
+    "existing_dedicated_environment_reused": true
+  },
+  "preflight": {
+    "kind": "connectivity_preflight_not_benchmark",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "exit_code": 0,
+    "seconds": 7.265,
+    "parsed": {
+      "session_id": "01a1090f-ac43-7663-801f-a029254b2844",
+      "usage": {
+        "input_tokens": 11411,
+        "cached_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 11416,
+        "uncached_input_tokens": 11411
+      },
+      "completed_turns": 1,
+      "malformed_lines": 0,
+      "errors": [],
+      "commands": [],
+      "messages": [
+        "OK"
+      ]
+    }
+  },
+  "complete_cases": [
+    "atomic_import",
+    "paged_listing",
+    "independent_utilities"
+  ],
+  "totals": {
+    "solo": {
+      "runs": 6,
+      "main": 591530,
+      "cached": 433536,
+      "uncached_plus_output": 157994,
+      "workers": 0,
+      "combined": 591530,
+      "seconds": 924.655,
+      "worker_invocations": 0,
+      "repair_invocations": 0
+    },
+    "team": {
+      "runs": 6,
+      "main": 326947,
+      "cached": 154368,
+      "uncached_plus_output": 172579,
+      "workers": 734571,
+      "combined": 1061518,
+      "seconds": 1131.079,
+      "worker_invocations": 7,
+      "repair_invocations": 0
+    }
+  },
+  "passed_runs": 12,
+  "eligible_runs": 12,
+  "archive_sha256": "68f2af5a08da2c6646222bdcd95c7ac5ca27c3237d0c39cc798fd42fb72e83fe",
+  "cleanup_verified": true,
+  "source_hashes_verified": true,
+  "excluded_protocol": {
+    "reason": "Grader required a root-level new test, although prompt allowed tests/; complete protocol aborted and restarted in fresh repositories/profiles.",
+    "completed_runs": 1,
+    "interrupted_runs": 1,
+    "included_in_comparison": false
+  },
+  "excluded_runs": [
+    {
+      "case": "atomic_import",
+      "arm": "solo",
+      "valid": true,
+      "passed": false,
+      "environment": "wsl2-fresh-project-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 120349,
+        "cached_input_tokens": 97280,
+        "output_tokens": 3485,
+        "reasoning_output_tokens": 464,
+        "total_tokens": 123834,
+        "uncached_input_tokens": 23069
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "tests/test_atomic_import.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 139.398
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high/atomic_import-1-solo",
+      "repeat": 1,
+      "eligible": false,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "atomic_import-1-solo": {
+          "session_id": "01a106f6-0c3c-73b2-b223-0b58cc270456",
+          "usage": {
+            "input_tokens": 120349,
+            "cached_input_tokens": 97280,
+            "output_tokens": 3485,
+            "reasoning_output_tokens": 464,
+            "total_tokens": 123834,
+            "uncached_input_tokens": 23069
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'Makefile'; git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'find .. -name AGENTS.md -print; cat taskdesk/service.py taskdesk/storage.py taskdesk/domain.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"cat taskdesk/cli.py tests/test_baseline.py README.md; rg --files -g '\"'!*.pyc'\"' -g '\"'!__pycache__/**'\"'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .; sha256sum tests/test_baseline.py tests/__init__.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest tests.test_atomic_import'",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s . -v'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff -- taskdesk/service.py taskdesk/storage.py; git status --short; cat taskdesk/__main__.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'sha256sum tests/test_baseline.py tests/__init__.py; python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    }
+  ],
+  "diagnostic": false,
+  "runs": [
+    {
+      "case": "atomic_import",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 92663,
+        "cached_input_tokens": 72192,
+        "output_tokens": 4167,
+        "reasoning_output_tokens": 1011,
+        "total_tokens": 96830,
+        "uncached_input_tokens": 20471
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_atomic_import.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 147.102
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/atomic_import-1-solo",
+      "repeat": 1,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "atomic_import-1-solo": {
+          "session_id": "01a10910-5b91-7a30-8a12-11c379df8180",
+          "usage": {
+            "input_tokens": 92663,
+            "cached_input_tokens": 72192,
+            "output_tokens": 4167,
+            "reasoning_output_tokens": 1011,
+            "total_tokens": 96830,
+            "uncached_input_tokens": 20471
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd && rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'Makefile' && git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'ls -la && for p in ../AGENTS.md AGENTS.md; do if [ -f \"$p\" ]; then cat \"$p\"; fi; done && cat taskdesk/service.py taskdesk/storage.py taskdesk/domain.py taskdesk/cli.py tests/test_baseline.py README.md'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s . -v && sha256sum tests/*.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check && git diff -- taskdesk/service.py taskdesk/storage.py && sha256sum tests/*.py && git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s . -v'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "atomic_import",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 61898,
+        "cached_input_tokens": 30976,
+        "output_tokens": 680,
+        "reasoning_output_tokens": 45,
+        "total_tokens": 62578,
+        "uncached_input_tokens": 30922
+      },
+      "worker_usage": {
+        "input_tokens": 106708,
+        "cached_input_tokens": 82688,
+        "output_tokens": 4257,
+        "total_tokens": 110965
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_atomic_import.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 182.563
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/atomic_import-1-team",
+      "repeat": 1,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [
+        {
+          "id": "atomic-import",
+          "role": "implement",
+          "scope": [
+            "."
+          ]
+        }
+      ],
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10912-a3ca-7583-9e81-64bf041b78dd",
+          "usage": {
+            "input_tokens": 12312,
+            "cached_input_tokens": 0,
+            "output_tokens": 361,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12673,
+            "uncached_input_tokens": 12312
+          },
+          "commands": [],
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10912-a3ca-7583-9e81-64bf041b78dd",
+          "usage": {
+            "input_tokens": 61898,
+            "cached_input_tokens": 30976,
+            "output_tokens": 680,
+            "reasoning_output_tokens": 45,
+            "total_tokens": 62578,
+            "uncached_input_tokens": 30922
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- taskdesk/service.py taskdesk/storage.py; cat test_atomic_import.py taskdesk/domain.py taskdesk/cli.py tests/test_baseline.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/storage.py taskdesk/service.py'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "atomic_import",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 44036,
+        "cached_input_tokens": 13696,
+        "output_tokens": 746,
+        "reasoning_output_tokens": 145,
+        "total_tokens": 44782,
+        "uncached_input_tokens": 30340
+      },
+      "worker_usage": {
+        "input_tokens": 112026,
+        "cached_input_tokens": 91136,
+        "output_tokens": 4192,
+        "total_tokens": 116218
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_atomic_import.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 185.405
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/atomic_import-2-team",
+      "repeat": 2,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [
+        {
+          "id": "atomic-import",
+          "role": "implement",
+          "scope": [
+            "."
+          ]
+        }
+      ],
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10915-7380-7af1-8913-fb1e30fd5b4a",
+          "usage": {
+            "input_tokens": 12317,
+            "cached_input_tokens": 0,
+            "output_tokens": 363,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12680,
+            "uncached_input_tokens": 12317
+          },
+          "commands": [],
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10915-7380-7af1-8913-fb1e30fd5b4a",
+          "usage": {
+            "input_tokens": 44036,
+            "cached_input_tokens": 13696,
+            "output_tokens": 746,
+            "reasoning_output_tokens": 145,
+            "total_tokens": 44782,
+            "uncached_input_tokens": 30340
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- taskdesk/service.py taskdesk/storage.py; cat test_atomic_import.py taskdesk/service.py taskdesk/storage.py taskdesk/cli.py taskdesk/domain.py tests/test_baseline.py'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "atomic_import",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 109249,
+        "cached_input_tokens": 84352,
+        "output_tokens": 4101,
+        "reasoning_output_tokens": 692,
+        "total_tokens": 113350,
+        "uncached_input_tokens": 24897
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_atomic_import.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 144.246
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/atomic_import-2-solo",
+      "repeat": 2,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "atomic_import-2-solo": {
+          "session_id": "01a10918-4cfb-7892-a575-fbf3e8377641",
+          "usage": {
+            "input_tokens": 109249,
+            "cached_input_tokens": 84352,
+            "output_tokens": 4101,
+            "reasoning_output_tokens": 692,
+            "total_tokens": 113350,
+            "uncached_input_tokens": 24897
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd && rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'Makefile' && git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/service.py taskdesk/storage.py taskdesk/domain.py taskdesk/cli.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'for p in /home/bench/AGENTS.md /home/bench/playground/AGENTS.md /home/bench/playground/bench-runs/AGENTS.md /home/bench/playground/bench-runs/project-sol-high-v3/AGENTS.md /home/bench/playground/bench-runs/project-sol-high-v3/atomic_import-2-solo/AGENTS.md AGENTS.md; do if [ -f \"$p\" ]; then cat \"$p\"; fi; done; rg --files -g '\"'AGENTS.md' -g '\"'!tests/**'\"' -g '\"'!taskdesk/**'\"' -g '\"'!*'\"'\"",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc \"cat tests/test_baseline.py tests/__init__.py README.md; sha256sum tests/*; rg --files --hidden -g '\"'!.git/**'\"'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git status --short && git diff -- taskdesk/service.py taskdesk/storage.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check && git diff --exit-code -- tests && sha256sum tests/*.py'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "paged_listing",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 94961,
+        "cached_input_tokens": 73472,
+        "output_tokens": 4358,
+        "reasoning_output_tokens": 478,
+        "total_tokens": 99319,
+        "uncached_input_tokens": 21489
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "README.md",
+        "taskdesk/cli.py",
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_listing.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 149.799
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/paged_listing-1-solo",
+      "repeat": 1,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "paged_listing-1-solo": {
+          "session_id": "01a1091a-8839-7873-bfc8-c6b5badc298a",
+          "usage": {
+            "input_tokens": 94961,
+            "cached_input_tokens": 73472,
+            "output_tokens": 4358,
+            "reasoning_output_tokens": 478,
+            "total_tokens": 99319,
+            "uncached_input_tokens": 21489
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"git status --short; rg --files -g AGENTS.md -g '\"'!'\"\\\\.git' ..\"",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g '\"'!'\"\\\\.git' -g '\"'!__pycache__'\"'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/storage.py taskdesk/service.py taskdesk/cli.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat README.md tests/test_baseline.py taskdesk/domain.py taskdesk/reporting.py taskdesk/settings.py taskdesk/__main__.py; sha256sum tests/*'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'sha256sum tests/__init__.py tests/test_baseline.py; git diff --exit-code -- tests/'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff --stat; git status --short; git diff -- README.md taskdesk/storage.py taskdesk/service.py taskdesk/cli.py'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "paged_listing",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 61181,
+        "cached_input_tokens": 29952,
+        "output_tokens": 757,
+        "reasoning_output_tokens": 47,
+        "total_tokens": 61938,
+        "uncached_input_tokens": 31229
+      },
+      "worker_usage": {
+        "input_tokens": 74634,
+        "cached_input_tokens": 56064,
+        "output_tokens": 3268,
+        "total_tokens": 77902
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "README.md",
+        "taskdesk/cli.py",
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_listing.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 151.462
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/paged_listing-1-team",
+      "repeat": 1,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [
+        {
+          "id": "task-list-sorting-pagination",
+          "role": "implement",
+          "scope": [
+            "."
+          ]
+        }
+      ],
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1091c-e09d-7810-9b7f-d4721e6a1887",
+          "usage": {
+            "input_tokens": 12349,
+            "cached_input_tokens": 0,
+            "output_tokens": 452,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12801,
+            "uncached_input_tokens": 12349
+          },
+          "commands": [],
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1091c-e09d-7810-9b7f-d4721e6a1887",
+          "usage": {
+            "input_tokens": 61181,
+            "cached_input_tokens": 29952,
+            "output_tokens": 757,
+            "reasoning_output_tokens": 47,
+            "total_tokens": 61938,
+            "uncached_input_tokens": 31229
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- README.md taskdesk/cli.py taskdesk/service.py taskdesk/storage.py tests/; cat test_listing.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/cli.py taskdesk/storage.py taskdesk/service.py tests/test_baseline.py tests/__init__.py; git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "paged_listing",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 61728,
+        "cached_input_tokens": 51456,
+        "output_tokens": 763,
+        "reasoning_output_tokens": 20,
+        "total_tokens": 62491,
+        "uncached_input_tokens": 10272
+      },
+      "worker_usage": {
+        "input_tokens": 111163,
+        "cached_input_tokens": 89600,
+        "output_tokens": 3770,
+        "total_tokens": 114933
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "README.md",
+        "taskdesk/cli.py",
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_listing.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 175.011
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/paged_listing-2-team",
+      "repeat": 2,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [
+        {
+          "id": "task-list-sorting-pagination",
+          "role": "implement",
+          "scope": [
+            "."
+          ]
+        }
+      ],
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1091f-3b39-7671-a5e5-68a33a88cc06",
+          "usage": {
+            "input_tokens": 12352,
+            "cached_input_tokens": 10496,
+            "output_tokens": 470,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12822,
+            "uncached_input_tokens": 1856
+          },
+          "commands": [],
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1091f-3b39-7671-a5e5-68a33a88cc06",
+          "usage": {
+            "input_tokens": 61728,
+            "cached_input_tokens": 51456,
+            "output_tokens": 763,
+            "reasoning_output_tokens": 20,
+            "total_tokens": 62491,
+            "uncached_input_tokens": 10272
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- README.md taskdesk/cli.py taskdesk/service.py taskdesk/storage.py; cat test_listing.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/cli.py taskdesk/storage.py taskdesk/reporting.py tests/test_baseline.py; git diff --name-only; git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "paged_listing",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 76524,
+        "cached_input_tokens": 57344,
+        "output_tokens": 3518,
+        "reasoning_output_tokens": 271,
+        "total_tokens": 80042,
+        "uncached_input_tokens": 19180
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "README.md",
+        "taskdesk/cli.py",
+        "taskdesk/service.py",
+        "taskdesk/storage.py",
+        "test_listing.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 122.019
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/paged_listing-2-solo",
+      "repeat": 2,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "paged_listing-2-solo": {
+          "session_id": "01a10921-f203-79c3-9e1c-7bf655d4f5cb",
+          "usage": {
+            "input_tokens": 76524,
+            "cached_input_tokens": 57344,
+            "output_tokens": 3518,
+            "reasoning_output_tokens": 271,
+            "total_tokens": 80042,
+            "uncached_input_tokens": 19180
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g '\"'!'\"\\\\.git' -g '\"'!*pycache*'\"'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"git status --short; rg --files -g AGENTS.md -g '\"'!'\"\\\\.git' ..\"",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/storage.py taskdesk/service.py taskdesk/domain.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/cli.py taskdesk/settings.py taskdesk/reporting.py README.md'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat tests/test_baseline.py tests/__init__.py; sha256sum tests/*; ls -la'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff --stat; sha256sum tests/__init__.py tests/test_baseline.py; git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "independent_utilities",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 94159,
+        "cached_input_tokens": 71680,
+        "output_tokens": 5686,
+        "reasoning_output_tokens": 1148,
+        "total_tokens": 99845,
+        "uncached_input_tokens": 22479
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "README.md",
+        "taskdesk/reporting.py",
+        "taskdesk/settings.py",
+        "tests/test_csv_export.py",
+        "tests/test_settings.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 189.385
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-solo",
+      "repeat": 1,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "independent_utilities-1-solo": {
+          "session_id": "01a10923-d6a7-7491-86b6-6874c6b77944",
+          "usage": {
+            "input_tokens": 94159,
+            "cached_input_tokens": 71680,
+            "output_tokens": 5686,
+            "reasoning_output_tokens": 1148,
+            "total_tokens": 99845,
+            "uncached_input_tokens": 22479
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd && rg --files -g 'AGENTS.md' -g '*.py' -g '*.md' -g 'pyproject.toml' -g 'setup.cfg' -g 'tox.ini' -g 'Makefile' && git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/reporting.py taskdesk/settings.py taskdesk/domain.py taskdesk/__init__.py README.md'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"cat tests/test_baseline.py tests/__init__.py && rg --files -g 'AGENTS.md' -g '\"'!project/**'\"' .. && sha256sum tests/*\"",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'for instruction in AGENTS.md ../AGENTS.md; do if [ -f \"$instruction\" ]; then cat \"$instruction\"; fi; done\nsha256sum tests/__init__.py tests/test_baseline.py\npython -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check && git diff --stat && git diff -- taskdesk/reporting.py taskdesk/settings.py README.md && sha256sum tests/__init__.py tests/test_baseline.py && git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s . -v'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "independent_utilities",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 48658,
+        "cached_input_tokens": 14720,
+        "output_tokens": 1133,
+        "reasoning_output_tokens": 104,
+        "total_tokens": 49791,
+        "uncached_input_tokens": 33938
+      },
+      "worker_usage": {
+        "input_tokens": 204018,
+        "cached_input_tokens": 181888,
+        "output_tokens": 8673,
+        "total_tokens": 212691
+      },
+      "worker_invocations": 2,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "docs/csv_export.md",
+        "docs/settings.md",
+        "taskdesk/reporting.py",
+        "taskdesk/settings.py",
+        "test_csv_export.py",
+        "test_settings.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 199.263
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team",
+      "repeat": 1,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [
+        {
+          "id": "csv-export",
+          "role": "implement",
+          "scope": [
+            "taskdesk/reporting.py",
+            "test_csv_export.py",
+            "docs/csv_export.md"
+          ]
+        },
+        {
+          "id": "settings-merge",
+          "role": "implement",
+          "scope": [
+            "taskdesk/settings.py",
+            "test_settings.py",
+            "docs/settings.md"
+          ]
+        }
+      ],
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10926-bd5f-7413-b6a0-24d8abce48f0",
+          "usage": {
+            "input_tokens": 12413,
+            "cached_input_tokens": 0,
+            "output_tokens": 710,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 13123,
+            "uncached_input_tokens": 12413
+          },
+          "commands": [],
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10926-bd5f-7413-b6a0-24d8abce48f0",
+          "usage": {
+            "input_tokens": 48658,
+            "cached_input_tokens": 14720,
+            "output_tokens": 1133,
+            "reasoning_output_tokens": 104,
+            "total_tokens": 49791,
+            "uncached_input_tokens": 33938
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/reporting.py test_csv_export.py docs/csv_export.md'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat taskdesk/settings.py test_settings.py docs/settings.md'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --stat && git diff -- tests taskdesk/reporting.py taskdesk/settings.py && cat taskdesk/domain.py tests/test_baseline.py'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "independent_utilities",
+      "arm": "team",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 44615,
+        "cached_input_tokens": 13568,
+        "output_tokens": 752,
+        "reasoning_output_tokens": 102,
+        "total_tokens": 45367,
+        "uncached_input_tokens": 31047
+      },
+      "worker_usage": {
+        "input_tokens": 95688,
+        "cached_input_tokens": 73088,
+        "output_tokens": 6174,
+        "total_tokens": 101862
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "README.md",
+        "taskdesk/reporting.py",
+        "taskdesk/settings.py",
+        "test_csv_export.py",
+        "test_settings.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 237.375
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-2-team",
+      "repeat": 2,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [
+        {
+          "id": "library-improvements",
+          "role": "implement",
+          "scope": [
+            "."
+          ]
+        }
+      ],
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10929-ca1a-7712-8df6-d8b6a540652d",
+          "usage": {
+            "input_tokens": 12414,
+            "cached_input_tokens": 0,
+            "output_tokens": 490,
+            "reasoning_output_tokens": 53,
+            "total_tokens": 12904,
+            "uncached_input_tokens": 12414
+          },
+          "commands": [],
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10929-ca1a-7712-8df6-d8b6a540652d",
+          "usage": {
+            "input_tokens": 44615,
+            "cached_input_tokens": 13568,
+            "output_tokens": 752,
+            "reasoning_output_tokens": 102,
+            "total_tokens": 45367,
+            "uncached_input_tokens": 31047
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- README.md taskdesk/reporting.py taskdesk/settings.py tests/; cat test_csv_export.py test_settings.py taskdesk/domain.py tests/test_baseline.py'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "case": "independent_utilities",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-dedicated-project-20261004-reused-20261005-fresh-per-run-repos-profiles",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 96996,
+        "cached_input_tokens": 74496,
+        "output_tokens": 5148,
+        "reasoning_output_tokens": 1031,
+        "total_tokens": 102144,
+        "uncached_input_tokens": 22500
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "README.md",
+        "taskdesk/reporting.py",
+        "taskdesk/settings.py",
+        "test_csv_export.py",
+        "test_settings.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 172.104
+      },
+      "artifacts": "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-2-solo",
+      "repeat": 2,
+      "eligible": true,
+      "repair_invocations": 0,
+      "assignments": [],
+      "main_phases": {
+        "independent_utilities-2-solo": {
+          "session_id": "01a1092d-6ad1-70c1-af8c-42e9d9a7369e",
+          "usage": {
+            "input_tokens": 96996,
+            "cached_input_tokens": 74496,
+            "output_tokens": 5148,
+            "reasoning_output_tokens": 1031,
+            "total_tokens": 102144,
+            "uncached_input_tokens": 22500
+          },
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g 'AGENTS.md' -g '*.py' -g '*.md' -g 'pyproject.toml' -g 'setup.cfg' -g 'setup.py' -g 'pytest.ini'; git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"ls -la; cat taskdesk/reporting.py taskdesk/settings.py taskdesk/domain.py taskdesk/__init__.py README.md tests/test_baseline.py tests/__init__.py; rg --files -g 'AGENTS.md' -g 'requirements*' -g '*test*' -g '*.json'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'sha256sum tests/*; cat taskdesk/cli.py taskdesk/service.py; python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s . -v'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff --stat; git diff -- taskdesk/reporting.py taskdesk/settings.py README.md; sha256sum tests/__init__.py tests/test_baseline.py; git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "errors": []
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "case": "atomic_import",
+      "solo_runs": 2,
+      "team_runs": 2,
+      "all_passed": true,
+      "delegation_observed": true,
+      "delegated_team_runs": 2,
+      "solo_main_median": 105090.0,
+      "team_main_median": 53680.0,
+      "diagnostic_reduction": 0.489199733561709,
+      "isolated_main_reduction": 0.489199733561709
+    },
+    {
+      "case": "independent_utilities",
+      "solo_runs": 2,
+      "team_runs": 2,
+      "all_passed": true,
+      "delegation_observed": true,
+      "delegated_team_runs": 2,
+      "solo_main_median": 100994.5,
+      "team_main_median": 47579.0,
+      "diagnostic_reduction": 0.5288951378540416,
+      "isolated_main_reduction": 0.5288951378540416
+    },
+    {
+      "case": "paged_listing",
+      "solo_runs": 2,
+      "team_runs": 2,
+      "all_passed": true,
+      "delegation_observed": true,
+      "delegated_team_runs": 2,
+      "solo_main_median": 89680.5,
+      "team_main_median": 62214.5,
+      "diagnostic_reduction": 0.30626501859378574,
+      "isolated_main_reduction": 0.30626501859378574
+    }
+  ],
+  "note": "Input includes cached input; output already includes reasoning. No extra addition. Repeated-run estimates are exploratory, not statistical proof.",
+  "stopped_reason": null,
+  "remaining_schedule": [],
+  "parallel_process_observation": {
+    "observed_unix_seconds": 1791155011.8273914,
+    "active_worker_processes": [
+      {
+        "pid": 3363,
+        "command": [
+          "/usr/local/bin/codex",
+          "--no-daemon",
+          "-C",
+          "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team/project",
+          "exec",
+          "--json",
+          "--color",
+          "never",
+          "-m",
+          "gpt-6.1-sol",
+          "-c",
+          "model_reasoning_effort=\"high\"",
+          "-c",
+          "agents.enabled=false",
+          "-c",
+          "approval_policy=\"never\"",
+          "-c",
+          "sandbox_mode=\"workspace-write\"",
+          "--output-schema",
+          "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team/coordination/workers/csv-export/schema.json",
+          "--output-last-message",
+          "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team/coordination/workers/csv-export/final.json",
+          "-"
+        ]
+      },
+      {
+        "pid": 3365,
+        "command": [
+          "/usr/local/bin/codex",
+          "--no-daemon",
+          "-C",
+          "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team/project",
+          "exec",
+          "--json",
+          "--color",
+          "never",
+          "-m",
+          "gpt-6.1-sol",
+          "-c",
+          "model_reasoning_effort=\"high\"",
+          "-c",
+          "agents.enabled=false",
+          "-c",
+          "approval_policy=\"never\"",
+          "-c",
+          "sandbox_mode=\"workspace-write\"",
+          "--output-schema",
+          "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team/coordination/workers/settings-merge/schema.json",
+          "--output-last-message",
+          "/home/bench/playground/bench-runs/project-sol-high-v3/independent_utilities-1-team/coordination/workers/settings-merge/final.json",
+          "-"
+        ]
+      }
+    ]
+  },
+  "audit": {
+    "source_hashes_match_fixed_commit": true,
+    "all_model_contexts_match": true,
+    "main_final_cumulative_usage_used_once": true,
+    "worker_usage_sums_match_reports": true,
+    "main_session_ids_preserved": true,
+    "planning_command_events": 0,
+    "review_file_change_events": 0,
+    "observed_concurrent_workers": 2,
+    "feedback_invocations": 0,
+    "review_commands_read_only_observed": true
+  },
+  "benchmark_distro_stopped": true
+}
