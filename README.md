@@ -140,6 +140,8 @@ python bench.py --isolated-environment fresh-vm-image-id --case all --repeats 2 
 
 OMP 방향의 읽기 전용 검토·워커 재수정 비교는 `benchmarks/director_experiment.py`입니다. 단독·이전 팀(`2ee466a`)·현재 팀(`cba3439`)을 같은 과제와 채점기로 비교하며, 이전 팀의 `team.py`와 `worker.py`를 함께 고정합니다. 새 환경에서 `python benchmarks/director_experiment.py --auth-file /path/to/auth.json --isolated-environment fresh-image-id --output bench-runs/director`로 실행합니다. 실행 횟수는 같은 21회이며 크레딧/사용량 한도 오류가 발생하면 즉시 중단합니다. 메인 재개 시 실제 기록된 샌드박스 정책과 워커 재수정 횟수도 보존합니다.
 
+파일·SQLite·서비스·CLI가 연결된 모의 앱으로 개발 작업을 비교하는 실험도 준비했습니다. `benchmarks/project_experiment.py`가 단독·현재 팀을 3과제 × 2회씩 비교합니다. 현재는 크레딧 소진으로 미완료이며 절감률은 없습니다. 과제, 채점기 검증, 제외 기록과 재실행 방법은 [SIMULATION.md](SIMULATION.md)에 있습니다.
+
 ## 현재 범위와 제한
 
 - 같은 작업 트리에서 서로 다른 파일을 수정하는 방식입니다. worktree 생성·자동 병합은 없습니다. 메인은 워커 실행 중 같은 파일을 편집하지 않아야 합니다.
