@@ -93,6 +93,9 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--isolated-environment", required=True)
     args = parser.parse_args()
+    # Task prompts name `python`, so validate that exact command before spending
+    # model tokens. A python3-only image otherwise measures command recovery too.
+    subprocess.run(["python", "-c", "import sys,unittest; assert sys.version_info >= (3, 11)"], check=True)
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
     args.codex = "codex"
@@ -110,6 +113,7 @@ def main():
     manifest = dict(source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                     baseline_commit=subprocess.check_output(['git','rev-parse',BASELINE],cwd=ROOT,text=True).strip(),
                     cli=subprocess.check_output(['codex','--version'],text=True).strip(),
+                    prompt_python=subprocess.check_output(['python','--version'],text=True).strip(),
                     python=sys.version, isolated_environment=args.isolated_environment,
                     model=args.main_model, effort=args.effort,
                     source_sha256={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
