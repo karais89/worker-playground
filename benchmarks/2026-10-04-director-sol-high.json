@@ -1,0 +1,2940 @@
+{
+  "environment": {
+    "source_commit": "cba3439275548fe2e51485fb7742473f878dcd45",
+    "cli": "codex-cli 0.160.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "git": "git version 2.43.0",
+    "kernel": "5.15.167.4-microsoft-standard-WSL2",
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "wsl_config": "[automount]\nenabled=false\n[interop]\nenabled=false\nappendWindowsPath=false\n",
+    "windows_drive_mounted": false,
+    "uid": 1000,
+    "cli_package_sha256": "37a41d61c3399182b8c727b77090cc7a1566bd849d0f09070a0bbc6fec4c58dc",
+    "distro": "WorkerPlaygroundDirector20261004",
+    "rootfs_sha256": "c1e67ef7b17a6300e136118bd1dc04725009cb376c1aad10abcf8cd453628d58",
+    "rootfs_url": "https://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.4-base-amd64.tar.gz"
+  },
+  "preflight": {
+    "kind": "connectivity_preflight_not_benchmark",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "exit_code": 0,
+    "elapsed_seconds": 7.369,
+    "cli": "codex-cli 0.160.0",
+    "parsed": {
+      "session_id": "01a10675-6af8-7ee1-b11b-3e6ed9e6f419",
+      "usage": {
+        "input_tokens": 11415,
+        "cached_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 11420,
+        "uncached_input_tokens": 11415
+      },
+      "completed_turns": 1,
+      "malformed_lines": 0,
+      "errors": [],
+      "commands": [],
+      "messages": [
+        "OK"
+      ]
+    }
+  },
+  "manifest": {
+    "current_commit": "cba3439275548fe2e51485fb7742473f878dcd45",
+    "previous_commit": "2ee466a3031be70b190780d7b43f076564aa1646",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "cli": "codex-cli 0.160.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "isolated_environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+    "source_sha256": {
+      "team.py": "1c2a369bf5b637046becb2b1a6fb700aea3dcf6ae335a8c935a58c76741c6817",
+      "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+      "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+      "benchmarks/director_experiment.py": "3556fa31ff9266c3f72baf22e40fabc2016d38c09d0c955f0832c23ed6aac757"
+    },
+    "fixture_sha256": "04a113ad441d210d4fd0643542b992f962519ad4965e3eb4d90c657d54712bfb",
+    "schedule": [
+      [
+        "bug",
+        1,
+        "solo"
+      ],
+      [
+        "bug",
+        1,
+        "previous"
+      ],
+      [
+        "bug",
+        1,
+        "current"
+      ],
+      [
+        "bug",
+        2,
+        "current"
+      ],
+      [
+        "bug",
+        2,
+        "previous"
+      ],
+      [
+        "bug",
+        2,
+        "solo"
+      ],
+      [
+        "modules",
+        1,
+        "solo"
+      ],
+      [
+        "modules",
+        1,
+        "previous"
+      ],
+      [
+        "modules",
+        1,
+        "current"
+      ],
+      [
+        "modules",
+        2,
+        "current"
+      ],
+      [
+        "modules",
+        2,
+        "previous"
+      ],
+      [
+        "modules",
+        2,
+        "solo"
+      ],
+      [
+        "investigate",
+        1,
+        "solo"
+      ],
+      [
+        "investigate",
+        1,
+        "previous"
+      ],
+      [
+        "investigate",
+        1,
+        "current"
+      ],
+      [
+        "investigate",
+        2,
+        "current"
+      ],
+      [
+        "investigate",
+        2,
+        "previous"
+      ],
+      [
+        "investigate",
+        2,
+        "solo"
+      ],
+      [
+        "repository",
+        1,
+        "solo"
+      ],
+      [
+        "repository",
+        1,
+        "previous"
+      ],
+      [
+        "repository",
+        1,
+        "current"
+      ]
+    ],
+    "eligibility": "unchanged bench.eligible; historical failed invocation is not erased by recovery",
+    "stop_rule": "stop immediately on workspace credits or usage limit errors"
+  },
+  "complete_cases": [
+    "bug",
+    "modules",
+    "investigate",
+    "repository"
+  ],
+  "totals": {
+    "solo": {
+      "runs": 7,
+      "main": 558730,
+      "cached": 410880,
+      "uncached_plus_output": 147850,
+      "workers": 0,
+      "combined": 558730,
+      "worker_invocations": 0,
+      "repair_invocations": 0,
+      "seconds": 553.445,
+      "planning_tokens": 0,
+      "review_tokens": null
+    },
+    "previous": {
+      "runs": 7,
+      "main": 345760,
+      "cached": 158848,
+      "uncached_plus_output": 186912,
+      "workers": 603336,
+      "combined": 949096,
+      "worker_invocations": 7,
+      "repair_invocations": 0,
+      "seconds": 787.096,
+      "planning_tokens": 87900,
+      "review_tokens": 257860
+    },
+    "current": {
+      "runs": 7,
+      "main": 291112,
+      "cached": 100608,
+      "uncached_plus_output": 190504,
+      "workers": 603046,
+      "combined": 894158,
+      "worker_invocations": 7,
+      "repair_invocations": 0,
+      "seconds": 850.682,
+      "planning_tokens": 87734,
+      "review_tokens": 203378
+    }
+  },
+  "passed_runs": 21,
+  "eligible_runs": 21,
+  "archive_sha256": "2b0f4c32e9c894d87d57dd5a25f2f2ba61663a652c0b01ec6229b8239133751c",
+  "cleanup_verified": true,
+  "runs": [
+    {
+      "case": "bug",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 67382,
+        "cached_input_tokens": 36480,
+        "output_tokens": 1132,
+        "reasoning_output_tokens": 65,
+        "total_tokens": 68514,
+        "uncached_input_tokens": 30902
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 51.115
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/bug-1-solo",
+      "repeat": 1,
+      "main_phases": {
+        "bug-1-solo": {
+          "session_id": "01a10678-c744-7c00-81e5-83adca0e23d5",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g 'AGENTS.md' -g '*flag*' -g '*test*' -g 'pyproject.toml' -g 'setup.cfg' -g 'README*' -g 'requirements*'; git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"ls -la; cat flags.py; rg --files -g 'AGENTS.md' /home/bench/playground/bench-runs/director-sol-high/bug-1-solo\"",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff -- flags.py; git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 67382,
+            "cached_input_tokens": 36480,
+            "output_tokens": 1132,
+            "reasoning_output_tokens": 65,
+            "total_tokens": 68514,
+            "uncached_input_tokens": 30902
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10678-c744-7c00-81e5-83adca0e23d5",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/bug-1-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "bug",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 38780,
+        "cached_input_tokens": 0,
+        "output_tokens": 527,
+        "reasoning_output_tokens": 44,
+        "total_tokens": 39307,
+        "uncached_input_tokens": 38780
+      },
+      "worker_usage": {
+        "input_tokens": 50866,
+        "cached_input_tokens": 24064,
+        "output_tokens": 1205,
+        "total_tokens": 52071
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 83.191
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/bug-1-previous",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10679-8d93-76d2-a30c-2e984bb019bb",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12220,
+            "cached_input_tokens": 0,
+            "output_tokens": 311,
+            "reasoning_output_tokens": 44,
+            "total_tokens": 12531,
+            "uncached_input_tokens": 12220
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10679-8d93-76d2-a30c-2e984bb019bb",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat flags.py test_flags.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff -- flags.py test_flags.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 38780,
+            "cached_input_tokens": 0,
+            "output_tokens": 527,
+            "reasoning_output_tokens": 44,
+            "total_tokens": 39307,
+            "uncached_input_tokens": 38780
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10679-8d93-76d2-a30c-2e984bb019bb",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10679-8d93-76d2-a30c-2e984bb019bb",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10679-d184-7ad2-8a10-5db76b032454",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "bug",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 39488,
+        "cached_input_tokens": 13056,
+        "output_tokens": 408,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 39896,
+        "uncached_input_tokens": 26432
+      },
+      "worker_usage": {
+        "input_tokens": 64771,
+        "cached_input_tokens": 50176,
+        "output_tokens": 1294,
+        "total_tokens": 66065
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 98.96
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/bug-1-current",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1067a-d308-72a0-9754-2946746df761",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12216,
+            "cached_input_tokens": 0,
+            "output_tokens": 243,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12459,
+            "uncached_input_tokens": 12216
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1067a-d308-72a0-9754-2946746df761",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat flags.py test_flags.py'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 39488,
+            "cached_input_tokens": 13056,
+            "output_tokens": 408,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 39896,
+            "uncached_input_tokens": 26432
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1067a-d308-72a0-9754-2946746df761",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1067a-d308-72a0-9754-2946746df761",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1067b-1358-7570-9261-dcd44843f81d",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "bug",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 39535,
+        "cached_input_tokens": 13184,
+        "output_tokens": 425,
+        "reasoning_output_tokens": 19,
+        "total_tokens": 39960,
+        "uncached_input_tokens": 26351
+      },
+      "worker_usage": {
+        "input_tokens": 65088,
+        "cached_input_tokens": 50560,
+        "output_tokens": 1169,
+        "total_tokens": 66257
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 83.71
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/bug-2-current",
+      "repeat": 2,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1067c-5805-75b1-b671-88c61868004d",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12211,
+            "cached_input_tokens": 0,
+            "output_tokens": 262,
+            "reasoning_output_tokens": 19,
+            "total_tokens": 12473,
+            "uncached_input_tokens": 12211
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1067c-5805-75b1-b671-88c61868004d",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat flags.py test_flags.py'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 39535,
+            "cached_input_tokens": 13184,
+            "output_tokens": 425,
+            "reasoning_output_tokens": 19,
+            "total_tokens": 39960,
+            "uncached_input_tokens": 26351
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1067c-5805-75b1-b671-88c61868004d",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1067c-5805-75b1-b671-88c61868004d",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1067c-9039-7cc2-b6aa-01814637856f",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "bug",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 38678,
+        "cached_input_tokens": 12544,
+        "output_tokens": 486,
+        "reasoning_output_tokens": 19,
+        "total_tokens": 39164,
+        "uncached_input_tokens": 26134
+      },
+      "worker_usage": {
+        "input_tokens": 64631,
+        "cached_input_tokens": 36480,
+        "output_tokens": 1477,
+        "total_tokens": 66108
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 91.398
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/bug-2-previous",
+      "repeat": 2,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1067d-9d71-7fe2-a352-2386cab5d8d5",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12222,
+            "cached_input_tokens": 0,
+            "output_tokens": 272,
+            "reasoning_output_tokens": 19,
+            "total_tokens": 12494,
+            "uncached_input_tokens": 12222
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1067d-9d71-7fe2-a352-2386cab5d8d5",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat flags.py test_flags.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff -- flags.py test_flags.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 38678,
+            "cached_input_tokens": 12544,
+            "output_tokens": 486,
+            "reasoning_output_tokens": 19,
+            "total_tokens": 39164,
+            "uncached_input_tokens": 26134
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1067d-9d71-7fe2-a352-2386cab5d8d5",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1067d-9d71-7fe2-a352-2386cab5d8d5",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1067d-d96b-71d2-89e0-c85364d87aa5",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "bug",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 66915,
+        "cached_input_tokens": 50944,
+        "output_tokens": 1045,
+        "reasoning_output_tokens": 24,
+        "total_tokens": 67960,
+        "uncached_input_tokens": 15971
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "flags.py",
+        "test_flags.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 48.606
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/bug-2-solo",
+      "repeat": 2,
+      "main_phases": {
+        "bug-2-solo": {
+          "session_id": "01a1067f-0302-7923-bfc2-fa2287183e0f",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g 'AGENTS.md' -g '*flags*' -g '*test*' -g 'pyproject.toml' -g 'setup.cfg' -g 'README*'; git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"ls -la; cat flags.py; rg --files -g 'AGENTS.md' /home/bench/playground/bench-runs/director-sol-high/bug-2-solo\"",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff -- flags.py; git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 66915,
+            "cached_input_tokens": 50944,
+            "output_tokens": 1045,
+            "reasoning_output_tokens": 24,
+            "total_tokens": 67960,
+            "uncached_input_tokens": 15971
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1067f-0302-7923-bfc2-fa2287183e0f",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/bug-2-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "modules",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 51400,
+        "cached_input_tokens": 36608,
+        "output_tokens": 1708,
+        "reasoning_output_tokens": 125,
+        "total_tokens": 53108,
+        "uncached_input_tokens": 14792
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 69.822
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/modules-1-solo",
+      "repeat": 1,
+      "main_phases": {
+        "modules-1-solo": {
+          "session_id": "01a1067f-c117-7df1-ab3c-c8443f5e4174",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g '\"'!'\"\\\\.git' -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'setup.py'; git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'ls -la; cat slug.py stats.py; for f in ../AGENTS.md AGENTS.md; do if [ -f \"$f\" ]; then cat \"$f\"; fi; done'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff --stat; git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 51400,
+            "cached_input_tokens": 36608,
+            "output_tokens": 1708,
+            "reasoning_output_tokens": 125,
+            "total_tokens": 53108,
+            "uncached_input_tokens": 14792
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1067f-c117-7df1-ab3c-c8443f5e4174",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/modules-1-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "modules",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 39331,
+        "cached_input_tokens": 23168,
+        "output_tokens": 529,
+        "reasoning_output_tokens": 47,
+        "total_tokens": 39860,
+        "uncached_input_tokens": 16163
+      },
+      "worker_usage": {
+        "input_tokens": 51045,
+        "cached_input_tokens": 34432,
+        "output_tokens": 1497,
+        "total_tokens": 52542
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 93.153
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/modules-1-previous",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10680-d499-7912-aded-9699fc1f4c52",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12262,
+            "cached_input_tokens": 0,
+            "output_tokens": 316,
+            "reasoning_output_tokens": 47,
+            "total_tokens": 12578,
+            "uncached_input_tokens": 12262
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10680-d499-7912-aded-9699fc1f4c52",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git status --short; git diff -- slug.py stats.py test_slug.py test_stats.py; cat slug.py stats.py test_slug.py test_stats.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 39331,
+            "cached_input_tokens": 23168,
+            "output_tokens": 529,
+            "reasoning_output_tokens": 47,
+            "total_tokens": 39860,
+            "uncached_input_tokens": 16163
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10681-1720-7191-822e-1fbead0d597e",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10680-d499-7912-aded-9699fc1f4c52",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10680-d499-7912-aded-9699fc1f4c52",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "modules",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 40300,
+        "cached_input_tokens": 13312,
+        "output_tokens": 483,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 40783,
+        "uncached_input_tokens": 26988
+      },
+      "worker_usage": {
+        "input_tokens": 52189,
+        "cached_input_tokens": 47616,
+        "output_tokens": 1906,
+        "total_tokens": 54095
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 103.351
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/modules-1-current",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10682-3ec7-7d63-a736-c7175c5a2c65",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12247,
+            "cached_input_tokens": 0,
+            "output_tokens": 314,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12561,
+            "uncached_input_tokens": 12247
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10682-3ec7-7d63-a736-c7175c5a2c65",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat slug.py stats.py test_slug.py test_stats.py'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 40300,
+            "cached_input_tokens": 13312,
+            "output_tokens": 483,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 40783,
+            "uncached_input_tokens": 26988
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10682-7ca7-77c0-b3a7-c571402d4d56",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10682-3ec7-7d63-a736-c7175c5a2c65",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10682-3ec7-7d63-a736-c7175c5a2c65",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "modules",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 40360,
+        "cached_input_tokens": 13312,
+        "output_tokens": 551,
+        "reasoning_output_tokens": 59,
+        "total_tokens": 40911,
+        "uncached_input_tokens": 27048
+      },
+      "worker_usage": {
+        "input_tokens": 52017,
+        "cached_input_tokens": 45184,
+        "output_tokens": 1932,
+        "total_tokens": 53949
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 107.097
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/modules-2-current",
+      "repeat": 2,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10683-d29d-76e2-b24c-ad8a731284f4",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12250,
+            "cached_input_tokens": 0,
+            "output_tokens": 370,
+            "reasoning_output_tokens": 59,
+            "total_tokens": 12620,
+            "uncached_input_tokens": 12250
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10683-d29d-76e2-b24c-ad8a731284f4",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat slug.py stats.py test_slug.py test_stats.py'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 40360,
+            "cached_input_tokens": 13312,
+            "output_tokens": 551,
+            "reasoning_output_tokens": 59,
+            "total_tokens": 40911,
+            "uncached_input_tokens": 27048
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10683-d29d-76e2-b24c-ad8a731284f4",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10683-d29d-76e2-b24c-ad8a731284f4",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10684-1dca-7363-812f-8a5aada266ba",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "modules",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 39554,
+        "cached_input_tokens": 12672,
+        "output_tokens": 591,
+        "reasoning_output_tokens": 67,
+        "total_tokens": 40145,
+        "uncached_input_tokens": 26882
+      },
+      "worker_usage": {
+        "input_tokens": 66429,
+        "cached_input_tokens": 61440,
+        "output_tokens": 1854,
+        "total_tokens": 68283
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 109.083
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/modules-2-previous",
+      "repeat": 2,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10685-7555-7610-a1f7-ad65f68963c7",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12257,
+            "cached_input_tokens": 0,
+            "output_tokens": 371,
+            "reasoning_output_tokens": 67,
+            "total_tokens": 12628,
+            "uncached_input_tokens": 12257
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10685-7555-7610-a1f7-ad65f68963c7",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat slug.py stats.py test_slug.py test_stats.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff -- slug.py stats.py test_slug.py test_stats.py; git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 39554,
+            "cached_input_tokens": 12672,
+            "output_tokens": 591,
+            "reasoning_output_tokens": 67,
+            "total_tokens": 40145,
+            "uncached_input_tokens": 26882
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10685-bc6c-7243-9d4d-b57fb32ebd05",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10685-7555-7610-a1f7-ad65f68963c7",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10685-7555-7610-a1f7-ad65f68963c7",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "modules",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 51260,
+        "cached_input_tokens": 47104,
+        "output_tokens": 1615,
+        "reasoning_output_tokens": 105,
+        "total_tokens": 52875,
+        "uncached_input_tokens": 4156
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "slug.py",
+        "stats.py",
+        "test_slug.py",
+        "test_stats.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 63.174
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/modules-2-solo",
+      "repeat": 2,
+      "main_phases": {
+        "modules-2-solo": {
+          "session_id": "01a10687-1fbc-7223-8c0c-996e726ab245",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd && rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'setup.py' -g 'requirements*' -g '\"'! .git'\"' && git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'ls -la && cat slug.py stats.py && for f in AGENTS.md ../AGENTS.md; do if [ -f \"$f\" ]; then cat \"$f\"; fi; done'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s . && git diff --check && git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 51260,
+            "cached_input_tokens": 47104,
+            "output_tokens": 1615,
+            "reasoning_output_tokens": 105,
+            "total_tokens": 52875,
+            "uncached_input_tokens": 4156
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10687-1fbc-7223-8c0c-996e726ab245",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/modules-2-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "investigate",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 70759,
+        "cached_input_tokens": 52736,
+        "output_tokens": 2592,
+        "reasoning_output_tokens": 520,
+        "total_tokens": 73351,
+        "uncached_input_tokens": 18023
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 96.524
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/investigate-1-solo",
+      "repeat": 1,
+      "main_phases": {
+        "investigate-1-solo": {
+          "session_id": "01a10688-171a-7773-8269-e5e78d69d8cf",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd && rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'pytest.ini' && git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'ls -la && cat loader.py config.py && for path in ../AGENTS.md AGENTS.md; do if [ -f \"$path\" ]; then cat \"$path\"; fi; done'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check && git diff -- loader.py && git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 70759,
+            "cached_input_tokens": 52736,
+            "output_tokens": 2592,
+            "reasoning_output_tokens": 520,
+            "total_tokens": 73351,
+            "uncached_input_tokens": 18023
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10688-171a-7773-8269-e5e78d69d8cf",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/investigate-1-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "investigate",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 54000,
+        "cached_input_tokens": 26752,
+        "output_tokens": 576,
+        "reasoning_output_tokens": 23,
+        "total_tokens": 54576,
+        "uncached_input_tokens": 27248
+      },
+      "worker_usage": {
+        "input_tokens": 81923,
+        "cached_input_tokens": 62464,
+        "output_tokens": 2230,
+        "total_tokens": 84153
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 118.029
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/investigate-1-previous",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10689-906d-7823-a9b8-ab39f44a7882",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12245,
+            "cached_input_tokens": 0,
+            "output_tokens": 255,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12500,
+            "uncached_input_tokens": 12245
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10689-906d-7823-a9b8-ab39f44a7882",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- loader.py test_loader.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat loader.py test_loader.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 54000,
+            "cached_input_tokens": 26752,
+            "output_tokens": 576,
+            "reasoning_output_tokens": 23,
+            "total_tokens": 54576,
+            "uncached_input_tokens": 27248
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10689-906d-7823-a9b8-ab39f44a7882",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10689-906d-7823-a9b8-ab39f44a7882",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10689-c572-77b1-a5fd-8325e436d57e",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "investigate",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 40172,
+        "cached_input_tokens": 13184,
+        "output_tokens": 473,
+        "reasoning_output_tokens": 36,
+        "total_tokens": 40645,
+        "uncached_input_tokens": 26988
+      },
+      "worker_usage": {
+        "input_tokens": 64936,
+        "cached_input_tokens": 47104,
+        "output_tokens": 1943,
+        "total_tokens": 66879
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 114.03
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/investigate-1-current",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1068b-5e22-7160-9278-6cdf05df340e",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12235,
+            "cached_input_tokens": 0,
+            "output_tokens": 273,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12508,
+            "uncached_input_tokens": 12235
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1068b-5e22-7160-9278-6cdf05df340e",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat loader.py test_loader.py config.py'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 40172,
+            "cached_input_tokens": 13184,
+            "output_tokens": 473,
+            "reasoning_output_tokens": 36,
+            "total_tokens": 40645,
+            "uncached_input_tokens": 26988
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1068b-9780-71f0-b21d-687c8dd86fb0",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1068b-5e22-7160-9278-6cdf05df340e",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1068b-5e22-7160-9278-6cdf05df340e",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "investigate",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 40502,
+        "cached_input_tokens": 20992,
+        "output_tokens": 457,
+        "reasoning_output_tokens": 37,
+        "total_tokens": 40959,
+        "uncached_input_tokens": 19510
+      },
+      "worker_usage": {
+        "input_tokens": 69654,
+        "cached_input_tokens": 63104,
+        "output_tokens": 2454,
+        "total_tokens": 72108
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 123.978
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/investigate-2-current",
+      "repeat": 2,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1068d-1bf6-78f3-87cc-7a62de427ef8",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12232,
+            "cached_input_tokens": 10496,
+            "output_tokens": 254,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12486,
+            "uncached_input_tokens": 1736
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1068d-1bf6-78f3-87cc-7a62de427ef8",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat loader.py test_loader.py config.py'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 40502,
+            "cached_input_tokens": 20992,
+            "output_tokens": 457,
+            "reasoning_output_tokens": 37,
+            "total_tokens": 40959,
+            "uncached_input_tokens": 19510
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1068d-54a8-7771-80d7-aecc722fb085",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1068d-1bf6-78f3-87cc-7a62de427ef8",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1068d-1bf6-78f3-87cc-7a62de427ef8",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "investigate",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 53392,
+        "cached_input_tokens": 36992,
+        "output_tokens": 467,
+        "reasoning_output_tokens": 17,
+        "total_tokens": 53859,
+        "uncached_input_tokens": 16400
+      },
+      "worker_usage": {
+        "input_tokens": 82454,
+        "cached_input_tokens": 65152,
+        "output_tokens": 2130,
+        "total_tokens": 84584
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 121.136
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/investigate-2-previous",
+      "repeat": 2,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a1068f-00d7-77b1-b191-d3318486dcaa",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12246,
+            "cached_input_tokens": 10496,
+            "output_tokens": 253,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12499,
+            "uncached_input_tokens": 1750
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a1068f-00d7-77b1-b191-d3318486dcaa",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git diff -- loader.py test_loader.py; git status --short; cat loader.py; cat test_loader.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 53392,
+            "cached_input_tokens": 36992,
+            "output_tokens": 467,
+            "reasoning_output_tokens": 17,
+            "total_tokens": 53859,
+            "uncached_input_tokens": 16400
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a1068f-00d7-77b1-b191-d3318486dcaa",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1068f-00d7-77b1-b191-d3318486dcaa",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a1068f-3bca-78a3-bac1-06c0f7f1ef5a",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "investigate",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 67963,
+        "cached_input_tokens": 51200,
+        "output_tokens": 2274,
+        "reasoning_output_tokens": 451,
+        "total_tokens": 70237,
+        "uncached_input_tokens": 16763
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "loader.py",
+        "test_loader.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 86.356
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/investigate-2-solo",
+      "repeat": 2,
+      "main_phases": {
+        "investigate-2-solo": {
+          "session_id": "01a10690-da4d-7eb0-9872-758d1310a732",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"pwd; rg --files -g 'AGENTS.md' -g '*.py' -g 'pyproject.toml' -g 'README*' -g 'setup.cfg' -g 'pytest.ini'; git status --short\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'for file in ../AGENTS.md AGENTS.md; do if [ -f \"$file\" ]; then cat \"$file\"; fi; done'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"cat loader.py config.py; rg --files --hidden -g '\"'!.git/**'\"'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 1
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check; git diff -- loader.py; git status --short'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 67963,
+            "cached_input_tokens": 51200,
+            "output_tokens": 2274,
+            "reasoning_output_tokens": 451,
+            "total_tokens": 70237,
+            "uncached_input_tokens": 16763
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10690-da4d-7eb0-9872-758d1310a732",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/investigate-2-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "repository",
+      "arm": "solo",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 169036,
+        "cached_input_tokens": 135808,
+        "output_tokens": 3649,
+        "reasoning_output_tokens": 314,
+        "total_tokens": 172685,
+        "uncached_input_tokens": 33228
+      },
+      "worker_usage": {
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "worker_invocations": 0,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": false,
+      "changed_files": [
+        "README.md",
+        "team.py",
+        "test_team_concurrency.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 137.848
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/repository-1-solo",
+      "repeat": 1,
+      "main_phases": {
+        "repository-1-solo": {
+          "session_id": "01a10692-2c15-7c91-8e4e-756627d75b92",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"pwd && rg --files -g 'AGENTS.md' -g 'team.py' -g 'worker.py' -g 'README*' -g 'test*.py' -g 'pyproject.toml' -g 'requirements*' -g 'setup.cfg'\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'for p in ../AGENTS.md AGENTS.md; do if [ -f \"$p\" ]; then cat \"$p\"; fi; done\nsed -n '\"'1,260p' team.py\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"sed -n '1,300p' worker.py\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'cat README.md\ncat tests/test_team.py\ncat tests/test_worker.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"rg -n 'concurrency|def run_batch|def _run_batch' worker.py\nsed -n '440,580p' worker.py\nsed -n '1,90p' README.md\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"rg --files -g AGENTS.md -g '__init__.py'\nsed -n '1,100p' tests/test_bench.py\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff --check && git diff --stat && git diff -- team.py README.md'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s tests'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git status --short && git diff --name-only -- tests && git diff --check'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 169036,
+            "cached_input_tokens": 135808,
+            "output_tokens": 3649,
+            "reasoning_output_tokens": 314,
+            "total_tokens": 172685,
+            "uncached_input_tokens": 33228
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10692-2c15-7c91-8e4e-756627d75b92",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "writable_roots": [
+              "/home/bench/playground/bench-runs/director-sol-high/repository-1-solo"
+            ],
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "repository",
+      "arm": "previous",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 78061,
+        "cached_input_tokens": 46720,
+        "output_tokens": 788,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 78849,
+        "uncached_input_tokens": 31341
+      },
+      "worker_usage": {
+        "input_tokens": 192458,
+        "cached_input_tokens": 160896,
+        "output_tokens": 3137,
+        "total_tokens": 195595
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "README.md",
+        "team.py",
+        "test_team_concurrency.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 171.106
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/repository-1-previous",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10694-545d-7cb2-b9cb-68dbd416f752",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12292,
+            "cached_input_tokens": 0,
+            "output_tokens": 378,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12670,
+            "uncached_input_tokens": 12292
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10694-545d-7cb2-b9cb-68dbd416f752",
+          "commands": [
+            {
+              "command": "/bin/bash -lc 'cat test_team_concurrency.py'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'git diff -- team.py README.md; git status --short'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc \"sed -n '1,155p' team.py; rg -n 'def run_batch|concurrency' worker.py\"",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s tests'",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 78061,
+            "cached_input_tokens": 46720,
+            "output_tokens": 788,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 78849,
+            "uncached_input_tokens": 31341
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10694-9959-7630-a038-85f141c8dfdb",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10694-545d-7cb2-b9cb-68dbd416f752",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10694-545d-7cb2-b9cb-68dbd416f752",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    },
+    {
+      "case": "repository",
+      "arm": "current",
+      "valid": true,
+      "passed": true,
+      "environment": "wsl2-fresh-director-ubuntu-24.04.4-c1e67ef7",
+      "isolation_basis": "operator-attested-VM-or-container",
+      "profile_config_sha256": "08a6d5266550739f110f048b8568d351deb360479500f31ba6e80137299f5a57",
+      "requested_main_model": "gpt-6.1-sol",
+      "requested_worker_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "requested_worker_effort": "high",
+      "observed_model_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high"
+        }
+      ],
+      "main_usage": {
+        "input_tokens": 47341,
+        "cached_input_tokens": 13568,
+        "output_tokens": 617,
+        "reasoning_output_tokens": 41,
+        "total_tokens": 47958,
+        "uncached_input_tokens": 33773
+      },
+      "worker_usage": {
+        "input_tokens": 218646,
+        "cached_input_tokens": 190592,
+        "output_tokens": 5047,
+        "total_tokens": 223693
+      },
+      "worker_invocations": 1,
+      "worker_failures": 0,
+      "worker_batch_failures": 0,
+      "actual_delegation": true,
+      "changed_files": [
+        "README.md",
+        "team.py",
+        "test_team_concurrency.py"
+      ],
+      "execution": {
+        "exit_code": 0,
+        "termination": "exited",
+        "seconds": 219.556
+      },
+      "artifacts": "/home/bench/playground/bench-runs/director-sol-high/repository-1-current",
+      "repeat": 1,
+      "main_phases": {
+        "plan": {
+          "session_id": "01a10696-fcea-7493-a65b-31e8ca62a6fd",
+          "commands": [],
+          "usage": {
+            "input_tokens": 12287,
+            "cached_input_tokens": 0,
+            "output_tokens": 340,
+            "reasoning_output_tokens": 0,
+            "total_tokens": 12627,
+            "uncached_input_tokens": 12287
+          },
+          "errors": []
+        },
+        "review": {
+          "session_id": "01a10696-fcea-7493-a65b-31e8ca62a6fd",
+          "commands": [
+            {
+              "command": "/bin/bash -lc \"git diff -- team.py README.md; cat test_team_concurrency.py; sed -n '1,300p' team.py; sed -n '385,505p' worker.py\"",
+              "exit_code": 0
+            }
+          ],
+          "usage": {
+            "input_tokens": 47341,
+            "cached_input_tokens": 13568,
+            "output_tokens": 617,
+            "reasoning_output_tokens": 41,
+            "total_tokens": 47958,
+            "uncached_input_tokens": 33773
+          },
+          "errors": []
+        }
+      },
+      "repair_invocations": 0,
+      "turn_contexts": [
+        {
+          "session_id": "01a10696-fcea-7493-a65b-31e8ca62a6fd",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10696-fcea-7493-a65b-31e8ca62a6fd",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          },
+          "approval_policy": "never"
+        },
+        {
+          "session_id": "01a10697-3c35-7b11-98f7-1ecd53435c01",
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          },
+          "approval_policy": "never"
+        }
+      ],
+      "eligible": true
+    }
+  ],
+  "comparisons": {
+    "previous": [
+      {
+        "case": "bug",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 68237.0,
+        "team_main_median": 39235.5,
+        "diagnostic_reduction": 0.42501135747468377,
+        "isolated_main_reduction": 0.42501135747468377
+      },
+      {
+        "case": "investigate",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 71794.0,
+        "team_main_median": 54217.5,
+        "diagnostic_reduction": 0.2448185085104605,
+        "isolated_main_reduction": 0.2448185085104605
+      },
+      {
+        "case": "modules",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 52991.5,
+        "team_main_median": 40002.5,
+        "diagnostic_reduction": 0.24511478255946706,
+        "isolated_main_reduction": 0.24511478255946706
+      },
+      {
+        "case": "repository",
+        "solo_runs": 1,
+        "team_runs": 1,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 1,
+        "solo_main_median": 172685,
+        "team_main_median": 78849,
+        "diagnostic_reduction": 0.5433940411732345,
+        "isolated_main_reduction": 0.5433940411732345
+      }
+    ],
+    "current": [
+      {
+        "case": "bug",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 68237.0,
+        "team_main_median": 39928.0,
+        "diagnostic_reduction": 0.4148629042894617,
+        "isolated_main_reduction": 0.4148629042894617
+      },
+      {
+        "case": "investigate",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 71794.0,
+        "team_main_median": 40802.0,
+        "diagnostic_reduction": 0.43167952753712013,
+        "isolated_main_reduction": 0.43167952753712013
+      },
+      {
+        "case": "modules",
+        "solo_runs": 2,
+        "team_runs": 2,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 2,
+        "solo_main_median": 52991.5,
+        "team_main_median": 40847.0,
+        "diagnostic_reduction": 0.22917826443863643,
+        "isolated_main_reduction": 0.22917826443863643
+      },
+      {
+        "case": "repository",
+        "solo_runs": 1,
+        "team_runs": 1,
+        "all_passed": true,
+        "delegation_observed": true,
+        "delegated_team_runs": 1,
+        "solo_main_median": 172685,
+        "team_main_median": 47958,
+        "diagnostic_reduction": 0.7222804528476706,
+        "isolated_main_reduction": 0.7222804528476706
+      }
+    ]
+  },
+  "stopped_reason": null,
+  "remaining_schedule": [],
+  "audit": {
+    "production_source_matches_cba3439": true,
+    "model_contexts_match_requested_model_and_effort": true,
+    "main_final_cumulative_usage_used_once": true,
+    "worker_report_usage_sum_matches": true,
+    "main_session_id_preserved": true,
+    "current_review_turns_recorded_read_only": 7,
+    "current_review_file_change_events": 0,
+    "current_review_commands_only_read_files_or_diff": true,
+    "planning_command_events_all_team_runs": 0,
+    "native_linux_regression_tests_passed": 40,
+    "unchanged_fixtures_rejected_by_grader": 4,
+    "notes": "Recorded sandbox policy and observed behavior were checked; no deliberate forbidden-write enforcement probe was run. No feedback rounds, parallel worker splits or direct-completion routes occurred."
+  }
+}

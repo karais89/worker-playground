@@ -138,6 +138,8 @@ python bench.py --isolated-environment fresh-vm-image-id --case all --repeats 2 
 
 배정 정책을 비교하는 고정 실험은 `benchmarks/routing_experiment.py`입니다. 새 환경에서 `python benchmarks/routing_experiment.py --auth-file /path/to/auth.json --isolated-environment fresh-image-id --output bench-runs/routing`으로 실행합니다. 단독·기존 팀(`20fb8cb`)·수정 팀을 같은 모델(Sol 6.1 High)로 비교합니다. 기존 3과제는 방식별 2회씩 순서를 뒤집어 총 18회, 고정한 이 저장소의 이전 버전에 CLI 동시 실행 옵션을 추가하는 과제는 방식별 1회씩 총 3회입니다. 마지막 과제는 대형 저장소 벤치마크가 아닌 보조 사례입니다. 기존 `worker.py`가 달라지면 이 비교 스크립트는 실행을 거부합니다. 현재 워커 재수정 변경 전의 실험이므로 재현 시 `2ee466a` 커밋을 사용합니다. 결과를 보고 프롬프트를 바꿔 같은 실험에 섞지 않습니다.
 
+OMP 방향의 읽기 전용 검토·워커 재수정 비교는 `benchmarks/director_experiment.py`입니다. 단독·이전 팀(`2ee466a`)·현재 팀(`cba3439`)을 같은 과제와 채점기로 비교하며, 이전 팀의 `team.py`와 `worker.py`를 함께 고정합니다. 새 환경에서 `python benchmarks/director_experiment.py --auth-file /path/to/auth.json --isolated-environment fresh-image-id --output bench-runs/director`로 실행합니다. 실행 횟수는 같은 21회이며 크레딧/사용량 한도 오류가 발생하면 즉시 중단합니다. 메인 재개 시 실제 기록된 샌드박스 정책과 워커 재수정 횟수도 보존합니다.
+
 ## 현재 범위와 제한
 
 - 같은 작업 트리에서 서로 다른 파일을 수정하는 방식입니다. worktree 생성·자동 병합은 없습니다. 메인은 워커 실행 중 같은 파일을 편집하지 않아야 합니다.
