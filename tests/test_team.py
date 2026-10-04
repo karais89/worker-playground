@@ -40,14 +40,38 @@ class TeamTests(unittest.TestCase):
         self.assertEqual(run_batch.call_args.args[0][0]["cwd"], str(self.repo.resolve()))
         self.assertTrue(result["actual_delegation"])
 
-    def test_zero_worker_plan_still_finishes_in_main(self):
-        plan = self.phase({"tasks": []}, 100)
-        final = self.phase(dict(status="completed", summary="done", changed_files=[], checks=[], issues=[]), 140)
-        with patch.object(team, "invoke", side_effect=[plan, final]), patch.object(team.worker, "run_batch") as run_batch:
+    def test_direct_completion_uses_only_one_main_turn(self):
+        report = dict(status="completed", summary="done", changed_files=[], checks=[], issues=[])
+        plan = self.phase({"tasks": [], "report": report}, 100)
+        with patch.object(team, "invoke", return_value=plan) as invoke, patch.object(team.worker, "run_batch") as run_batch:
             result = team.run_team("tiny task", self.repo, self.root / "output")
+        self.assertEqual(invoke.call_count, 1)
         run_batch.assert_not_called()
         self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["main_usage"]["total_tokens"], 100)
         self.assertFalse(result["actual_delegation"])
+
+    def test_empty_tasks_without_report_is_not_completion(self):
+        with patch.object(team, "invoke", return_value=self.phase({"tasks": [], "report": None}, 100)) as invoke:
+            result = team.run_team("task", self.repo, self.root / "output")
+        self.assertEqual(invoke.call_count, 1)
+        self.assertEqual(result["status"], "failed")
+        self.assertFalse(result["main_valid"])
+
+    def test_direct_blocked_report_preserves_status(self):
+        report = dict(status="blocked", summary="Need specification", changed_files=[], checks=[], issues=["ambiguous"])
+        with patch.object(team, "invoke", return_value=self.phase({"tasks": [], "report": report}, 100)):
+            result = team.run_team("task", self.repo, self.root / "output")
+        self.assertEqual(result["status"], "blocked")
+
+    def test_mixed_direct_report_and_delegation_is_rejected(self):
+        report = dict(status="completed", summary="done", changed_files=[], checks=[], issues=[])
+        task = dict(id="code", role="implement", scope=["a.py"], prompt="task", acceptance=[])
+        with patch.object(team, "invoke", return_value=self.phase({"tasks": [task], "report": report}, 100)), \
+             patch.object(team.worker, "run_batch") as run_batch:
+            result = team.run_team("task", self.repo, self.root / "output")
+        run_batch.assert_not_called()
+        self.assertEqual(result["status"], "failed")
 
     def test_failed_plan_does_not_dispatch_or_report_success(self):
         with patch.object(team, "invoke", return_value=self.phase(None, None, False)), \
@@ -60,8 +84,8 @@ class TeamTests(unittest.TestCase):
     def test_lock_covers_planning_and_review_including_zero_workers(self):
         other_temp = self.root / "other-temp"
         other_temp.mkdir()
-        phases = [self.phase({"tasks": []}, 100), self.phase(dict(
-            status="completed", summary="done", changed_files=[], checks=[], issues=[]), 140)]
+        phases = [self.phase({"tasks": [], "report": dict(
+            status="completed", summary="done", changed_files=[], checks=[], issues=[])}, 100)]
         def inspect_lock(*args, **kwargs):
             script = "import worker; from pathlib import Path\nwith worker.directory_lock(Path(" + repr(str(self.repo.resolve())) + ")): pass"
             contender = subprocess.run([sys.executable, "-c", script], cwd=Path(team.__file__).parent,

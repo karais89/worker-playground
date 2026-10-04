@@ -92,6 +92,7 @@ def prepare_case(repo, case):
     subprocess.run(["git", "init", "-q", str(repo)], check=True)
     subprocess.run(["git", "config", "core.autocrlf", "false"], cwd=repo, check=True)
     for name, content in case["files"].items():
+        (repo / name).parent.mkdir(parents=True, exist_ok=True)
         (repo / name).write_text(content, encoding="utf-8")
     (repo / ".gitignore").write_text("__pycache__/\n*.pyc\n", encoding="utf-8")
     subprocess.run(["git", "add", "."], cwd=repo, check=True)

@@ -1,4 +1,4 @@
-"""Small CLI coordinator: main plans, host runs workers, same main session reviews."""
+"""Small CLI coordinator: delegate before exploring, or finish a trivial task directly."""
 from __future__ import annotations
 
 import argparse
@@ -11,9 +11,10 @@ import uuid
 import worker
 
 PLAN_SCHEMA = {
-    "type": "object", "additionalProperties": False, "required": ["summary", "tasks"],
+    "type": "object", "additionalProperties": False, "required": ["summary", "tasks", "report"],
     "properties": {
         "summary": {"type": "string"},
+        "report": {"anyOf": [worker.REPORT_SCHEMA, {"type": "null"}]},
         "tasks": {"type": "array", "maxItems": 3, "items": {
             "type": "object", "additionalProperties": False,
             "required": ["id", "role", "scope", "prompt", "acceptance"],
@@ -32,8 +33,9 @@ PLAN_SCHEMA = {
 def invoke(cli, cwd, output, prompt, schema, model, effort, timeout, env, session_id=None):
     output.mkdir(parents=True, exist_ok=False)
     worker.write_json(output / "schema.json", schema)
-    # Planning is read-only; the final review can run tests and repair small defects.
-    task = dict(cwd=str(cwd), role="implement" if session_id else "research")
+    # The first turn may finish a trivial task directly. Delegated work must be
+    # assigned before exploration; this is a prompt policy, not a tool sandbox.
+    task = dict(cwd=str(cwd), role="implement")
     command = worker.build_command(cli, task, model, effort, output, session_id)
     worker.write_json(output / "command.json", command)
     (output / "prompt.txt").write_text(prompt, encoding="utf-8")
@@ -65,21 +67,38 @@ def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker
     cli = cli or ["codex"]
     plan = invoke(cli, cwd, output / "plan", (
         "You are the main coordinator. Minimize your own token usage while preserving quality. "
-        "Do only the minimum inspection needed to divide the task. Do not edit files, run native subagents, "
-        "or launch AI CLIs. Return a concise plan using the supplied schema. A host runner will execute "
-        "the tasks, then resume this exact session with short results for your final review. "
-        "Choose up to 3 bounded tasks with roles research, implement, review. Use relative file/directory "
+        "Choose from the user request alone: delegate, or finish a truly trivial task directly. "
+        "Default to ONE worker owning investigation, implementation and relevant tests end to end. "
+        "When delegating, do not call tools, read files, search, or design the implementation first. "
+        "Unknown file locations and implementation details are for the worker to discover. "
+        "Give the goal, constraints and observable acceptance criteria, not a detailed solution. "
+        "A host runner executes the tasks and resumes this session with short results for final review. "
+        "Return report=null with 1-3 tasks. Split only clearly independent workstreams already apparent "
+        "in the request; do not create separate research, implementation and review tasks by default. "
+        "Roles are research, implement, review. Use relative file/directory "
         "scopes (not globs), including test files. Disjoint scopes run in parallel; overlapping scopes "
-        "with an implement task run in list order. Make prompts self-contained. "
-        "For work too small to delegate, return no tasks and complete it in your next turn. "
+        "with an implement task run in list order. Use scope=['.'] for a single worker when paths are unknown. "
+        "Make prompts self-contained, including relevant testing and fixing failures before returning. "
+        "For a truly trivial known-location change needing no investigation, finish it NOW, run relevant "
+        "checks, and return tasks=[] with a complete report. There is no second turn for this route. "
+        "Do not run native subagents, launch AI CLIs, commit, or change Git configuration. "
         "Do not prescribe later tasks that depend on findings you have not received.\nUser task:\n" + prompt),
         PLAN_SCHEMA, main_model, effort, timeout, env)
     worker.write_json(output / "plan/execution.json", plan["execution"])
     raw = plan["final"].get("tasks") if plan["valid"] else None
-    if not isinstance(raw, list) or len(raw) > 3 or not all(isinstance(t, dict) for t in raw):
+    direct_report = plan["final"].get("report") if plan["valid"] else None
+    if (not isinstance(raw, list) or len(raw) > 3 or not all(isinstance(t, dict) for t in raw)
+            or (raw and direct_report is not None) or (raw == [] and not worker.validate_report(direct_report))):
         result = dict(status="failed", summary="Main planning failed; inspect plan artifacts.",
                       main_usage=plan["events"]["usage"], worker_usage=None, actual_delegation=False,
                       main_valid=False, artifacts=str(output))
+        worker.write_json(output / "summary.json", result)
+        return result
+    if not raw:
+        result = dict(status=direct_report["status"], summary=direct_report["summary"][:1200],
+                      main_valid=True, main_session_id=plan["events"]["session_id"],
+                      main_usage=plan["events"]["usage"], worker_usage=None, actual_delegation=False,
+                      worker_status=None, main_report=direct_report, artifacts=str(output))
         worker.write_json(output / "summary.json", result)
         return result
     batch = None
@@ -92,8 +111,8 @@ def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker
     final = invoke(cli, cwd, output / "review", (
         "Continue as the main coordinator. Review the short worker results below and only the necessary "
         "changed code. Do not repeat broad exploration. Verify the user's acceptance criteria and relevant "
-        "tests; repair small defects or report blocked if substantial work remains. If there were no workers, "
-        "complete the original task directly now. Do not launch AI CLIs or native subagents. Do not commit. "
+        "tests; repair small defects or report blocked if substantial work remains. "
+        "Do not launch AI CLIs or native subagents. Do not commit. "
         "Return a concise final report using the supplied schema.\nWorker results:\n" +
         worker.main_report(batch)), worker.REPORT_SCHEMA, main_model, effort, timeout, env,
         session_id=plan["events"]["session_id"])
