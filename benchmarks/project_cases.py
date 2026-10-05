@@ -237,7 +237,7 @@ COMMON_GRADE = source('''
     def cli(db, *args):
         return subprocess.run([sys.executable, '-m', 'taskdesk', '--db', str(db), *args], capture_output=True, text=True, timeout=10)
 
-    baseline = unittest.TestLoader().discover('tests')
+    baseline = unittest.TestLoader().discover('tests', top_level_dir='.')
     assert unittest.TextTestRunner().run(baseline).wasSuccessful()
 ''')
 
@@ -366,7 +366,7 @@ def cases():
             if path.startswith("tests/"):
                 contract += f"\nassert Path({path!r}).read_text(encoding='utf-8') == {text!r}\n"
         for path in tests:
-            contract += f"\ntest_path = next((p for p in (Path({path!r}), Path('tests') / {path!r}) if p.is_file()), None)\nassert test_path is not None\nsuite = unittest.TestLoader().discover(str(test_path.parent), pattern=test_path.name)\nassert suite.countTestCases() > 0\nresult = unittest.TextTestRunner().run(suite)\nassert result.wasSuccessful() and result.testsRun > len(result.skipped)\n"
+            contract += f"\ntest_path = next((p for p in (Path({path!r}), Path('tests') / {path!r}) if p.is_file()), None)\nassert test_path is not None\nsuite = unittest.TestLoader().discover(str(test_path.parent), pattern=test_path.name, top_level_dir='.')\nassert suite.countTestCases() > 0\nresult = unittest.TextTestRunner().run(suite)\nassert result.wasSuccessful() and result.testsRun > len(result.skipped)\n"
         result[name] = dict(files=dict(FILES), grade=contract + "\n" + grade,
                            prompt=prompt + " Use only the standard library. Preserve existing tests/ files byte-for-byte; run all existing and new tests. Keep changes within this project.")
     return result

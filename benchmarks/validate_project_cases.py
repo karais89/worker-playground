@@ -80,7 +80,11 @@ def validate():
             good = bench.grade(repo, case)
             assert good["passed"], (name, good)
             for path in repo.glob("test_*.py"):
-                path.rename(repo / "tests" / path.name)
+                (repo / "tests" / path.name).write_bytes(path.read_bytes())
+            duplicate_names = bench.grade(repo, case)
+            assert duplicate_names["passed"], (name, duplicate_names)
+            for path in repo.glob("test_*.py"):
+                path.unlink()
             nested = bench.grade(repo, case)
             assert nested["passed"], (name, nested)
             if name == "atomic_import":
@@ -95,7 +99,7 @@ def validate():
             path.write_text(text, encoding="utf-8")
             bad = bench.grade(repo, case)
             assert not bad["functional"]["passed"] and bad["generated_tests"]["passed"], (name,bad)
-            evidence.append(dict(case=name, unchanged_rejected=True, reference_passed=True, root_and_tests_locations_passed=True, mutant_rejected=True))
+            evidence.append(dict(case=name, unchanged_rejected=True, reference_passed=True, root_and_tests_locations_passed=True, duplicate_test_names_passed=True, mutant_rejected=True))
     return evidence
 
 

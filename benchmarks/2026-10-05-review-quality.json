@@ -1,0 +1,1412 @@
+{
+  "manifest": {
+    "schedule": [
+      [
+        "atomic_import",
+        true
+      ],
+      [
+        "paged_listing",
+        false
+      ],
+      [
+        "independent_utilities",
+        true
+      ],
+      [
+        "atomic_import",
+        false
+      ],
+      [
+        "paged_listing",
+        true
+      ],
+      [
+        "independent_utilities",
+        false
+      ]
+    ],
+    "controls": [
+      {
+        "case": "atomic_import",
+        "faulty": false,
+        "smoke_passed": true,
+        "external_passed": true
+      },
+      {
+        "case": "atomic_import",
+        "faulty": true,
+        "smoke_passed": true,
+        "external_passed": false
+      },
+      {
+        "case": "paged_listing",
+        "faulty": false,
+        "smoke_passed": true,
+        "external_passed": true
+      },
+      {
+        "case": "paged_listing",
+        "faulty": true,
+        "smoke_passed": true,
+        "external_passed": false
+      },
+      {
+        "case": "independent_utilities",
+        "faulty": false,
+        "smoke_passed": true,
+        "external_passed": true
+      },
+      {
+        "case": "independent_utilities",
+        "faulty": true,
+        "smoke_passed": true,
+        "external_passed": false
+      }
+    ],
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "source_commit": "37086940b619cda9458488b72f1ef54284018569",
+    "source_sha256": {
+      "team.py": "1c2a369bf5b637046becb2b1a6fb700aea3dcf6ae335a8c935a58c76741c6817",
+      "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+      "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+      "benchmarks/review_quality.py": "f1d4d6afc28117710c77cab7fc73d726195c7803b4d2e855d7e981ec1877d5a5",
+      "benchmarks/project_cases.py": "4b220cd50d1f39b92d0061a5455e20183ea94bddd208a78b845cf11c7607433e",
+      "benchmarks/validate_project_cases.py": "06fc7e1c6f8af154c85c732950707a06a796d67714a4c7b0045a096879e1e6aa"
+    },
+    "method": "Prepared patches; real test-only initial worker sessions; unchanged director/feedback loop; 3 faulty and 3 clean controls, one each; no solo comparison"
+  },
+  "environment": {
+    "source_commit": "2362ad6462e83b82412d148bc07f2df24b9d4b85",
+    "cli": "codex-cli 0.160.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "git": "git version 2.43.0",
+    "kernel": "5.15.167.4-microsoft-standard-WSL2",
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+    "wsl_config": "[automount]\nenabled=false\n[interop]\nenabled=false\nappendWindowsPath=false\n",
+    "windows_drive_mounted": false,
+    "uid": 1000,
+    "cli_package_sha256": "37a41d61c3399182b8c727b77090cc7a1566bd849d0f09070a0bbc6fec4c58dc",
+    "distro": "WorkerPlaygroundProject20261004",
+    "rootfs_sha256": "c1e67ef7b17a6300e136118bd1dc04725009cb376c1aad10abcf8cd453628d58",
+    "preflight_correction": "Independent unittest loaders for Python 3.12 discovery; corrected before any model invocation",
+    "protocol_correction": "Root-only new-test grader corrected to accept tests/; initial solo plus interrupted team preserved, excluded; all cases restarted with fresh repos/profiles"
+  },
+  "preflight": {
+    "exit_code": 0,
+    "parsed": {
+      "session_id": "01a10940-d17e-76a3-9bfe-4a3a11ce7cec",
+      "usage": {
+        "input_tokens": 11410,
+        "cached_input_tokens": 10368,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 11415,
+        "uncached_input_tokens": 1042
+      },
+      "completed_turns": 1,
+      "malformed_lines": 0,
+      "errors": [],
+      "commands": [],
+      "messages": [
+        "OK"
+      ]
+    }
+  },
+  "scoring": {
+    "target_detection": "Initial director feedback identifies the seeded faulty behavior or its missing boundary condition; a generic request for more tests alone is not a confirmed defect detection.",
+    "repair_success": "External acceptance checks transition from failed before review to passed after feedback, preserving existing tests.",
+    "control_false_positive": "A specific incorrect functional-defect claim against a clean control. Requests to improve genuinely incomplete test coverage are recorded separately, not automatically called false positives.",
+    "limitations": "Three hand-seeded defects, three behaviorally correct controls, intentionally incomplete visible tests, one trial per condition; not natural incidence, not solo-vs-team quality comparison."
+  },
+  "environment_note": "Reused dedicated WSL created 2026-10-04; fresh repositories, profiles and sessions for every trial; environment source_commit describes original provisioning, manifest contains current experiment commit.",
+  "archive_sha256": "7c23c85039dd375a695c86834c330206ff6f656660f7af15376a8a1001f5d54b",
+  "source_hashes_verified": true,
+  "cleanup_verified": true,
+  "runs": [
+    {
+      "case": "atomic_import",
+      "faulty": true,
+      "before_grade": {
+        "passed": false,
+        "functional": {
+          "passed": false,
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.086s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.014s\n\nOK\nTraceback (most recent call last):\n  File \"<string>\", line 43, in <module>\nAssertionError: [{'title': 'first'}, {'title': ' '}]\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_empty_import_preserves_existing (test_atomic_import.ImportTests.test_empty_import_preserves_existing) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.102s\n\nOK\n"
+        }
+      },
+      "after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.059s\n\nOK\n.........\n----------------------------------------------------------------------\nRan 9 tests in 0.449s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_failures_exit_two_and_roll_back (test_atomic_import.ImportTests.test_cli_failures_exit_two_and_roll_back) ... ok\ntest_cli_success_and_empty_import_json (test_atomic_import.ImportTests.test_cli_success_and_empty_import_json) ... ok\ntest_duplicate_against_existing_rolls_back (test_atomic_import.ImportTests.test_duplicate_against_existing_rolls_back) ... ok\ntest_duplicate_within_batch_rolls_back (test_atomic_import.ImportTests.test_duplicate_within_batch_rolls_back) ... ok\ntest_empty_import_preserves_existing (test_atomic_import.ImportTests.test_empty_import_preserves_existing) ... ok\ntest_invalid_document_preserves_existing (test_atomic_import.ImportTests.test_invalid_document_preserves_existing) ... ok\ntest_second_connection_sees_no_partial_data_during_import (test_atomic_import.ImportTests.test_second_connection_sees_no_partial_data_during_import) ... ok\ntest_successful_import_commits_normalized_records (test_atomic_import.ImportTests.test_successful_import_commits_normalized_records) ... ok\ntest_validation_failure_after_valid_records (test_atomic_import.ImportTests.test_validation_failure_after_valid_records) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.530s\n\nOK\n"
+        }
+      },
+      "initial_review": {
+        "status": "blocked",
+        "summary": "The requested fix is missing. import_json still commits each record inside its loop, so later validation or duplicate-title failures leave earlier records saved. The worker changed no files; existing tests cover no failed imports.",
+        "changed_files": [],
+        "checks": [
+          {
+            "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+            "exit_code": 0
+          }
+        ],
+        "issues": [
+          "Passing existing tests does not establish atomicity.",
+          "test_atomic_import.py contains only an empty-import test; required regressions are missing."
+        ],
+        "followups": [
+          {
+            "id": "atomic-json-import",
+            "prompt": "Complete the original implementation task within scope ['.']. Inspection confirms taskdesk/service.py import_json commits every insert inside the loop; correct its transaction handling so any validation or duplicate-title failure rolls back the entire import while preserving previously committed tasks. Preserve public APIs, validation, successful/empty imports, and CLI success JSON/error exit 2. Add regressions in test_atomic_import.py for failures after valid records, duplicates within the batch and against existing data, preservation of committed tasks, and absence of partial data from a second connection. Verify successful/empty imports and CLI behavior. Keep all existing tests/ files byte-for-byte unchanged, use only the standard library, and keep changes within this project. Run all existing and new tests, fix failures, and return changed files plus observed command results. Do not stop after merely running the baseline suite. Do not commit, change Git configuration, launch AI CLIs, or use native subagents."
+          }
+        ]
+      },
+      "coordinator": {
+        "status": "completed",
+        "summary": "Verified import_json uses one transaction, rolling back validation and duplicate-title failures while preserving committed tasks. Regressions cover second-connection visibility, successful/empty imports, and CLI JSON/error exit 2. All 13 tests pass; existing tests/ files are unchanged.",
+        "main_valid": true,
+        "main_session_id": "01a10941-9308-7b43-8d14-34dddb8dc94f",
+        "main_usage": {
+          "input_tokens": 108027,
+          "cached_input_tokens": 75904,
+          "output_tokens": 1235,
+          "reasoning_output_tokens": 98,
+          "total_tokens": 109262,
+          "uncached_input_tokens": 32123
+        },
+        "worker_usage": {
+          "input_tokens": 134463,
+          "cached_input_tokens": 108928,
+          "output_tokens": 5179,
+          "total_tokens": 139642
+        },
+        "repair_invocations": 1,
+        "actual_delegation": true,
+        "worker_status": "completed",
+        "main_report": {
+          "status": "completed",
+          "summary": "Verified import_json uses one transaction, rolling back validation and duplicate-title failures while preserving committed tasks. Regressions cover second-connection visibility, successful/empty imports, and CLI JSON/error exit 2. All 13 tests pass; existing tests/ files are unchanged.",
+          "changed_files": [
+            "taskdesk/service.py",
+            "test_atomic_import.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check && git diff --exit-code -- tests && sha256sum tests/__init__.py tests/test_baseline.py",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q01/coordination"
+      },
+      "initial_worker_modified_code": false,
+      "assignments": {
+        "tasks": [
+          {
+            "id": "atomic-json-import",
+            "role": "implement",
+            "scope": [
+              "."
+            ],
+            "prompt": "Investigate this project's CLI/service/storage flow and fix import_json so every import is all-or-nothing. Failures, including validation failures and duplicate titles within the batch or against existing data, must leave no imported records saved or visible from a second connection. Previously committed tasks must survive failures. Preserve successful and empty imports, existing validation behavior, public APIs, and CLI success JSON/error exit code 2. Add meaningful regressions in test_atomic_import.py without modifying any existing tests/ files; preserve those files byte-for-byte. Use only the standard library and keep changes within this project. Discover relevant paths and implementation details yourself. Run all existing and new tests, fix failures, and report changed files, commands/results, and any remaining issues. Do not commit, change Git configuration, launch AI CLIs, or use native subagents.",
+            "acceptance": [
+              "Validation errors and duplicate titles within a batch or against stored data roll back the whole import.",
+              "Previously committed tasks remain intact after failed imports, and a second connection sees no partial imported data.",
+              "Successful and empty imports, validation, public APIs, CLI success JSON, and error exit code 2 remain compatible.",
+              "Regressions are added in test_atomic_import.py; all pre-existing tests/ files remain byte-for-byte unchanged.",
+              "All existing and new tests pass using only standard-library dependencies; changes stay within the project."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q01/project"
+          }
+        ]
+      },
+      "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q01",
+      "observed_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        }
+      ],
+      "corrected_after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.078s\n\nOK\n.........\n----------------------------------------------------------------------\nRan 9 tests in 0.541s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_failures_exit_two_and_roll_back (test_atomic_import.ImportTests.test_cli_failures_exit_two_and_roll_back) ... ok\ntest_cli_success_and_empty_import_json (test_atomic_import.ImportTests.test_cli_success_and_empty_import_json) ... ok\ntest_duplicate_against_existing_rolls_back (test_atomic_import.ImportTests.test_duplicate_against_existing_rolls_back) ... ok\ntest_duplicate_within_batch_rolls_back (test_atomic_import.ImportTests.test_duplicate_within_batch_rolls_back) ... ok\ntest_empty_import_preserves_existing (test_atomic_import.ImportTests.test_empty_import_preserves_existing) ... ok\ntest_invalid_document_preserves_existing (test_atomic_import.ImportTests.test_invalid_document_preserves_existing) ... ok\ntest_second_connection_sees_no_partial_data_during_import (test_atomic_import.ImportTests.test_second_connection_sees_no_partial_data_during_import) ... ok\ntest_successful_import_commits_normalized_records (test_atomic_import.ImportTests.test_successful_import_commits_normalized_records) ... ok\ntest_validation_failure_after_valid_records (test_atomic_import.ImportTests.test_validation_failure_after_valid_records) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.623s\n\nOK\n"
+        }
+      },
+      "initial_worker_summaries": [
+        "Requested initial-turn check passed: unittest discovery ran 5 tests in 0.084s and reported OK. No files were inspected or modified."
+      ],
+      "worker_invocations": 2
+    },
+    {
+      "case": "paged_listing",
+      "faulty": false,
+      "before_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.071s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_limit_and_sort (test_listing.ListingTests.test_limit_and_sort) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.061s\n\nOK\n"
+        }
+      },
+      "after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.105s\n\nOK\n...................\n----------------------------------------------------------------------\nRan 19 tests in 2.110s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_listing_preserves_persisted_tasks (test_listing.ListingCLITests.test_cli_listing_preserves_persisted_tasks) ... ok\ntest_default_and_explicit_id_order_and_json_format (test_listing.ListingCLITests.test_default_and_explicit_id_order_and_json_format) ... ok\ntest_invalid_options_have_actual_process_exit_2 (test_listing.ListingCLITests.test_invalid_options_have_actual_process_exit_2) ... ok\ntest_pagination_boundaries (test_listing.ListingCLITests.test_pagination_boundaries) ... ok\ntest_priority_and_combined_flags (test_listing.ListingCLITests.test_priority_and_combined_flags) ... ok\ntest_default_and_explicit_id_order (test_listing.ListingTests.test_default_and_explicit_id_order) ... ok\ntest_empty_database (test_listing.ListingTests.test_empty_database) ... ok\ntest_filter_without_matches (test_listing.ListingTests.test_filter_without_matches) ... ok\ntest_invalid_options (test_listing.ListingTests.test_invalid_options) ... ok\ntest_json_row_format (test_listing.ListingTests.test_json_row_format) ... ok\ntest_limit_and_combined_limit_offset (test_listing.ListingTests.test_limit_and_combined_limit_offset) ... ok\ntest_listing_does_not_mutate_persisted_tasks (test_listing.ListingTests.test_listing_does_not_mutate_persisted_tasks) ... ok\ntest_no_limit_with_offset (test_listing.ListingTests.test_no_limit_with_offset) ... ok\ntest_offsets_at_and_past_end (test_listing.ListingTests.test_offsets_at_and_past_end) ... ok\ntest_priority_descending_with_id_ties (test_listing.ListingTests.test_priority_descending_with_id_ties) ... ok\ntest_status_filter_before_sort_and_pagination (test_listing.ListingTests.test_status_filter_before_sort_and_pagination) ... ok\ntest_zero_limit (test_listing.ListingTests.test_zero_limit) ... ok\ntest_invalid_options_raise_before_store_invocation (test_listing.ServiceValidationTests.test_invalid_options_raise_before_store_invocation) ... ok\ntest_valid_options_are_forwarded_to_store (test_listing.ServiceValidationTests.test_valid_options_are_forwarded_to_store) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 1.974s\n\nOK\n"
+        }
+      },
+      "initial_review": {
+        "status": "blocked",
+        "summary": "Sorting, pagination, CLI flags, and basic documentation are present. Review found insufficient test coverage and service validation delegated entirely to Store. Existing tests show no diff; the observed command passed only five tests.",
+        "changed_files": [
+          "README.md",
+          "taskdesk/storage.py",
+          "taskdesk/service.py",
+          "taskdesk/cli.py",
+          "test_listing.py"
+        ],
+        "checks": [
+          {
+            "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+            "exit_code": 0
+          }
+        ],
+        "issues": [
+          "test_listing.py covers only priority sorting with limit=1 and limit=0; filtering, ties, offsets, invalid inputs, CLI behavior, JSON compatibility, and immutability remain unverified.",
+          "TaskService.list_tasks does not itself validate sorting and pagination parameters."
+        ],
+        "followups": [
+          {
+            "id": "task-list-sorting-pagination",
+            "prompt": "Complete the implementation and verification within your original scope. Add validation in TaskService.list_tasks so unsupported sort and negative limit/offset raise ValueError before invoking the store. Expand test_listing.py to cover Store and service default id ordering, descending priority with ascending-id ties, status filtering before pagination, combined limit/offset, limit=0, limit=None with offset, offsets at/past the end, empty results, all specified invalid options, CLI flags and actual process exit 2, unchanged JSON row format, and persisted-task immutability. Preserve existing tests/ files byte-for-byte. Expand usage documentation to explain filtering order and pagination boundary semantics. Use only the standard library, run all existing and new tests, fix failures, and report actual changes and commands. Do not commit or change Git configuration."
+          }
+        ]
+      },
+      "coordinator": {
+        "status": "completed",
+        "summary": "Implemented and reviewed sorting and pagination across Store, service, and CLI. Added usage documentation and comprehensive tests. All 23 tests passed; existing tests remain byte-for-byte unchanged.",
+        "main_valid": true,
+        "main_session_id": "01a10945-5d30-71c0-9383-dcc422caf8b9",
+        "main_usage": {
+          "input_tokens": 115717,
+          "cached_input_tokens": 75776,
+          "output_tokens": 1375,
+          "reasoning_output_tokens": 73,
+          "total_tokens": 117092,
+          "uncached_input_tokens": 39941
+        },
+        "worker_usage": {
+          "input_tokens": 163966,
+          "cached_input_tokens": 136832,
+          "output_tokens": 7980,
+          "total_tokens": 171946
+        },
+        "repair_invocations": 1,
+        "actual_delegation": true,
+        "worker_status": "completed",
+        "main_report": {
+          "status": "completed",
+          "summary": "Implemented and reviewed sorting and pagination across Store, service, and CLI. Added usage documentation and comprehensive tests. All 23 tests passed; existing tests remain byte-for-byte unchanged.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --exit-code HEAD -- tests/",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q02/coordination"
+      },
+      "initial_worker_modified_code": false,
+      "assignments": {
+        "tasks": [
+          {
+            "id": "task-list-sorting-pagination",
+            "role": "implement",
+            "scope": [
+              "."
+            ],
+            "prompt": "Implement task list sorting and pagination end to end in this project. Discover the relevant files. Extend Store.list_tasks and TaskService.list_tasks with keyword parameters sort='id', limit=None, offset=0. Preserve default id-ascending order. sort='priority' must order priority descending then id ascending. Apply status filtering before sorting and pagination. limit=0 returns no rows, limit=None imposes no cap, and offsets past the end return empty. Reject negative limit/offset and unsupported sort with ValueError from the service and CLI exit code 2. Add list CLI flags --sort, --limit, --offset. Preserve the existing JSON row format and never mutate stored tasks while listing. Document usage and add test_listing.py with meaningful coverage of ordering, filtering, pagination boundaries, validation, CLI behavior, and task immutability. Use only the standard library. Preserve all existing files under tests/ byte-for-byte; add new tests without modifying existing ones. Keep changes within this project. Run all existing and new tests, fix failures caused by your changes, and report changed files, verification commands/results, and any unresolved issues. Do not commit, change Git configuration, launch AI CLIs, or run native subagents.",
+            "acceptance": [
+              "Store and service expose the requested keyword parameters and implement filtering, deterministic sorting, and pagination correctly.",
+              "Service raises ValueError for unsupported sorts and negative limit/offset; CLI accepts the new flags and exits 2 for invalid values.",
+              "Existing JSON row format is preserved and listing does not mutate stored tasks.",
+              "Usage is documented and test_listing.py covers the new behavior.",
+              "All existing tests/ files remain byte-for-byte unchanged, and all existing and new tests pass.",
+              "Only standard-library dependencies are used, and changes stay within the project."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q02/project"
+          }
+        ]
+      },
+      "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q02",
+      "observed_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        }
+      ],
+      "corrected_after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.070s\n\nOK\n...................\n----------------------------------------------------------------------\nRan 19 tests in 2.224s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_listing_preserves_persisted_tasks (test_listing.ListingCLITests.test_cli_listing_preserves_persisted_tasks) ... ok\ntest_default_and_explicit_id_order_and_json_format (test_listing.ListingCLITests.test_default_and_explicit_id_order_and_json_format) ... ok\ntest_invalid_options_have_actual_process_exit_2 (test_listing.ListingCLITests.test_invalid_options_have_actual_process_exit_2) ... ok\ntest_pagination_boundaries (test_listing.ListingCLITests.test_pagination_boundaries) ... ok\ntest_priority_and_combined_flags (test_listing.ListingCLITests.test_priority_and_combined_flags) ... ok\ntest_default_and_explicit_id_order (test_listing.ListingTests.test_default_and_explicit_id_order) ... ok\ntest_empty_database (test_listing.ListingTests.test_empty_database) ... ok\ntest_filter_without_matches (test_listing.ListingTests.test_filter_without_matches) ... ok\ntest_invalid_options (test_listing.ListingTests.test_invalid_options) ... ok\ntest_json_row_format (test_listing.ListingTests.test_json_row_format) ... ok\ntest_limit_and_combined_limit_offset (test_listing.ListingTests.test_limit_and_combined_limit_offset) ... ok\ntest_listing_does_not_mutate_persisted_tasks (test_listing.ListingTests.test_listing_does_not_mutate_persisted_tasks) ... ok\ntest_no_limit_with_offset (test_listing.ListingTests.test_no_limit_with_offset) ... ok\ntest_offsets_at_and_past_end (test_listing.ListingTests.test_offsets_at_and_past_end) ... ok\ntest_priority_descending_with_id_ties (test_listing.ListingTests.test_priority_descending_with_id_ties) ... ok\ntest_status_filter_before_sort_and_pagination (test_listing.ListingTests.test_status_filter_before_sort_and_pagination) ... ok\ntest_zero_limit (test_listing.ListingTests.test_zero_limit) ... ok\ntest_invalid_options_raise_before_store_invocation (test_listing.ServiceValidationTests.test_invalid_options_raise_before_store_invocation) ... ok\ntest_valid_options_are_forwarded_to_store (test_listing.ServiceValidationTests.test_valid_options_are_forwarded_to_store) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 2.140s\n\nOK\n"
+        }
+      },
+      "initial_worker_summaries": [
+        "Requested test discovery completed: 5 tests ran and passed (OK). No files were inspected or modified."
+      ],
+      "worker_invocations": 2
+    },
+    {
+      "case": "independent_utilities",
+      "faulty": true,
+      "before_grade": {
+        "passed": false,
+        "functional": {
+          "passed": false,
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.089s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"<string>\", line 55, in <module>\nAssertionError\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_rows_and_empty_header (test_csv_export.CsvTests.test_rows_and_empty_header) ... ok\ntest_explicit_environment_override (test_settings.SettingsTests.test_explicit_environment_override) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.077s\n\nOK\n"
+        }
+      },
+      "after_grade": {
+        "passed": false,
+        "functional": {
+          "passed": false,
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.125s\n\nOK\nTraceback (most recent call last):\n  File \"<string>\", line 20, in <module>\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 309, in discover\n    tests = list(self._find_tests(start_dir, pattern))\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 364, in _find_tests\n    tests, should_recurse = self._find_test_path(full_path, pattern)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/loader.py\", line 416, in _find_test_path\n    raise ImportError(\nImportError: 'test_csv_export' module incorrectly imported from '/home/bench/playground/bench-runs/review-quality-20261005/q03/project/tests'. Expected '/home/bench/playground/bench-runs/review-quality-20261005/q03/project'. Is this module globally installed?\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_rows_and_empty_header (test_csv_export.CsvTests.test_rows_and_empty_header) ... ok\ntest_explicit_environment_override (test_settings.SettingsTests.test_explicit_environment_override) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\ntest_csv_preserves_input_objects_and_json_behavior (tests.test_csv_export.CsvExportTests.test_csv_preserves_input_objects_and_json_behavior) ... ok\ntest_empty_iterable_has_exact_lf_terminated_header (tests.test_csv_export.CsvExportTests.test_empty_iterable_has_exact_lf_terminated_header) ... ok\ntest_generator_round_trips_special_characters_and_unicode (tests.test_csv_export.CsvExportTests.test_generator_round_trips_special_characters_and_unicode) ... ok\ntest_one_pass_iterable_preserves_order_and_lf_record_endings (tests.test_csv_export.CsvExportTests.test_one_pass_iterable_preserves_order_and_lf_record_endings) ... ok\ntest_invalid_overrides_raise_value_error (tests.test_settings.SettingsTests.test_invalid_overrides_raise_value_error) ... ok\ntest_json_merge_keeps_defaults_and_file_unchanged (tests.test_settings.SettingsTests.test_json_merge_keeps_defaults_and_file_unchanged) ... ok\ntest_non_dictionaries_replace_previous_values (tests.test_settings.SettingsTests.test_non_dictionaries_replace_previous_values) ... ok\ntest_non_object_json_roots_are_rejected (tests.test_settings.SettingsTests.test_non_object_json_roots_are_rejected) ... ok\ntest_none_environment_reads_process_and_empty_mapping_ignores_it (tests.test_settings.SettingsTests.test_none_environment_reads_process_and_empty_mapping_ignores_it) ... ok\ntest_optional_path_returns_independent_defaults (tests.test_settings.SettingsTests.test_optional_path_returns_independent_defaults) ... ok\ntest_override_integer_boundaries_and_parsing (tests.test_settings.SettingsTests.test_override_integer_boundaries_and_parsing) ... ok\ntest_override_precedence_and_environment_mapping_preservation (tests.test_settings.SettingsTests.test_override_precedence_and_environment_mapping_preservation) ... ok\ntest_override_recreates_report_after_non_dictionary_replacement (tests.test_settings.SettingsTests.test_override_recreates_report_after_non_dictionary_replacement) ... ok\ntest_recursive_merge_preserves_nested_siblings_and_inputs (tests.test_settings.SettingsTests.test_recursive_merge_preserves_nested_siblings_and_inputs) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.100s\n\nOK\n"
+        }
+      },
+      "initial_review": {
+        "status": "blocked",
+        "summary": "CSV implementation is present, but both requested test files and API documents are missing. Settings incorrectly treats env={} as os.environ. Workers must complete implementation and verification.",
+        "changed_files": [],
+        "checks": [
+          {
+            "command": "python -m unittest discover -s . (csv-export worker)",
+            "exit_code": 0
+          },
+          {
+            "command": "python -m unittest discover -s . (settings-merge worker)",
+            "exit_code": 0
+          }
+        ],
+        "issues": [
+          "Observed successful test commands do not cover the missing new tests.",
+          "load_settings uses env = env or os.environ, violating explicit empty-environment behavior.",
+          "tests/test_csv_export.py, tests/test_settings.py, docs/csv_export.md, and docs/settings.md are absent."
+        ],
+        "followups": [
+          {
+            "id": "csv-export",
+            "prompt": "Complete your original implementation task within taskdesk/reporting.py, tests/test_csv_export.py, and docs/csv_export.md. Inspection found to_csv already present but the requested tests and documentation absent. Review its correctness and add meaningful tests for a one-pass Task iterable, preserved order and inputs, exact LF-terminated empty header, and CSV round-tripping commas, quotes, embedded newlines, and Unicode. Verify preserved to_json behavior. Document the API. Preserve pre-existing tests byte-for-byte; use only the standard library and make no CLI changes. Run all existing and new tests, fix failures within your scope, and report commands/results and changed files. Do not return after merely running the baseline suite."
+          },
+          {
+            "id": "settings-merge",
+            "prompt": "Complete your original implementation task within taskdesk/settings.py, tests/test_settings.py, and docs/settings.md. Inspection found env = env or os.environ, which incorrectly uses the process environment for explicit env={}; correct that behavior. Tests and documentation are absent. Add meaningful tests covering recursive object merges, non-dictionary replacement, independent nested mutable copies, unchanged DEFAULTS and input mappings, rejection of non-object JSON roots, env=None versus explicit env={} under a populated process environment, override precedence, and integer boundaries/invalid values. Ensure TASKDESK_PAGE_SIZE can override report.page_size even when JSON replaced report with a non-dictionary, without an incidental TypeError. Document the API. Preserve pre-existing tests byte-for-byte; use only the standard library and make no CLI changes. Run all existing and new tests, fix failures within your scope, and report commands/results and changed files. Do not return after merely running the baseline suite."
+          }
+        ]
+      },
+      "coordinator": {
+        "status": "blocked",
+        "summary": "Settings, documentation, and requested tests are implemented. CSV export still mishandles standalone carriage returns in fields: with LF-only terminators, csv.writer leaves them unquoted, breaking CSV round-tripping.",
+        "main_valid": true,
+        "main_session_id": "01a1094a-c2f3-72a2-ac9a-53de0d6f915e",
+        "main_usage": {
+          "input_tokens": 131648,
+          "cached_input_tokens": 78592,
+          "output_tokens": 2202,
+          "reasoning_output_tokens": 380,
+          "total_tokens": 133850,
+          "uncached_input_tokens": 53056
+        },
+        "worker_usage": {
+          "input_tokens": 242698,
+          "cached_input_tokens": 195072,
+          "output_tokens": 7216,
+          "total_tokens": 249914
+        },
+        "repair_invocations": 2,
+        "actual_delegation": true,
+        "worker_status": "completed",
+        "main_report": {
+          "status": "blocked",
+          "summary": "Settings, documentation, and requested tests are implemented. CSV export still mishandles standalone carriage returns in fields: with LF-only terminators, csv.writer leaves them unquoted, breaking CSV round-tripping.",
+          "changed_files": [
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "tests/test_csv_export.py",
+            "tests/test_settings.py",
+            "docs/csv_export.md",
+            "docs/settings.md"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s . (both workers)",
+              "exit_code": 0
+            },
+            {
+              "command": "Pre-existing test file SHA-256 verification (both workers)",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "CSV tests cover LF and CRLF within titles but omit standalone CR. Correct quoting for standalone CR and a regression test remain necessary. No feedback rounds remain."
+          ],
+          "followups": []
+        },
+        "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q03/coordination"
+      },
+      "initial_worker_modified_code": false,
+      "assignments": {
+        "tasks": [
+          {
+            "id": "csv-export",
+            "role": "implement",
+            "scope": [
+              "taskdesk/reporting.py",
+              "tests/test_csv_export.py",
+              "docs/csv_export.md"
+            ],
+            "prompt": "Implement library improvement A within this project. In taskdesk/reporting.py add to_csv(tasks), accepting a one-pass iterable of Task, preserving order, emitting header id,title,status,priority even for empty input, using newline (LF) line endings and correct CSV quoting for commas, quotes, newlines, and Unicode. Discover existing conventions and Task representation yourself. Preserve to_json and input objects. Add tests/test_csv_export.py and document the API in docs/csv_export.md. Use only the standard library. Preserve all pre-existing tests/ files byte-for-byte. Do not change CLI code, commit, change Git configuration, launch AI CLIs, or use native subagents. Keep edits within your scoped project files. Run all existing and new tests available, fix failures caused by your changes, and report changed files, commands/results, and any remaining issues.",
+            "acceptance": [
+              "CSV export consumes a one-pass iterable safely and preserves task order.",
+              "Empty input emits the exact header with LF termination; populated output uses correct CSV quoting and round-trips special characters and Unicode.",
+              "to_json behavior and input objects remain unchanged.",
+              "New tests and API documentation are present; all available existing and new tests pass.",
+              "Pre-existing tests/ files are byte-for-byte unchanged; only standard-library dependencies and scoped project changes are used."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q03/project"
+          },
+          {
+            "id": "settings-merge",
+            "role": "implement",
+            "scope": [
+              "taskdesk/settings.py",
+              "tests/test_settings.py",
+              "docs/settings.md"
+            ],
+            "prompt": "Implement library improvement B within this project. Extend taskdesk/settings.py load_settings(path=None, env=None). Recursively merge JSON object settings into independent copies of DEFAULTS. Non-dictionaries replace previous values; reject a non-object JSON root with ValueError. env=None uses os.environ; explicit env={} ignores the process environment. TASKDESK_PAGE_SIZE overrides report.page_size and must parse as an integer in 1..1000, otherwise raise ValueError. Discover existing conventions yourself. Preserve supplied mappings and DEFAULTS, including nested values, and ensure returned settings do not share mutable state with defaults or other calls. Add tests/test_settings.py and document the API in docs/settings.md. Use only the standard library. Preserve all pre-existing tests/ files byte-for-byte. Do not change CLI code, commit, change Git configuration, launch AI CLIs, or use native subagents. Keep edits within your scoped project files. Run all existing and new tests available, fix failures caused by your changes, and report changed files, commands/results, and any remaining issues.",
+            "acceptance": [
+              "load_settings supports optional path and env, recursive object merging, replacement by non-dictionaries, and independent copies of defaults.",
+              "Non-object JSON roots raise ValueError; environment override accepts only parsed integers in 1..1000 and rejects invalid values with ValueError.",
+              "env=None reads the process environment while explicit empty env ignores it; input mappings and defaults remain unchanged.",
+              "New tests and API documentation are present; all available existing and new tests pass.",
+              "Pre-existing tests/ files are byte-for-byte unchanged; only standard-library dependencies and scoped project changes are used."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q03/project"
+          }
+        ]
+      },
+      "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q03",
+      "observed_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        }
+      ],
+      "corrected_after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.077s\n\nOK\n.....\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nOK\n...........\n----------------------------------------------------------------------\nRan 11 tests in 0.010s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_rows_and_empty_header (test_csv_export.CsvTests.test_rows_and_empty_header) ... ok\ntest_explicit_environment_override (test_settings.SettingsTests.test_explicit_environment_override) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\ntest_csv_preserves_input_objects_and_json_behavior (tests.test_csv_export.CsvExportTests.test_csv_preserves_input_objects_and_json_behavior) ... ok\ntest_empty_iterable_has_exact_lf_terminated_header (tests.test_csv_export.CsvExportTests.test_empty_iterable_has_exact_lf_terminated_header) ... ok\ntest_generator_round_trips_special_characters_and_unicode (tests.test_csv_export.CsvExportTests.test_generator_round_trips_special_characters_and_unicode) ... ok\ntest_one_pass_iterable_preserves_order_and_lf_record_endings (tests.test_csv_export.CsvExportTests.test_one_pass_iterable_preserves_order_and_lf_record_endings) ... ok\ntest_invalid_overrides_raise_value_error (tests.test_settings.SettingsTests.test_invalid_overrides_raise_value_error) ... ok\ntest_json_merge_keeps_defaults_and_file_unchanged (tests.test_settings.SettingsTests.test_json_merge_keeps_defaults_and_file_unchanged) ... ok\ntest_non_dictionaries_replace_previous_values (tests.test_settings.SettingsTests.test_non_dictionaries_replace_previous_values) ... ok\ntest_non_object_json_roots_are_rejected (tests.test_settings.SettingsTests.test_non_object_json_roots_are_rejected) ... ok\ntest_none_environment_reads_process_and_empty_mapping_ignores_it (tests.test_settings.SettingsTests.test_none_environment_reads_process_and_empty_mapping_ignores_it) ... ok\ntest_optional_path_returns_independent_defaults (tests.test_settings.SettingsTests.test_optional_path_returns_independent_defaults) ... ok\ntest_override_integer_boundaries_and_parsing (tests.test_settings.SettingsTests.test_override_integer_boundaries_and_parsing) ... ok\ntest_override_precedence_and_environment_mapping_preservation (tests.test_settings.SettingsTests.test_override_precedence_and_environment_mapping_preservation) ... ok\ntest_override_recreates_report_after_non_dictionary_replacement (tests.test_settings.SettingsTests.test_override_recreates_report_after_non_dictionary_replacement) ... ok\ntest_recursive_merge_preserves_nested_siblings_and_inputs (tests.test_settings.SettingsTests.test_recursive_merge_preserves_nested_siblings_and_inputs) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.086s\n\nOK\n"
+        }
+      },
+      "initial_worker_summaries": [
+        "Requested test discovery completed successfully: 6 tests ran in 0.115s, result OK. No files were modified or implementation source inspected.",
+        "Requested test discovery completed: 6 tests ran and passed (OK). No files were inspected or modified."
+      ],
+      "worker_invocations": 4,
+      "cr_probe": {
+        "exit_code": 0,
+        "stdout": "'id,title,status,priority\\n1,\"a\\rb\",open,1\\n'\n[['id', 'title', 'status', 'priority'], ['1', 'a\\rb', 'open', '1']]\n",
+        "stderr": "",
+        "program": "from taskdesk.reporting import to_csv; from taskdesk.domain import Task; import csv,io; title='a'+chr(13)+'b'; value=to_csv([Task(1,title,'open',1)]); rows=list(csv.reader(io.StringIO(value,newline=''))); print(repr(value)); print(rows); assert len(rows)==2 and rows[1][1]==title"
+      },
+      "override_probe": {
+        "exit_code": 0,
+        "stdout": "{'report': {'page_size': 7}, 'display': {'columns': ['id', 'title', 'status']}}\n",
+        "stderr": "",
+        "program": "import json,tempfile; from pathlib import Path; from taskdesk.settings import load_settings; t=tempfile.TemporaryDirectory(); p=Path(t.name)/'config.json'; p.write_text(json.dumps({'report':None})); value=load_settings(p,env={'TASKDESK_PAGE_SIZE':'7'}); print(value); assert value['report']['page_size']==7"
+      }
+    },
+    {
+      "case": "atomic_import",
+      "faulty": false,
+      "before_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.087s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.023s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_empty_import_preserves_existing (test_atomic_import.ImportTests.test_empty_import_preserves_existing) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.179s\n\nOK\n"
+        }
+      },
+      "after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.086s\n\nOK\n............\n----------------------------------------------------------------------\nRan 12 tests in 0.487s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_errors_exit_two_without_partial_data (test_atomic_import.ImportTests.test_cli_errors_exit_two_without_partial_data) ... ok\ntest_cli_success_json_and_empty_import (test_atomic_import.ImportTests.test_cli_success_json_and_empty_import) ... ok\ntest_duplicate_against_existing_rolls_back_earlier_records (test_atomic_import.ImportTests.test_duplicate_against_existing_rolls_back_earlier_records) ... ok\ntest_duplicate_within_batch_rolls_back_earlier_records (test_atomic_import.ImportTests.test_duplicate_within_batch_rolls_back_earlier_records) ... ok\ntest_empty_import_preserves_existing (test_atomic_import.ImportTests.test_empty_import_preserves_existing) ... ok\ntest_invalid_json_and_non_list_preserve_existing (test_atomic_import.ImportTests.test_invalid_json_and_non_list_preserve_existing) ... ok\ntest_missing_file_preserves_existing (test_atomic_import.ImportTests.test_missing_file_preserves_existing) ... ok\ntest_second_connection_cannot_see_in_progress_failures (test_atomic_import.ImportTests.test_second_connection_cannot_see_in_progress_failures) ... ok\ntest_second_connection_cannot_see_in_progress_success (test_atomic_import.ImportTests.test_second_connection_cannot_see_in_progress_success) ... ok\ntest_success_commits_entire_normalized_batch (test_atomic_import.ImportTests.test_success_commits_entire_normalized_batch) ... ok\ntest_successful_import_after_failure (test_atomic_import.ImportTests.test_successful_import_after_failure) ... ok\ntest_validation_failure_rolls_back_earlier_records (test_atomic_import.ImportTests.test_validation_failure_rolls_back_earlier_records) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.723s\n\nOK\n"
+        }
+      },
+      "initial_review": {
+        "status": "blocked",
+        "summary": "The current import uses a transaction, but the worker made no changes and verified only five tests. test_atomic_import.py covers only empty imports; required failure and visibility regressions are missing.",
+        "changed_files": [],
+        "checks": [
+          {
+            "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+            "exit_code": 0
+          }
+        ],
+        "issues": [
+          "Missing regressions for validation rollback, duplicate titles, preservation of committed tasks, second-connection visibility, and CLI behavior.",
+          "Existing workspace changes include taskdesk/service.py, README.md, and test_atomic_import.py; preserve unrelated changes."
+        ],
+        "followups": [
+          {
+            "id": "atomic-json-import",
+            "prompt": "Complete the original task. The current service.import_json wraps direct INSERTs in the store connection transaction; inspect and verify this existing change, correcting any demonstrated atomicity failures. Expand root test_atomic_import.py beyond its single empty-import test. Cover failure after earlier valid records for validation errors, duplicates within the batch (including normalized titles), and duplicates against existing data. Assert previously committed tasks survive and both the importing connection and a second connection see no partial data after failure; also check second-connection visibility while an import is in progress. Cover successful/empty imports and CLI success JSON/error exit 2. Preserve validation and public APIs. Keep every existing tests/ file byte-for-byte unchanged and preserve unrelated workspace changes, including README.md. Use only the standard library. Run all existing and new tests, fix failures, and report exact commands/results, changed files, and evidence that existing tests/ files are unchanged. Do not stop after running the current five tests; perform the missing investigation and regression work."
+          }
+        ]
+      },
+      "coordinator": {
+        "status": "completed",
+        "summary": "Verified atomic imports and regressions for validation failures, duplicates, committed-task preservation, second-connection visibility, successful/empty imports, and CLI behavior. All 16 tests passed; existing tests remained byte-for-byte unchanged.",
+        "main_valid": true,
+        "main_session_id": "01a10950-2ede-7581-ba59-662a3c3995d1",
+        "main_usage": {
+          "input_tokens": 107597,
+          "cached_input_tokens": 94976,
+          "output_tokens": 1325,
+          "reasoning_output_tokens": 85,
+          "total_tokens": 108922,
+          "uncached_input_tokens": 12621
+        },
+        "worker_usage": {
+          "input_tokens": 165780,
+          "cached_input_tokens": 153216,
+          "output_tokens": 5129,
+          "total_tokens": 170909
+        },
+        "repair_invocations": 1,
+        "actual_delegation": true,
+        "worker_status": "completed",
+        "main_report": {
+          "status": "completed",
+          "summary": "Verified atomic imports and regressions for validation failures, duplicates, committed-task preservation, second-connection visibility, successful/empty imports, and CLI behavior. All 16 tests passed; existing tests remained byte-for-byte unchanged.",
+          "changed_files": [
+            "taskdesk/service.py",
+            "test_atomic_import.py"
+          ],
+          "checks": [
+            {
+              "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "sha256sum -c /tmp/taskdesk-preservation.sha256",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --exit-code -- tests/",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q04/coordination"
+      },
+      "initial_worker_modified_code": false,
+      "assignments": {
+        "tasks": [
+          {
+            "id": "atomic-json-import",
+            "role": "implement",
+            "scope": [
+              "."
+            ],
+            "prompt": "Within this project, investigate the CLI/service/storage flow and fix import_json so each import is all-or-nothing. Failures must roll back the entire import, including validation failures and duplicate titles both within the batch and against existing data. Previously committed tasks must survive failures, and a second connection must never observe partial imported data. Preserve successful and empty imports, existing validation, public APIs, and CLI success JSON/error exit code 2. Use only the standard library. Add regressions in a new test_atomic_import.py without changing any existing files under tests/; preserve those files byte-for-byte. Discover the relevant locations and implementation yourself. Run all existing and new tests, fix failures introduced by your changes, and report changed files, commands/results, and any remaining limitations. Keep all changes within this project. Do not commit, change Git configuration, launch AI CLIs, or run native subagents.",
+            "acceptance": [
+              "Imports either persist the entire valid batch or leave storage unchanged on failure, including both kinds of duplicate titles and validation errors.",
+              "Previously committed tasks remain intact after failed imports; second-connection regressions demonstrate that partial imports are not visible.",
+              "Successful and empty imports, validation, public APIs, CLI success JSON, and CLI error exit code 2 retain their behavior.",
+              "New regressions are in test_atomic_import.py; all pre-existing tests/ files remain byte-for-byte unchanged.",
+              "All existing and new tests are run and pass; implementation uses only the standard library and changes remain within the project."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q04/project"
+          }
+        ]
+      },
+      "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q04",
+      "observed_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        }
+      ],
+      "corrected_after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.068s\n\nOK\n............\n----------------------------------------------------------------------\nRan 12 tests in 0.527s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_errors_exit_two_without_partial_data (test_atomic_import.ImportTests.test_cli_errors_exit_two_without_partial_data) ... ok\ntest_cli_success_json_and_empty_import (test_atomic_import.ImportTests.test_cli_success_json_and_empty_import) ... ok\ntest_duplicate_against_existing_rolls_back_earlier_records (test_atomic_import.ImportTests.test_duplicate_against_existing_rolls_back_earlier_records) ... ok\ntest_duplicate_within_batch_rolls_back_earlier_records (test_atomic_import.ImportTests.test_duplicate_within_batch_rolls_back_earlier_records) ... ok\ntest_empty_import_preserves_existing (test_atomic_import.ImportTests.test_empty_import_preserves_existing) ... ok\ntest_invalid_json_and_non_list_preserve_existing (test_atomic_import.ImportTests.test_invalid_json_and_non_list_preserve_existing) ... ok\ntest_missing_file_preserves_existing (test_atomic_import.ImportTests.test_missing_file_preserves_existing) ... ok\ntest_second_connection_cannot_see_in_progress_failures (test_atomic_import.ImportTests.test_second_connection_cannot_see_in_progress_failures) ... ok\ntest_second_connection_cannot_see_in_progress_success (test_atomic_import.ImportTests.test_second_connection_cannot_see_in_progress_success) ... ok\ntest_success_commits_entire_normalized_batch (test_atomic_import.ImportTests.test_success_commits_entire_normalized_batch) ... ok\ntest_successful_import_after_failure (test_atomic_import.ImportTests.test_successful_import_after_failure) ... ok\ntest_validation_failure_rolls_back_earlier_records (test_atomic_import.ImportTests.test_validation_failure_rolls_back_earlier_records) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.578s\n\nOK\n"
+        }
+      },
+      "initial_worker_summaries": [
+        "Unittest discovery passed: 5 tests ran in 0.097s. No files were inspected or modified. Implementation correctness was not assessed."
+      ],
+      "worker_invocations": 2
+    },
+    {
+      "case": "paged_listing",
+      "faulty": true,
+      "before_grade": {
+        "passed": false,
+        "functional": {
+          "passed": false,
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.100s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\nTraceback (most recent call last):\n  File \"<string>\", line 32, in <module>\nAssertionError\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_limit_and_sort (test_listing.ListingTests.test_limit_and_sort) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.085s\n\nOK\n"
+        }
+      },
+      "after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.099s\n\nOK\n........\n----------------------------------------------------------------------\nRan 8 tests in 1.077s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_flags_and_json_row_format (test_listing.ListingTests.test_cli_flags_and_json_row_format) ... ok\ntest_cli_invalid_options_exit_two (test_listing.ListingTests.test_cli_invalid_options_exit_two) ... ok\ntest_default_and_priority_ordering (test_listing.ListingTests.test_default_and_priority_ordering) ... ok\ntest_empty_store (test_listing.ListingTests.test_empty_store) ... ok\ntest_filtering_before_sorting_and_pagination (test_listing.ListingTests.test_filtering_before_sorting_and_pagination) ... ok\ntest_listing_preserves_stored_tasks_and_row_format (test_listing.ListingTests.test_listing_preserves_stored_tasks_and_row_format) ... ok\ntest_pagination_boundaries_and_uncapped_results (test_listing.ListingTests.test_pagination_boundaries_and_uncapped_results) ... ok\ntest_service_rejects_invalid_sort_and_negative_bounds (test_listing.ListingTests.test_service_rejects_invalid_sort_and_negative_bounds) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 1.398s\n\nOK\n"
+        }
+      },
+      "initial_review": {
+        "status": "blocked",
+        "summary": "Sorting and CLI flags exist, but storage ignores every offset. The five passing tests do not cover this defect. Existing tests/ files have no diff.",
+        "changed_files": [
+          "README.md",
+          "taskdesk/storage.py",
+          "taskdesk/service.py",
+          "taskdesk/cli.py",
+          "test_listing.py"
+        ],
+        "checks": [
+          {
+            "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+            "exit_code": 0
+          }
+        ],
+        "issues": [
+          "Store.list_tasks binds 0 instead of the requested offset, so pagination and offsets past the end are incorrect.",
+          "test_listing.py covers only priority ordering with limit=1 and limit=0; other required behaviors lack coverage."
+        ],
+        "followups": [
+          {
+            "id": "task-list-sorting-pagination",
+            "prompt": "Complete the implementation within your original scope. In taskdesk/storage.py, list_tasks currently binds a hardcoded 0 as the SQL offset; use the requested offset. Expand test_listing.py to verify Store and TaskService default ordering, priority descending with id-ascending ties, status filtering before pagination, offset with and without a limit, offsets past the end, zero limit, uncapped results, invalid sorts and negative bounds raising ValueError through the service, unchanged stored tasks, and CLI flags, JSON row format, and invalid-option exit code 2. Preserve existing tests/ files byte-for-byte. Run all existing and new tests and fix failures before returning. Report actual changes and command results. Use only the standard library; keep changes in this project; do not commit, change Git configuration, or launch subagents or AI CLIs."
+          }
+        ]
+      },
+      "coordinator": {
+        "status": "completed",
+        "summary": "Verified sorting, pagination, validation, CLI flags, documentation, and test coverage. All 12 tests passed; existing tests/ files remain byte-for-byte unchanged.",
+        "main_valid": true,
+        "main_session_id": "01a10954-2267-7ce3-9674-b42c0f6c93ad",
+        "main_usage": {
+          "input_tokens": 111310,
+          "cached_input_tokens": 76416,
+          "output_tokens": 1326,
+          "reasoning_output_tokens": 95,
+          "total_tokens": 112636,
+          "uncached_input_tokens": 34894
+        },
+        "worker_usage": {
+          "input_tokens": 152976,
+          "cached_input_tokens": 140032,
+          "output_tokens": 5992,
+          "total_tokens": 158968
+        },
+        "repair_invocations": 1,
+        "actual_delegation": true,
+        "worker_status": "completed",
+        "main_report": {
+          "status": "completed",
+          "summary": "Verified sorting, pagination, validation, CLI flags, documentation, and test coverage. All 12 tests passed; existing tests/ files remain byte-for-byte unchanged.",
+          "changed_files": [
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "README.md",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q05/coordination"
+      },
+      "initial_worker_modified_code": false,
+      "assignments": {
+        "tasks": [
+          {
+            "id": "task-list-sorting-pagination",
+            "role": "implement",
+            "scope": [
+              "."
+            ],
+            "prompt": "Implement task list sorting and pagination end to end within this project. Discover the relevant files yourself. Extend Store.list_tasks and TaskService.list_tasks with keyword parameters sort='id', limit=None, offset=0. Default ordering must remain id ascending; sort='priority' must order priority descending then id ascending. Apply status filtering before sorting and pagination. A zero limit returns no rows, None means no cap, and offsets past the end return empty. Reject negative limit/offset and unsupported sort with ValueError from the service and exit code 2 from the CLI. Add list CLI flags --sort, --limit, --offset. Preserve the existing JSON row format and do not mutate stored tasks. Document usage and add test_listing.py covering the requested behavior, validation, and CLI integration. Use only the standard library. Preserve every existing file under tests/ byte-for-byte; add new tests without editing existing ones. Run all existing and new tests, fixing failures before returning. Keep changes within this project. Do not launch native subagents or AI CLIs, commit, or change Git configuration. Return a concise report of changed files, checks and results, and any unresolved issues.",
+            "acceptance": [
+              "Store and service accept the requested keyword parameters and produce correct default and priority ordering.",
+              "Status filtering precedes sorting/pagination; zero and absent limits, offsets, and combined options behave as specified.",
+              "Service rejects invalid values with ValueError; CLI exposes all three flags and exits 2 for invalid values.",
+              "Existing JSON row format and stored tasks are unchanged.",
+              "Usage is documented and test_listing.py provides relevant coverage using only the standard library.",
+              "All existing tests/ files remain byte-for-byte unchanged, and all existing and new tests pass."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q05/project"
+          }
+        ]
+      },
+      "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q05",
+      "observed_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        }
+      ],
+      "corrected_after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.098s\n\nOK\n........\n----------------------------------------------------------------------\nRan 8 tests in 1.168s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_cli_flags_and_json_row_format (test_listing.ListingTests.test_cli_flags_and_json_row_format) ... ok\ntest_cli_invalid_options_exit_two (test_listing.ListingTests.test_cli_invalid_options_exit_two) ... ok\ntest_default_and_priority_ordering (test_listing.ListingTests.test_default_and_priority_ordering) ... ok\ntest_empty_store (test_listing.ListingTests.test_empty_store) ... ok\ntest_filtering_before_sorting_and_pagination (test_listing.ListingTests.test_filtering_before_sorting_and_pagination) ... ok\ntest_listing_preserves_stored_tasks_and_row_format (test_listing.ListingTests.test_listing_preserves_stored_tasks_and_row_format) ... ok\ntest_pagination_boundaries_and_uncapped_results (test_listing.ListingTests.test_pagination_boundaries_and_uncapped_results) ... ok\ntest_service_rejects_invalid_sort_and_negative_bounds (test_listing.ListingTests.test_service_rejects_invalid_sort_and_negative_bounds) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 1.370s\n\nOK\n"
+        }
+      },
+      "initial_worker_summaries": [
+        "Requested unittest discovery passed: 5 tests ran in 0.093s. No files were inspected or modified; implementation correctness was not assessed."
+      ],
+      "worker_invocations": 2
+    },
+    {
+      "case": "independent_utilities",
+      "faulty": false,
+      "before_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.079s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n.\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_rows_and_empty_header (test_csv_export.CsvTests.test_rows_and_empty_header) ... ok\ntest_explicit_environment_override (test_settings.SettingsTests.test_explicit_environment_override) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.082s\n\nOK\n"
+        }
+      },
+      "after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.116s\n\nOK\n....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n...........\n----------------------------------------------------------------------\nRan 11 tests in 0.030s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_csv_quoting_and_unicode (test_csv_export.CsvTests.test_csv_quoting_and_unicode) ... ok\ntest_empty_header (test_csv_export.CsvTests.test_empty_header) ... ok\ntest_inputs_and_json_behavior_are_preserved (test_csv_export.CsvTests.test_inputs_and_json_behavior_are_preserved) ... ok\ntest_one_pass_order_and_lf_record_endings (test_csv_export.CsvTests.test_one_pass_order_and_lf_record_endings) ... ok\ntest_input_mappings_and_defaults_are_unchanged (test_settings.SettingsTests.test_input_mappings_and_defaults_are_unchanged) ... ok\ntest_invalid_override_values_raise_value_error (test_settings.SettingsTests.test_invalid_override_values_raise_value_error) ... ok\ntest_loaded_nested_values_are_independent_across_calls (test_settings.SettingsTests.test_loaded_nested_values_are_independent_across_calls) ... ok\ntest_malformed_json_is_rejected (test_settings.SettingsTests.test_malformed_json_is_rejected) ... ok\ntest_nested_defaults_are_independent_across_calls (test_settings.SettingsTests.test_nested_defaults_are_independent_across_calls) ... ok\ntest_non_object_roots_are_rejected (test_settings.SettingsTests.test_non_object_roots_are_rejected) ... ok\ntest_override_after_non_dictionary_report_replacement (test_settings.SettingsTests.test_override_after_non_dictionary_report_replacement) ... ok\ntest_override_precedence_and_inclusive_bounds (test_settings.SettingsTests.test_override_precedence_and_inclusive_bounds) ... ok\ntest_process_environment_and_explicit_empty_mapping (test_settings.SettingsTests.test_process_environment_and_explicit_empty_mapping) ... ok\ntest_recursive_merge (test_settings.SettingsTests.test_recursive_merge) ... ok\ntest_scalar_list_and_null_replacements (test_settings.SettingsTests.test_scalar_list_and_null_replacements) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 19 tests in 0.185s\n\nOK\n"
+        }
+      },
+      "initial_review": {
+        "status": "blocked",
+        "summary": "Inspection found both APIs implemented, despite the worker reporting no changes. Settings overrides fail when JSON replaces report with a non-dictionary, and the new tests leave most requirements unverified. Existing tracked tests have no diff.",
+        "changed_files": [
+          "README.md",
+          "taskdesk/reporting.py",
+          "taskdesk/settings.py",
+          "test_csv_export.py",
+          "test_settings.py"
+        ],
+        "checks": [
+          {
+            "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+            "exit_code": 0
+          }
+        ],
+        "issues": [
+          "A valid TASKDESK_PAGE_SIZE override raises TypeError when JSON sets report to null or another non-dictionary.",
+          "The two new tests do not adequately verify quoting, ordering, recursive merging, independence, root rejection, environment selection, or validation boundaries.",
+          "The worker's reported change inventory contradicts the inspected workspace."
+        ],
+        "followups": [
+          {
+            "id": "library-improvements",
+            "prompt": "Within your original implementation scope, finish and verify the current changes. Fix load_settings so valid TASKDESK_PAGE_SIZE overrides work even when JSON replaces report with a non-dictionary; preserve non-dictionary replacement when no override exists. Ensure invalid override values consistently raise ValueError. Expand test_csv_export.py to cover a one-pass iterable, multiple-task order, empty header, LF record endings, commas, quotes, embedded newlines, Unicode, unchanged tasks, and preserved to_json behavior. Expand test_settings.py to cover recursive merges, scalar/list/null replacements, independent nested defaults across calls, unchanged input mappings and DEFAULTS, rejection of non-object roots, env=None versus explicit env={} under a patched process environment, override precedence, bounds 1 and 1000, malformed/out-of-range values, and overrides after replacing report with a non-dictionary. Complete documentation with CSV quoting/empty-input behavior and settings replacement/error behavior. Preserve all existing tests/ files byte-for-byte and make no CLI changes. Run all existing and new tests, fix failures, verify preservation of existing tests, and return an accurate changed-file inventory and exact commands/results. The current workspace contains changes even though your previous summary reported none."
+          }
+        ]
+      },
+      "coordinator": {
+        "status": "completed",
+        "summary": "Implemented and reviewed both library APIs, documentation, and comprehensive tests. All 19 tests pass; existing test files and CLI files remain byte-for-byte unchanged.",
+        "main_valid": true,
+        "main_session_id": "01a10958-76fb-7cd1-bdc3-4641346bad29",
+        "main_usage": {
+          "input_tokens": 111737,
+          "cached_input_tokens": 76544,
+          "output_tokens": 1846,
+          "reasoning_output_tokens": 310,
+          "total_tokens": 113583,
+          "uncached_input_tokens": 35193
+        },
+        "worker_usage": {
+          "input_tokens": 158688,
+          "cached_input_tokens": 131328,
+          "output_tokens": 8257,
+          "total_tokens": 166945
+        },
+        "repair_invocations": 1,
+        "actual_delegation": true,
+        "worker_status": "completed",
+        "main_report": {
+          "status": "completed",
+          "summary": "Implemented and reviewed both library APIs, documentation, and comprehensive tests. All 19 tests pass; existing test files and CLI files remain byte-for-byte unchanged.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "python /tmp/taskdesk_verify_preservation.py",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q06/coordination"
+      },
+      "initial_worker_modified_code": false,
+      "assignments": {
+        "tasks": [
+          {
+            "id": "library-improvements",
+            "role": "implement",
+            "scope": [
+              "."
+            ],
+            "prompt": "Implement both improvements within this project using only the standard library. Do not change CLI behavior, commit, launch AI CLIs/native subagents, or change Git configuration. Preserve every existing tests/ file byte-for-byte; add new tests only.\n\nA: In taskdesk/reporting.py add to_csv(tasks), accepting a one-pass iterable of Task, preserving order, emitting the header id,title,status,priority even for empty input, using newline (LF) line endings and correct CSV quoting for commas, quotes, embedded newlines, and Unicode. Preserve to_json behavior and input tasks. Add test_csv_export.py in the appropriate test location.\n\nB: In taskdesk/settings.py extend load_settings(path=None, env=None). Recursively merge JSON object settings into independent copies of DEFAULTS. Non-dictionaries replace previous values. Reject non-object JSON roots with ValueError. env=None uses os.environ, whereas explicit env={} ignores the process environment. TASKDESK_PAGE_SIZE overrides report.page_size and must parse as an integer in 1..1000; otherwise raise ValueError. Preserve input mappings and DEFAULTS, including nested values and independence across calls. Add test_settings.py in the appropriate test location.\n\nDiscover repository conventions and document both APIs in the project's appropriate documentation. Run all existing and new tests, fix relevant failures, and verify existing test files remain byte-for-byte unchanged. Return a concise report with changed files, exact check commands/results, and any remaining issues.",
+            "acceptance": [
+              "to_csv handles empty input, one-pass iteration, ordering, LF record endings, CSV special characters, and Unicode without mutating inputs or changing to_json.",
+              "load_settings provides recursive merges, independent default copies, replacement semantics, non-object root rejection, correct environment selection, and validated page-size overrides without mutating mappings or defaults.",
+              "Both APIs are documented; new test_csv_export.py and test_settings.py cover the required behavior.",
+              "All existing and new tests pass, existing tests/ files remain byte-for-byte unchanged, and changes stay within the project with no CLI changes."
+            ],
+            "cwd": "/home/bench/playground/bench-runs/review-quality-20261005/q06/project"
+          }
+        ]
+      },
+      "artifacts": "/home/bench/playground/bench-runs/review-quality-20261005/q06",
+      "observed_contexts": [
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "read-only"
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "effort": "high",
+          "sandbox_policy": {
+            "type": "workspace-write",
+            "network_access": false,
+            "exclude_tmpdir_env_var": false,
+            "exclude_slash_tmp": false
+          }
+        }
+      ],
+      "corrected_after_grade": {
+        "passed": true,
+        "functional": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.089s\n\nOK\n....\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n...........\n----------------------------------------------------------------------\nRan 11 tests in 0.029s\n\nOK\n"
+        },
+        "generated_tests": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "",
+          "stderr": "test_csv_quoting_and_unicode (test_csv_export.CsvTests.test_csv_quoting_and_unicode) ... ok\ntest_empty_header (test_csv_export.CsvTests.test_empty_header) ... ok\ntest_inputs_and_json_behavior_are_preserved (test_csv_export.CsvTests.test_inputs_and_json_behavior_are_preserved) ... ok\ntest_one_pass_order_and_lf_record_endings (test_csv_export.CsvTests.test_one_pass_order_and_lf_record_endings) ... ok\ntest_input_mappings_and_defaults_are_unchanged (test_settings.SettingsTests.test_input_mappings_and_defaults_are_unchanged) ... ok\ntest_invalid_override_values_raise_value_error (test_settings.SettingsTests.test_invalid_override_values_raise_value_error) ... ok\ntest_loaded_nested_values_are_independent_across_calls (test_settings.SettingsTests.test_loaded_nested_values_are_independent_across_calls) ... ok\ntest_malformed_json_is_rejected (test_settings.SettingsTests.test_malformed_json_is_rejected) ... ok\ntest_nested_defaults_are_independent_across_calls (test_settings.SettingsTests.test_nested_defaults_are_independent_across_calls) ... ok\ntest_non_object_roots_are_rejected (test_settings.SettingsTests.test_non_object_roots_are_rejected) ... ok\ntest_override_after_non_dictionary_report_replacement (test_settings.SettingsTests.test_override_after_non_dictionary_report_replacement) ... ok\ntest_override_precedence_and_inclusive_bounds (test_settings.SettingsTests.test_override_precedence_and_inclusive_bounds) ... ok\ntest_process_environment_and_explicit_empty_mapping (test_settings.SettingsTests.test_process_environment_and_explicit_empty_mapping) ... ok\ntest_recursive_merge (test_settings.SettingsTests.test_recursive_merge) ... ok\ntest_scalar_list_and_null_replacements (test_settings.SettingsTests.test_scalar_list_and_null_replacements) ... ok\ntest_add_and_complete (tests.test_baseline.BaselineTests.test_add_and_complete) ... ok\ntest_json_and_settings (tests.test_baseline.BaselineTests.test_json_and_settings) ... ok\ntest_valid_import (tests.test_baseline.BaselineTests.test_valid_import) ... ok\ntest_validation (tests.test_baseline.BaselineTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 19 tests in 0.134s\n\nOK\n"
+        }
+      },
+      "initial_worker_summaries": [
+        "Requested unittest discovery passed: 6 tests ran, result OK. No files were modified or implementation source inspected."
+      ],
+      "worker_invocations": 2,
+      "cr_probe": {
+        "exit_code": 0,
+        "stdout": "'id,title,status,priority\\n1,\"a\\rb\",open,1\\n'\n[['id', 'title', 'status', 'priority'], ['1', 'a\\rb', 'open', '1']]\n",
+        "stderr": "",
+        "program": "from taskdesk.reporting import to_csv; from taskdesk.domain import Task; import csv,io; title='a'+chr(13)+'b'; value=to_csv([Task(1,title,'open',1)]); rows=list(csv.reader(io.StringIO(value,newline=''))); print(repr(value)); print(rows); assert len(rows)==2 and rows[1][1]==title"
+      },
+      "override_probe": {
+        "exit_code": 0,
+        "stdout": "{'report': {'page_size': 7}, 'display': {'columns': ['id', 'title', 'status']}}\n",
+        "stderr": "",
+        "program": "import json,tempfile; from pathlib import Path; from taskdesk.settings import load_settings; t=tempfile.TemporaryDirectory(); p=Path(t.name)/'config.json'; p.write_text(json.dumps({'report':None})); value=load_settings(p,env={'TASKDESK_PAGE_SIZE':'7'}); print(value); assert value['report']['page_size']==7"
+      }
+    }
+  ],
+  "stopped_reason": null,
+  "remaining_schedule": [],
+  "original_control_override_probe": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/tmpx7wh2_kd/project/taskdesk/settings.py\", line 26, in load_settings\n    result['report']['page_size'] = size\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\nTypeError: 'NoneType' object does not support item assignment\n",
+    "program": "import json,tempfile; from pathlib import Path; from taskdesk.settings import load_settings; t=tempfile.TemporaryDirectory(); p=Path(t.name)/'config.json'; p.write_text(json.dumps({'report':None})); value=load_settings(p,env={'TASKDESK_PAGE_SIZE':'7'}); print(value); assert value['report']['page_size']==7"
+  },
+  "grading_correction": {
+    "reason": "Duplicate root/tests test module names polluted unittest imports in one original after-grade; isolated package names using explicit top_level_dir.",
+    "functional_assertions_changed": false,
+    "all_six_regraded": true,
+    "original_grades_preserved": true,
+    "all_corrected_after_grades_passed": true,
+    "not_a_model_rerun": true,
+    "corrected_grader_sha256": "c2e9c3af6f68a73ce1acfdcf76453e8a4be8167571f9ea29633740cd81f6a170",
+    "duplicate_name_controls_passed_windows_and_linux": true
+  },
+  "assessment": {
+    "seeded_defects_detected": 3,
+    "seeded_defects_repaired": 3,
+    "seeded_defect_trials": 3,
+    "initial_control_trials": 3,
+    "initial_control_with_additional_real_defect": 1,
+    "all_final_code_checks_passed": 6,
+    "coordinator_completed": 5,
+    "coordinator_blocked_by_confirmed_false_positive": 1,
+    "feedback_worker_calls": 7,
+    "unnecessary_design_requirement_trials": [
+      "q02"
+    ],
+    "note": "q03 CR claim disproved by actual runtime probe; q06 clean label limited to original grader, report=null plus env override is a real unseeded defect. No defensible general false-positive rate from this sample."
+  },
+  "audit": {
+    "initial_workers_did_not_modify_code": true,
+    "worker_resume_session_and_scope_preserved": true,
+    "worker_usage_deltas_match": true,
+    "main_session_preserved_and_final_cumulative_used_once": true,
+    "all_requested_model_contexts_match": true,
+    "no_scope_violations": true
+  },
+  "benchmark_distro_stopped": true
+}
