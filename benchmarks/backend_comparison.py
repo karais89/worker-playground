@@ -130,7 +130,7 @@ def run_case(case_name, case, backend, output, args, settings):
     return row
 
 
-def summarize(rows, schedule, stopped=None):
+def summarize(rows, schedule, stopped=None, environment="Host diagnostic, fresh profiles; no fresh OS per run"):
     comparisons = []
     for name in sorted({r["case"] for r in rows}):
         selected = [r for r in rows if r["case"] == name]
@@ -158,7 +158,7 @@ def summarize(rows, schedule, stopped=None):
         a, b = entry["seconds_median"]["codex"], entry["seconds_median"]["opencode"]
         entry["opencode_time_change"] = b / a - 1 if comparable and a else None
         comparisons.append(entry)
-    return dict(diagnostic=True, environment="Windows host, fresh profiles; no OS isolation",
+    return dict(diagnostic=True, environment=environment,
                 runs=rows, comparisons=comparisons, stopped_reason=stopped,
                 remaining_schedule=schedule[len(rows):],
                 note="Two exploratory repeats. Different worker models, tokenizers and reasoning settings; tokens are not costs or equal work units.")
@@ -172,6 +172,7 @@ def main():
     parser.add_argument("--codex", default="codex")
     parser.add_argument("--opencode", default="opencode")
     parser.add_argument("--timeout", type=float, default=600)
+    parser.add_argument("--environment-label", default="Windows host, fresh profiles; no OS isolation")
     parser.add_argument("--preflight-only", action="store_true")
     args = parser.parse_args()
     args.output = args.output.resolve()
@@ -195,7 +196,8 @@ def main():
                     worker_efforts={"codex": "high", "opencode": "max"}, timeout=args.timeout,
                     cli_versions={"codex": subprocess.check_output([args.codex, "--version"], text=True).strip(),
                                   "opencode": subprocess.check_output(args.opencode + ["--version"], text=True).strip()},
-                    python=sys.version, schedule=schedule, grader_controls=controls, preflight=args.preflight_only,
+                    python=sys.version, platform=sys.platform, environment=args.environment_label,
+                    schedule=schedule, grader_controls=controls, preflight=args.preflight_only,
                     fixture_sha256=hashlib.sha256(json.dumps(fixture_cases, sort_keys=True).encode()).hexdigest(),
                     provider_model_options={key: settings[0]["models"]["deepseek-ai/deepseek-v4.1-flash"].get("options", {}).get(key)
                                             for key in ("reasoningEffort", "max_tokens")},
@@ -211,7 +213,7 @@ def main():
             stopped = "quota/rate limit error"
         elif not row["valid"]:
             stopped = "runtime or coordinator failure"
-        worker.write_json(args.output / "summary.json", summarize(rows, schedule, stopped))
+        worker.write_json(args.output / "summary.json", summarize(rows, schedule, stopped, args.environment_label))
         print(json.dumps({key: row[key] for key in ("case", "backend", "status", "passed", "eligible", "seconds", "repair_invocations")}), flush=True)
         if stopped:
             break
