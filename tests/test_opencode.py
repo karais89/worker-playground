@@ -18,6 +18,14 @@ FAKE_CLI = r'''
 import json, os, pathlib, sys
 args = sys.argv[1:]
 prompt = sys.stdin.buffer.read().decode('utf-8')
+if args[:2] == ['session','list']:
+    assert args == ['session','list','--format','json','--max-count','0']
+    if os.environ.get('FIXTURE_INIT_FAIL'):
+        print('database is locked',file=sys.stderr)
+        sys.exit(3)
+    pathlib.Path(os.environ['FIXTURE_INIT_MARKER']).write_text('initialized')
+    print('[]')
+    sys.exit(0)
 def emit(kind, **fields):
     print(json.dumps(dict(type=kind, **fields)), flush=True)
 def report(status='completed', **extra):
@@ -52,6 +60,8 @@ else:
     settings = {}
     task_line=next((s[6:] for s in prompt.splitlines() if s.startswith('Task: ')), '')
     if task_line.startswith('{'): settings=json.loads(task_line)
+    if settings.get('require_initialization'):
+        assert pathlib.Path(os.environ['FIXTURE_INIT_MARKER']).read_text()=='initialized'
     if settings.get('delay'):
         import time
         time.sleep(settings['delay'])
@@ -127,6 +137,26 @@ class OpenCodeTests(unittest.TestCase):
         self.assertIn('한국어', (self.root/'resume/prompt.txt').read_text(encoding='utf-8'))
         with self.assertRaisesRegex(ValueError,'newest result'):
             worker.resume_task(self.root/'out/code',self.root/'stale','again',10,env=self.env)
+
+    def test_parallel_batch_initializes_shared_store_before_workers(self):
+        env=dict(self.env,FIXTURE_INIT_MARKER=str(self.root/'initialized'))
+        tasks=[dict(self.task(require_initialization=True),id=ident,role='research',scope=[ident+'.py'])
+               for ident in ('one','two')]
+        result=worker.run_batch(tasks,self.root/'out',cli=self.cli,model='fixture/model',
+                                backend='opencode',env=env)
+        self.assertEqual(result['status'],'completed')
+        self.assertEqual(result['usage']['total_tokens'],102)
+        self.assertEqual(worker.read_json(self.root/'out/initialization/execution.json')['exit_code'],0)
+        self.assertEqual((self.root/'out/initialization/events.jsonl').read_text().strip(),'[]')
+
+    def test_initialization_failure_preserves_evidence_and_starts_no_workers(self):
+        env=dict(self.env,FIXTURE_INIT_MARKER=str(self.root/'initialized'),FIXTURE_INIT_FAIL='1')
+        tasks=[dict(self.task(),id=ident,role='research',scope=[ident+'.py']) for ident in ('one','two')]
+        with self.assertRaisesRegex(ValueError,'shared store initialization failed'):
+            worker.run_batch(tasks,self.root/'out',cli=self.cli,model='fixture/model',backend='opencode',env=env)
+        self.assertEqual(worker.read_json(self.root/'out/initialization/execution.json')['exit_code'],3)
+        self.assertFalse((self.root/'out/one').exists())
+        self.assertFalse((self.root/'out/two').exists())
 
     def test_codex_main_opencode_worker_feedback_end_to_end(self):
         out=self.root/'team'

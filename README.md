@@ -168,7 +168,7 @@ CLI 프로세스 자체가 시작되지 못한 `launch_failed`는 원본 세션�
 
 Codex의 `turn.completed.usage`는 **세션 누적값**입니다. 최초 실행에서는 그대로 사용하고, 재개에서는 이전 누적값을 빼서 이번 호출의 `usage`를 기록합니다. `cumulative_usage`도 별도로 보존합니다. 이 동작과 관련된 [Codex 이슈](https://github.com/openai/codex/issues/16213)를 참고했습니다.
 
-OpenCode의 `step_finish`는 **호출별 단계 사용량**입니다. 모든 단계의 입력(비캐시 + 캐시 읽기 + 캐시 생성)과 출력(일반 출력 + 추론)을 합산하고, 재개분은 이전 값에서 빼지 않습니다. 누적값은 실행기가 직접 합산합니다. 이 정규화는 CLI 1.18.34의 토큰 구조를 기준으로 합니다. OpenCode CLI 이벤트에서 누락되는 내부 호출이나 공급자가 보고하지 않는 사용량까지 완전하게 측정한다는 보장은 없습니다. 기존 벤치마크 스크립트의 격리 프로필·실험은 Codex 전용이며 OpenCode를 대상으로 확장하지 않았습니다.
+OpenCode의 `step_finish`는 **호출별 단계 사용량**입니다. 모든 단계의 입력(비캐시 + 캐시 읽기 + 캐시 생성)과 출력(일반 출력 + 추론)을 합산하고, 재개분은 이전 값에서 빼지 않습니다. 누적값은 실행기가 직접 합산합니다. 이 정규화는 CLI 1.18.34의 토큰 구조를 기준으로 합니다. OpenCode CLI 이벤트에서 누락되는 내부 호출이나 공급자가 보고하지 않는 사용량까지 완전하게 측정한다는 보장은 없습니다. 기존 Codex 실험과 별도로 `benchmarks/backend_comparison.py`가 Codex 메인을 고정한 Codex/Hive OpenCode 워커 비교를 제공합니다.
 
 - 총 토큰 = 입력 + 출력. 캐시 입력은 입력의 일부이고 추론 출력은 출력의 일부이므로 다시 더하지 않습니다.
 - 입력, 캐시 입력, 출력, 확인 가능한 추론 출력과 재개 차이를 따로 기록합니다.
@@ -216,7 +216,7 @@ OMP 방향의 읽기 전용 검토·워커 재수정 비교는 `benchmarks/direc
 - 같은 작업 트리에서 서로 다른 파일을 수정하는 방식입니다. worktree 생성·자동 병합은 없습니다. 메인은 워커 실행 중 같은 파일을 편집하지 않아야 합니다.
 - 다른 실행기의 동시 접근은 Git 메타데이터 디렉터리의 `cli-worker.lock`으로 거부합니다. 팀의 계획·워커 실행·최종 검토 전체를 잠그며, 호출자마다 TEMP/HOME이 달라도 같은 잠금을 사용합니다. 강제 종료 후 잠금이 남으면 안내된 파일의 PID가 종료됐는지 확인한 뒤 해당 잠금 파일만 제거하세요.
 - `scope`는 스케줄링 규약입니다. 파일별 OS 권한 경계가 아닙니다. 종료 후 Git이 추적하거나 무시하지 않은 일반 파일의 범위 위반을 검사합니다. ignored 파일, 심볼릭 링크, 저장소 밖 변경은 이 검사에 포함하지 않습니다. 병렬 워커 사이의 위반 주체를 확정하지 않습니다.
-- OpenCode는 아직 연결하지 않았습니다. Codex 인자 생성과 이벤트 해석을 `build_command` / `parse_events`에 모아두었습니다. OpenCode로 바꿀 때 실제 CLI의 세션·사용량 의미를 검증하고 이 경계를 교체합니다.
+- 워커는 Codex와 OpenCode를 선택할 수 있습니다. OpenCode 연결·권한·이벤트·사용량 해석은 `opencode_backend.py`에 있으며, 공급자별 모델과 variant 지원은 실제 OpenCode 설정과 인증 상태에 따라 달라집니다.
 - 전역 설정이나 Codex Desktop의 메인 모델을 변경하지 않습니다. 메인 모델은 해당 CLI 세션 또는 벤치마크 옵션에서 선택합니다.
 
 구조 참고: [OMP](https://github.com/can1357/oh-my-pi), [Pi의 subagent 예제](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions/subagent). 작업 프로세스 분리와 작은 결과 반환 아이디어를 참고했고 소스 코드는 복사하지 않았습니다.

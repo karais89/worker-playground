@@ -10,6 +10,7 @@ from pathlib import Path
 import statistics
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,13 +79,19 @@ def opencode_contexts(cli, env, output):
         session = worker.read_json(path)
         if session.get("backend") != "opencode" or not session.get("session_id"):
             continue
-        exported = subprocess.run(cli + ["export", session["session_id"]], env=env,
-                                  capture_output=True, text=True, encoding="utf-8", timeout=45)
-        if exported.returncode:
-            found.append(dict(session_id=session["session_id"], exported=False))
-            continue
         try:
-            data = json.loads(exported.stdout)
+            # Large native CLI exports can be truncated when stdout is a pipe.
+            # Keep the transcript in an automatically removed private file and
+            # retain only model/usage metadata in the benchmark artifacts.
+            with tempfile.TemporaryFile(mode="w+", encoding="utf-8") as transcript:
+                exported = subprocess.run(cli + ["export", session["session_id"]], env=env,
+                                          stdout=transcript, stderr=subprocess.PIPE, text=True,
+                                          encoding="utf-8", timeout=45)
+                if exported.returncode:
+                    found.append(dict(session_id=session["session_id"], exported=False))
+                    continue
+                transcript.seek(0)
+                data = json.load(transcript)
             models = [{key: message["info"].get(key) for key in ("modelID", "providerID", "variant", "finish", "tokens")}
                       for message in data.get("messages", []) if message.get("info", {}).get("role") == "assistant"]
             found.append(dict(session_id=session["session_id"], exported=True, messages=models))
@@ -174,12 +181,15 @@ def main():
     parser.add_argument("--timeout", type=float, default=600)
     parser.add_argument("--environment-label", default="Windows host, fresh profiles; no OS isolation")
     parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument("--case", choices=["all", *cases()], default="all")
     args = parser.parse_args()
     args.output = args.output.resolve()
     args.opencode = adapter.resolve_cli([args.opencode])
     settings = source_settings(args.opencode)
     args.output.mkdir(parents=True, exist_ok=False)
     fixture_cases = cases()
+    if args.case != "all":
+        fixture_cases = {args.case: fixture_cases[args.case]}
     schedule = [(name, repeat + 1, backend) for name in fixture_cases for repeat in range(2)
                 for backend in (("codex", "opencode") if repeat == 0 else ("opencode", "codex"))]
     if args.preflight_only:
@@ -191,7 +201,8 @@ def main():
     manifest = dict(source_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                     source_sha256={p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in
                                    ("team.py", "worker.py", "opencode_backend.py", "bench.py",
-                                    "benchmarks/backend_comparison.py", "benchmarks/project_cases.py")},
+                                    "benchmarks/backend_comparison.py", "benchmarks/project_cases.py",
+                                    "benchmarks/validate_project_cases.py")},
                     main_model=MAIN_MODEL, main_effort="high", worker_models={"codex": MAIN_MODEL, "opencode": HIVE_MODEL},
                     worker_efforts={"codex": "high", "opencode": "max"}, timeout=args.timeout,
                     cli_versions={"codex": subprocess.check_output([args.codex, "--version"], text=True).strip(),

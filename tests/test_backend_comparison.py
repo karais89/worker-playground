@@ -64,6 +64,24 @@ class BackendComparisonTests(unittest.TestCase):
             self.assertEqual(credentials,{'hive-ai':{'key':'fixture'}})
             self.assertEqual(provider,config['provider']['hive-ai'])
 
+    def test_large_export_retains_only_metadata_without_pipe_capture(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            (root/'session.json').write_text(json.dumps(dict(backend='opencode',session_id='fixture-session')))
+            script=root/'export.py'
+            script.write_text('import json, os, stat, sys\n'
+                'assert sys.argv[1:] == ["export", "fixture-session"]\n'
+                'assert stat.S_ISREG(os.fstat(sys.stdout.fileno()).st_mode)\n'
+                'print(json.dumps({"messages":[{"info":{"role":"assistant",'
+                '"modelID":"model","providerID":"provider","variant":"max",'
+                '"finish":"stop","tokens":{"total":42}},"parts":[{"text":"x"*150000}]}]}))\n')
+            result=comparison.opencode_contexts([sys.executable,str(script)],dict(os.environ),root)
+            self.assertTrue(result[0]['exported'])
+            self.assertEqual(result[0]['messages'][0]['modelID'],'model')
+            self.assertEqual(result[0]['messages'][0]['tokens'],{'total':42})
+            self.assertLess(len(json.dumps(result)),1000)
+            self.assertEqual({p.name for p in root.iterdir()},{'session.json','export.py'})
+
 
 if __name__=='__main__':
     unittest.main()

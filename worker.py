@@ -485,6 +485,17 @@ def run_batch(tasks, output, cli=None, model=None, effort="high", concurrency=3,
             if root not in _held_roots:  # Only the host coordinator passes its already-held lock.
                 locks.enter_context(directory_lock(root))
         baselines = {root: snapshot(root, ["."], (output,)) for root in roots}
+        if backend == "opencode" and len(tasks) > 1 and concurrency > 1:
+            # Fresh shared SQLite stores can race on native CLI initialization.
+            # Bootstrap once before parallel processes; model calls remain parallel.
+            init_output = output / "initialization"
+            command = [*cli, "session", "list", "--format", "json", "--max-count", "0"]
+            write_json(init_output / "command.json", command)
+            initialization = run_process(command, Path(tasks[0]["cwd"]), "", init_output,
+                                         min(timeout, 45), env=opencode_backend.prepare_env(env, "implement"))
+            write_json(init_output / "execution.json", initialization)
+            if initialization["termination"] != "exited" or initialization["exit_code"] != 0:
+                raise ValueError(f"OpenCode shared store initialization failed; inspect {init_output}")
         with ThreadPoolExecutor(max_workers=concurrency) as pool:
             pending, running = list(tasks), {}
             try:
