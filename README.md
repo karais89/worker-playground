@@ -1,5 +1,41 @@
 # CLI Worker Playground
 
+A small Python coordinator for Codex CLI: delegate a task, review the result, and resume the same workers for one correction round. No server or agent framework. Requires Python 3.11+, Git and an authenticated Codex CLI. Tested against CLI 0.160.0; model availability depends on your account. MIT licensed.
+
+## Install as a Codex skill / 스킬 설치
+
+```sh
+git clone https://github.com/karais89/worker-playground.git
+cd worker-playground
+python scripts/install_skill.py
+```
+
+The installer copies an allowlisted, self-contained snapshot into `$CODEX_HOME/skills/cli-worker-team` (default: `~/.codex/skills/cli-worker-team`). It does not copy credentials, logs or benchmark data. The installed skill works without this checkout. Installation refuses an existing destination; preserve customizations and `runs/` before removing an old installation to reinstall, or choose a new `--destination` for inspection.
+
+새 Codex 세션에서 작업할 Git 프로젝트를 열고 다음처럼 요청합니다.
+
+```text
+$cli-worker-team 로그인 오류를 수정하고 관련 테스트를 실행해줘.
+기존 공개 API는 유지해줘.
+```
+
+스킬은 현재 채팅과 별도로 **CLI 메인 + CLI 워커**를 실행합니다. 기본 안내는 검증한 Sol 6.1 High / Sol 6.1 High이며, 요청에 메인·워커 모델을 지정하면 그 선택을 사용합니다. 워커 수는 기본 1명, 독립 작업은 최대 3명입니다. 설치 후 Codex에서 아직 보이지 않으면 새 세션에서 설치된 `SKILL.md` 경로를 직접 지정할 수 있습니다.
+
+The runner edits the target checkout directly and uses your existing CLI authentication. It does not provide OS isolation or one worktree per worker. Raw run artifacts can contain project source and prompts; keep them private. Scope checks detect some out-of-scope changes after execution rather than acting as a filesystem security boundary. Committing and publishing are separate, explicitly requested actions.
+
+The generic GitHub skill-folder installer is not the installation method for this repository: use `scripts/install_skill.py` so the runtime files are bundled. The source entrypoint also works via `python skills/cli-worker-team/scripts/run_team.py --help` while the complete repository is present.
+
+## Development and evidence
+
+```sh
+python -m unittest discover -s tests -q
+python benchmarks/validate_project_cases.py
+```
+
+These checks require no model calls or credentials. Live scripts under `benchmarks/` invoke billable/quota-consuming CLI sessions when explicitly run. Published JSON contains selected synthetic benchmark evidence, not real project data or authentication files. Full local artifacts linked from the reports are not distributed. Historical commit references are retained to make earlier experiment code inspectable. Recorded model names and measurements describe the tested environment, not guaranteed availability or pricing.
+
+## 한국어 설명
+
 메인이 조사와 구현의 상세 로그를 읽는 대신 **작업을 나누고 짧은 결과를 검토**하도록 만드는 최소 구현입니다. Python 표준 라이브러리만 사용합니다. 서버, DB, 에이전트 프레임워크는 없습니다.
 
 작은 모의 앱의 단독 6회·팀 6회 비교에서 메인 총 토큰은 44.7% 줄었고 양쪽 결과 모두 외부 검사를 통과했습니다. 전체 토큰은 1.79배, 메인 비캐시 입력+출력은 9.2% 늘었으므로 비용 절감이나 대형 프로젝트 성능으로 일반화하지 않습니다. 이 수치는 아래 리뷰 근거 지침 보완 전 결과입니다. [프로젝트 시뮬레이션](SIMULATION.md)과 [이전 비교 결과](BENCHMARK.md)에 조건과 한계를 기록했습니다.

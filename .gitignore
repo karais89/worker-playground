@@ -4,3 +4,10 @@ runs/
 bench-runs/
 .venv/
 .runtime-profile-*/
+.env
+.env.*
+!.env.example
+auth.json
+.codex/
+task.txt
+skills/*/runs/

@@ -1,0 +1,4 @@
+interface:
+  display_name: "CLI Worker Team"
+  short_description: "Delegate Git project work to a reviewed Codex CLI team"
+  default_prompt: "Use $cli-worker-team to implement this task in the current Git project and report the verified result."
