@@ -177,6 +177,8 @@ OpenCode의 `step_finish`는 **호출별 단계 사용량**입니다. 모든 단
 
 ## 벤치마크
 
+Codex 메인 Sol 6.1 High를 고정한 Codex/Hive OpenCode 워커 비교의 현재 기록은 [HIVE_WORKER_BENCHMARK.md](HIVE_WORKER_BENCHMARK.md)에 있습니다. 두 과제는 방식별 2회씩 완료했고, 병렬 초기화 오류 수정 후 독립 기능 과제는 첫 쌍을 통과했습니다. 사용자 요청으로 남은 반복은 중단했으며 전체 실험 완료나 비용 절감을 주장하지 않습니다.
+
 실행기 자체 테스트에는 모델 호출이 없습니다.
 
 ```powershell

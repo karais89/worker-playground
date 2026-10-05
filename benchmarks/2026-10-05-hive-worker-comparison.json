@@ -1,0 +1,2385 @@
+{
+  "status": "paused_by_user_before_second_repeat_of_corrected_utilities",
+  "date": "2026-10-05",
+  "scope": "Diagnostic paired CLI worker comparison; no fresh OS per run; no billing inference.",
+  "main": {
+    "backend": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "high"
+  },
+  "workers": {
+    "codex": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "opencode": {
+      "model": "hive-ai/deepseek-ai/deepseek-v4.1-flash",
+      "effort": "max"
+    }
+  },
+  "initial": {
+    "upstream_commit": "c786c1b",
+    "manifest": {
+      "source_commit": "f6cae95ed4be0da10ee4020f4bd4151d73e04627",
+      "source_sha256": {
+        "team.py": "d1e58c095dcbeddba54a5c9624445e0f7cbe28a46c95e854c80d6673808c5993",
+        "worker.py": "44d5e1b9376c8aa2c07eaa6502b4271cea6b08a6b247ce8d014d9d2ade3ef879",
+        "opencode_backend.py": "f64b93676f32e2bad6b0aad042eebd7b8e27f337b7d9f8191d806a69a413711c",
+        "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+        "benchmarks/backend_comparison.py": "c6ab65015644d2ff226dc6ce063319e02654d93a52a10e66447a21bd11fd7fcc",
+        "benchmarks/project_cases.py": "c5fd7cccf311a9fe17ffe88510e3202e330d8f3bd5264a87b74348e163e3a738"
+      },
+      "main_model": "gpt-6.1-sol",
+      "main_effort": "high",
+      "worker_models": {
+        "codex": "gpt-6.1-sol",
+        "opencode": "hive-ai/deepseek-ai/deepseek-v4.1-flash"
+      },
+      "worker_efforts": {
+        "codex": "high",
+        "opencode": "max"
+      },
+      "timeout": 600,
+      "cli_versions": {
+        "codex": "codex-cli 0.160.0",
+        "opencode": "1.18.34"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "platform": "linux",
+      "environment": "reused-WSL2-Ubuntu-24.04.4-no-Windows-mounts",
+      "schedule": [
+        [
+          "atomic_import",
+          1,
+          "codex"
+        ],
+        [
+          "atomic_import",
+          1,
+          "opencode"
+        ],
+        [
+          "atomic_import",
+          2,
+          "opencode"
+        ],
+        [
+          "atomic_import",
+          2,
+          "codex"
+        ],
+        [
+          "paged_listing",
+          1,
+          "codex"
+        ],
+        [
+          "paged_listing",
+          1,
+          "opencode"
+        ],
+        [
+          "paged_listing",
+          2,
+          "opencode"
+        ],
+        [
+          "paged_listing",
+          2,
+          "codex"
+        ],
+        [
+          "independent_utilities",
+          1,
+          "codex"
+        ],
+        [
+          "independent_utilities",
+          1,
+          "opencode"
+        ],
+        [
+          "independent_utilities",
+          2,
+          "opencode"
+        ],
+        [
+          "independent_utilities",
+          2,
+          "codex"
+        ]
+      ],
+      "grader_controls": [
+        {
+          "case": "atomic_import",
+          "unchanged_rejected": true,
+          "reference_passed": true,
+          "root_and_tests_locations_passed": true,
+          "duplicate_test_names_passed": true,
+          "mutant_rejected": true
+        },
+        {
+          "case": "paged_listing",
+          "unchanged_rejected": true,
+          "reference_passed": true,
+          "root_and_tests_locations_passed": true,
+          "duplicate_test_names_passed": true,
+          "mutant_rejected": true
+        },
+        {
+          "case": "independent_utilities",
+          "unchanged_rejected": true,
+          "reference_passed": true,
+          "root_and_tests_locations_passed": true,
+          "duplicate_test_names_passed": true,
+          "mutant_rejected": true
+        }
+      ],
+      "preflight": false,
+      "fixture_sha256": "d595d94fe892ac2fe1cf24c9defb1bd9908b202cec59967fcc3c00d8533e28d0",
+      "provider_model_options": {
+        "reasoningEffort": "max",
+        "max_tokens": 393216
+      },
+      "stopping": "Stop on quota or runtime failure; preserve all runs. No silent retries or model substitutions."
+    },
+    "summary": {
+      "diagnostic": true,
+      "environment": "reused-WSL2-Ubuntu-24.04.4-no-Windows-mounts",
+      "runs": [
+        {
+          "case": "atomic_import",
+          "backend": "codex",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 265.928,
+          "main_usage": {
+            "input_tokens": 64397,
+            "cached_input_tokens": 32640,
+            "output_tokens": 834,
+            "reasoning_output_tokens": 67,
+            "total_tokens": 65231,
+            "uncached_input_tokens": 31757
+          },
+          "worker_usage": {
+            "input_tokens": 124837,
+            "cached_input_tokens": 87808,
+            "output_tokens": 4471,
+            "total_tokens": 129308
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/atomic_import-1-codex",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        },
+        {
+          "case": "atomic_import",
+          "backend": "opencode",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 242.128,
+          "main_usage": {
+            "input_tokens": 87318,
+            "cached_input_tokens": 49280,
+            "output_tokens": 956,
+            "reasoning_output_tokens": 66,
+            "total_tokens": 88274,
+            "uncached_input_tokens": 38038
+          },
+          "worker_usage": {
+            "input_tokens": 132909,
+            "cached_input_tokens": 38400,
+            "output_tokens": 26170,
+            "total_tokens": 159079
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [
+            {
+              "session_id": "ses_ef4ef1953ffemDSmQeM2mLI1Pc",
+              "exported": false
+            }
+          ],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/atomic_import-1-opencode",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        },
+        {
+          "case": "atomic_import",
+          "backend": "opencode",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 227.362,
+          "main_usage": {
+            "input_tokens": 80930,
+            "cached_input_tokens": 47232,
+            "output_tokens": 837,
+            "reasoning_output_tokens": 52,
+            "total_tokens": 81767,
+            "uncached_input_tokens": 33698
+          },
+          "worker_usage": {
+            "input_tokens": 98406,
+            "cached_input_tokens": 7936,
+            "output_tokens": 21953,
+            "total_tokens": 120359
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [
+            {
+              "session_id": "ses_ef4eb53dfffe6XDNKJ0IKzX9Ta",
+              "exported": false
+            }
+          ],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/atomic_import-2-opencode",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 2
+        },
+        {
+          "case": "atomic_import",
+          "backend": "codex",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 260.392,
+          "main_usage": {
+            "input_tokens": 62485,
+            "cached_input_tokens": 17280,
+            "output_tokens": 747,
+            "reasoning_output_tokens": 48,
+            "total_tokens": 63232,
+            "uncached_input_tokens": 45205
+          },
+          "worker_usage": {
+            "input_tokens": 127024,
+            "cached_input_tokens": 100352,
+            "output_tokens": 5202,
+            "total_tokens": 132226
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/atomic_import-2-codex",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 2
+        },
+        {
+          "case": "paged_listing",
+          "backend": "codex",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 454.819,
+          "main_usage": {
+            "input_tokens": 137551,
+            "cached_input_tokens": 97792,
+            "output_tokens": 1500,
+            "reasoning_output_tokens": 243,
+            "total_tokens": 139051,
+            "uncached_input_tokens": 39759
+          },
+          "worker_usage": {
+            "input_tokens": 286375,
+            "cached_input_tokens": 253312,
+            "output_tokens": 8769,
+            "total_tokens": 295144
+          },
+          "actual_delegation": true,
+          "worker_invocations": 2,
+          "repair_invocations": 1,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/paged_listing-1-codex",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        },
+        {
+          "case": "paged_listing",
+          "backend": "opencode",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 170.362,
+          "main_usage": {
+            "input_tokens": 84212,
+            "cached_input_tokens": 50048,
+            "output_tokens": 1070,
+            "reasoning_output_tokens": 72,
+            "total_tokens": 85282,
+            "uncached_input_tokens": 34164
+          },
+          "worker_usage": {
+            "input_tokens": 150553,
+            "cached_input_tokens": 78592,
+            "output_tokens": 7065,
+            "total_tokens": 157618
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [
+            {
+              "session_id": "ses_ef4dcc856ffewctb3Q5qZTxKgo",
+              "exported": false
+            }
+          ],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/paged_listing-1-opencode",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        },
+        {
+          "case": "paged_listing",
+          "backend": "opencode",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 156.687,
+          "main_usage": {
+            "input_tokens": 66955,
+            "cached_input_tokens": 13952,
+            "output_tokens": 900,
+            "reasoning_output_tokens": 53,
+            "total_tokens": 67855,
+            "uncached_input_tokens": 53003
+          },
+          "worker_usage": {
+            "input_tokens": 223964,
+            "cached_input_tokens": 124672,
+            "output_tokens": 10173,
+            "total_tokens": 234137
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [
+            {
+              "session_id": "ses_ef4da1cf5ffeuMpowiyXgFk7EO",
+              "exported": false
+            }
+          ],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/paged_listing-2-opencode",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 2
+        },
+        {
+          "case": "paged_listing",
+          "backend": "codex",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 209.688,
+          "main_usage": {
+            "input_tokens": 63381,
+            "cached_input_tokens": 31616,
+            "output_tokens": 864,
+            "reasoning_output_tokens": 43,
+            "total_tokens": 64245,
+            "uncached_input_tokens": 31765
+          },
+          "worker_usage": {
+            "input_tokens": 95635,
+            "cached_input_tokens": 57344,
+            "output_tokens": 3799,
+            "total_tokens": 99434
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/paged_listing-2-codex",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 2
+        },
+        {
+          "case": "independent_utilities",
+          "backend": "codex",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 324.988,
+          "main_usage": {
+            "input_tokens": 66800,
+            "cached_input_tokens": 33664,
+            "output_tokens": 854,
+            "reasoning_output_tokens": 94,
+            "total_tokens": 67654,
+            "uncached_input_tokens": 33136
+          },
+          "worker_usage": {
+            "input_tokens": 117385,
+            "cached_input_tokens": 96000,
+            "output_tokens": 6037,
+            "total_tokens": 123422
+          },
+          "actual_delegation": true,
+          "worker_invocations": 1,
+          "repair_invocations": 0,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/independent_utilities-1-codex",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        },
+        {
+          "case": "independent_utilities",
+          "backend": "opencode",
+          "status": "blocked",
+          "valid": false,
+          "passed": false,
+          "seconds": 172.593,
+          "main_usage": {
+            "input_tokens": 81205,
+            "cached_input_tokens": 47872,
+            "output_tokens": 2097,
+            "reasoning_output_tokens": 323,
+            "total_tokens": 83302,
+            "uncached_input_tokens": 33333
+          },
+          "worker_usage": null,
+          "actual_delegation": true,
+          "worker_invocations": 2,
+          "repair_invocations": 0,
+          "worker_failures": 1,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [
+            {
+              "session_id": "ses_ef4cf41b2ffeCrflLearA9GKHl",
+              "exported": false
+            }
+          ],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison/independent_utilities-1-opencode",
+          "eligible": false,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        }
+      ],
+      "comparisons": [
+        {
+          "case": "atomic_import",
+          "comparable": true,
+          "passed": {
+            "codex": 2,
+            "opencode": 2
+          },
+          "runs": {
+            "codex": 2,
+            "opencode": 2
+          },
+          "seconds_median": {
+            "codex": 263.15999999999997,
+            "opencode": 234.745
+          },
+          "main_tokens_median": {
+            "codex": 64231.5,
+            "opencode": 85020.5
+          },
+          "worker_tokens_median": {
+            "codex": 130767.0,
+            "opencode": 139719.0
+          },
+          "total_tokens_median": {
+            "codex": 194998.5,
+            "opencode": 224739.5
+          },
+          "opencode_time_change": -0.1079761361909104
+        },
+        {
+          "case": "independent_utilities",
+          "comparable": false,
+          "passed": {
+            "codex": 1,
+            "opencode": 0
+          },
+          "runs": {
+            "codex": 1,
+            "opencode": 1
+          },
+          "seconds_median": {
+            "codex": 324.988,
+            "opencode": 172.593
+          },
+          "main_tokens_median": {
+            "codex": 67654,
+            "opencode": 83302
+          },
+          "worker_tokens_median": {
+            "codex": 123422,
+            "opencode": null
+          },
+          "total_tokens_median": {
+            "codex": 191076,
+            "opencode": null
+          },
+          "opencode_time_change": null
+        },
+        {
+          "case": "paged_listing",
+          "comparable": true,
+          "passed": {
+            "codex": 2,
+            "opencode": 2
+          },
+          "runs": {
+            "codex": 2,
+            "opencode": 2
+          },
+          "seconds_median": {
+            "codex": 332.25350000000003,
+            "opencode": 163.5245
+          },
+          "main_tokens_median": {
+            "codex": 101648.0,
+            "opencode": 76568.5
+          },
+          "worker_tokens_median": {
+            "codex": 197289.0,
+            "opencode": 195877.5
+          },
+          "total_tokens_median": {
+            "codex": 298937.0,
+            "opencode": 272446.0
+          },
+          "opencode_time_change": -0.5078321221597366
+        }
+      ],
+      "stopped_reason": "runtime or coordinator failure",
+      "remaining_schedule": [
+        [
+          "independent_utilities",
+          2,
+          "opencode"
+        ],
+        [
+          "independent_utilities",
+          2,
+          "codex"
+        ]
+      ],
+      "note": "Two exploratory repeats. Different worker models, tokenizers and reasoning settings; tokens are not costs or equal work units."
+    }
+  },
+  "corrected_utilities": {
+    "upstream_commit": "88728ee",
+    "manifest": {
+      "source_commit": "6e02a0a85e29302ba4561f136725215a5266025e",
+      "source_sha256": {
+        "team.py": "d1e58c095dcbeddba54a5c9624445e0f7cbe28a46c95e854c80d6673808c5993",
+        "worker.py": "6b7ffe599f38cbed7b5c2a1457161b5e4645dc8f68991eb61ceee7d3363be6d1",
+        "opencode_backend.py": "f64b93676f32e2bad6b0aad042eebd7b8e27f337b7d9f8191d806a69a413711c",
+        "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+        "benchmarks/backend_comparison.py": "192d5561f2629b57a2467061b2b3a980804951d80350b35c57ae74ff171594c6",
+        "benchmarks/project_cases.py": "c5fd7cccf311a9fe17ffe88510e3202e330d8f3bd5264a87b74348e163e3a738",
+        "benchmarks/validate_project_cases.py": "a1ca261c5bd6ce8ec527b6a44b6c703aebeeb2a2e65ccac0170a721f7cf9f9a8"
+      },
+      "main_model": "gpt-6.1-sol",
+      "main_effort": "high",
+      "worker_models": {
+        "codex": "gpt-6.1-sol",
+        "opencode": "hive-ai/deepseek-ai/deepseek-v4.1-flash"
+      },
+      "worker_efforts": {
+        "codex": "high",
+        "opencode": "max"
+      },
+      "timeout": 600,
+      "cli_versions": {
+        "codex": "codex-cli 0.160.0",
+        "opencode": "1.18.34"
+      },
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "platform": "linux",
+      "environment": "reused-WSL2-Ubuntu-24.04.4-no-Windows-mounts",
+      "schedule": [
+        [
+          "independent_utilities",
+          1,
+          "codex"
+        ],
+        [
+          "independent_utilities",
+          1,
+          "opencode"
+        ],
+        [
+          "independent_utilities",
+          2,
+          "opencode"
+        ],
+        [
+          "independent_utilities",
+          2,
+          "codex"
+        ]
+      ],
+      "grader_controls": [
+        {
+          "case": "atomic_import",
+          "unchanged_rejected": true,
+          "reference_passed": true,
+          "root_and_tests_locations_passed": true,
+          "duplicate_test_names_passed": true,
+          "mutant_rejected": true
+        },
+        {
+          "case": "paged_listing",
+          "unchanged_rejected": true,
+          "reference_passed": true,
+          "root_and_tests_locations_passed": true,
+          "duplicate_test_names_passed": true,
+          "mutant_rejected": true
+        },
+        {
+          "case": "independent_utilities",
+          "unchanged_rejected": true,
+          "reference_passed": true,
+          "root_and_tests_locations_passed": true,
+          "duplicate_test_names_passed": true,
+          "mutant_rejected": true
+        }
+      ],
+      "preflight": false,
+      "fixture_sha256": "72845aa3e9228537abca0ddd5b54ce3994fdbe3def60b35edf738de7de74f685",
+      "provider_model_options": {
+        "reasoningEffort": "max",
+        "max_tokens": 393216
+      },
+      "stopping": "Stop on quota or runtime failure; preserve all runs. No silent retries or model substitutions."
+    },
+    "summary": {
+      "diagnostic": true,
+      "environment": "reused-WSL2-Ubuntu-24.04.4-no-Windows-mounts",
+      "runs": [
+        {
+          "case": "independent_utilities",
+          "backend": "codex",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 346.609,
+          "main_usage": {
+            "input_tokens": 98772,
+            "cached_input_tokens": 60288,
+            "output_tokens": 1969,
+            "reasoning_output_tokens": 388,
+            "total_tokens": 100741,
+            "uncached_input_tokens": 38484
+          },
+          "worker_usage": {
+            "input_tokens": 226182,
+            "cached_input_tokens": 174080,
+            "output_tokens": 8904,
+            "total_tokens": 235086
+          },
+          "actual_delegation": true,
+          "worker_invocations": 3,
+          "repair_invocations": 1,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison-fixed-utilities/independent_utilities-1-codex",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        },
+        {
+          "case": "independent_utilities",
+          "backend": "opencode",
+          "status": "completed",
+          "valid": true,
+          "passed": true,
+          "seconds": 293.68,
+          "main_usage": {
+            "input_tokens": 185761,
+            "cached_input_tokens": 130560,
+            "output_tokens": 2207,
+            "reasoning_output_tokens": 449,
+            "total_tokens": 187968,
+            "uncached_input_tokens": 55201
+          },
+          "worker_usage": {
+            "input_tokens": 296227,
+            "cached_input_tokens": 196096,
+            "output_tokens": 20328,
+            "total_tokens": 316555
+          },
+          "actual_delegation": true,
+          "worker_invocations": 2,
+          "repair_invocations": 1,
+          "worker_failures": 0,
+          "model_contexts": [
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            },
+            {
+              "model": "gpt-6.1-sol",
+              "effort": "high"
+            }
+          ],
+          "opencode_contexts": [
+            {
+              "session_id": "ses_ef4bfe9a5ffeX60VqmmIKrYB1h",
+              "exported": true,
+              "messages": [
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 6508,
+                    "input": 6404,
+                    "output": 91,
+                    "reasoning": 13,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 6960,
+                    "input": 6615,
+                    "output": 337,
+                    "reasoning": 8,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 8804,
+                    "input": 2098,
+                    "output": 275,
+                    "reasoning": 31,
+                    "cache": {
+                      "write": 0,
+                      "read": 6400
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 12564,
+                    "input": 10126,
+                    "output": 71,
+                    "reasoning": 2367,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 14165,
+                    "input": 10316,
+                    "output": 952,
+                    "reasoning": 2897,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 13444,
+                    "input": 11296,
+                    "output": 1980,
+                    "reasoning": 168,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 14276,
+                    "input": 3320,
+                    "output": 680,
+                    "reasoning": 292,
+                    "cache": {
+                      "write": 0,
+                      "read": 9984
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 14115,
+                    "input": 2746,
+                    "output": 104,
+                    "reasoning": 1,
+                    "cache": {
+                      "write": 0,
+                      "read": 11264
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 15136,
+                    "input": 14824,
+                    "output": 208,
+                    "reasoning": 104,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 15232,
+                    "input": 13326,
+                    "output": 71,
+                    "reasoning": 43,
+                    "cache": {
+                      "write": 0,
+                      "read": 1792
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "stop",
+                  "tokens": {
+                    "total": 15727,
+                    "input": 160,
+                    "output": 417,
+                    "reasoning": 46,
+                    "cache": {
+                      "write": 0,
+                      "read": 15104
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 19584,
+                    "input": 2140,
+                    "output": 284,
+                    "reasoning": 2568,
+                    "cache": {
+                      "write": 0,
+                      "read": 14592
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 19012,
+                    "input": 8740,
+                    "output": 195,
+                    "reasoning": 1629,
+                    "cache": {
+                      "write": 0,
+                      "read": 8448
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 18163,
+                    "input": 926,
+                    "output": 112,
+                    "reasoning": 485,
+                    "cache": {
+                      "write": 0,
+                      "read": 16640
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20082,
+                    "input": 1032,
+                    "output": 377,
+                    "reasoning": 1265,
+                    "cache": {
+                      "write": 0,
+                      "read": 17408
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 19229,
+                    "input": 1680,
+                    "output": 106,
+                    "reasoning": 291,
+                    "cache": {
+                      "write": 0,
+                      "read": 17152
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20395,
+                    "input": 1059,
+                    "output": 857,
+                    "reasoning": 47,
+                    "cache": {
+                      "write": 0,
+                      "read": 18432
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20732,
+                    "input": 1686,
+                    "output": 230,
+                    "reasoning": 128,
+                    "cache": {
+                      "write": 0,
+                      "read": 18688
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20849,
+                    "input": 1330,
+                    "output": 62,
+                    "reasoning": 1,
+                    "cache": {
+                      "write": 0,
+                      "read": 19456
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "stop",
+                  "tokens": {
+                    "total": 21578,
+                    "input": 307,
+                    "output": 499,
+                    "reasoning": 36,
+                    "cache": {
+                      "write": 0,
+                      "read": 20736
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "session_id": "ses_ef4bfe9a5ffeX60VqmmIKrYB1h",
+              "exported": true,
+              "messages": [
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 6508,
+                    "input": 6404,
+                    "output": 91,
+                    "reasoning": 13,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 6960,
+                    "input": 6615,
+                    "output": 337,
+                    "reasoning": 8,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 8804,
+                    "input": 2098,
+                    "output": 275,
+                    "reasoning": 31,
+                    "cache": {
+                      "write": 0,
+                      "read": 6400
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 12564,
+                    "input": 10126,
+                    "output": 71,
+                    "reasoning": 2367,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 14165,
+                    "input": 10316,
+                    "output": 952,
+                    "reasoning": 2897,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 13444,
+                    "input": 11296,
+                    "output": 1980,
+                    "reasoning": 168,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 14276,
+                    "input": 3320,
+                    "output": 680,
+                    "reasoning": 292,
+                    "cache": {
+                      "write": 0,
+                      "read": 9984
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 14115,
+                    "input": 2746,
+                    "output": 104,
+                    "reasoning": 1,
+                    "cache": {
+                      "write": 0,
+                      "read": 11264
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 15136,
+                    "input": 14824,
+                    "output": 208,
+                    "reasoning": 104,
+                    "cache": {
+                      "write": 0,
+                      "read": 0
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 15232,
+                    "input": 13326,
+                    "output": 71,
+                    "reasoning": 43,
+                    "cache": {
+                      "write": 0,
+                      "read": 1792
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "stop",
+                  "tokens": {
+                    "total": 15727,
+                    "input": 160,
+                    "output": 417,
+                    "reasoning": 46,
+                    "cache": {
+                      "write": 0,
+                      "read": 15104
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 19584,
+                    "input": 2140,
+                    "output": 284,
+                    "reasoning": 2568,
+                    "cache": {
+                      "write": 0,
+                      "read": 14592
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 19012,
+                    "input": 8740,
+                    "output": 195,
+                    "reasoning": 1629,
+                    "cache": {
+                      "write": 0,
+                      "read": 8448
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 18163,
+                    "input": 926,
+                    "output": 112,
+                    "reasoning": 485,
+                    "cache": {
+                      "write": 0,
+                      "read": 16640
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20082,
+                    "input": 1032,
+                    "output": 377,
+                    "reasoning": 1265,
+                    "cache": {
+                      "write": 0,
+                      "read": 17408
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 19229,
+                    "input": 1680,
+                    "output": 106,
+                    "reasoning": 291,
+                    "cache": {
+                      "write": 0,
+                      "read": 17152
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20395,
+                    "input": 1059,
+                    "output": 857,
+                    "reasoning": 47,
+                    "cache": {
+                      "write": 0,
+                      "read": 18432
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20732,
+                    "input": 1686,
+                    "output": 230,
+                    "reasoning": 128,
+                    "cache": {
+                      "write": 0,
+                      "read": 18688
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "tool-calls",
+                  "tokens": {
+                    "total": 20849,
+                    "input": 1330,
+                    "output": 62,
+                    "reasoning": 1,
+                    "cache": {
+                      "write": 0,
+                      "read": 19456
+                    }
+                  }
+                },
+                {
+                  "modelID": "deepseek-ai/deepseek-v4.1-flash",
+                  "providerID": "hive-ai",
+                  "variant": "max",
+                  "finish": "stop",
+                  "tokens": {
+                    "total": 21578,
+                    "input": 307,
+                    "output": 499,
+                    "reasoning": 36,
+                    "cache": {
+                      "write": 0,
+                      "read": 20736
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "artifacts": "/home/bench/hive-comparison-20261005/comparison-fixed-utilities/independent_utilities-1-opencode",
+          "eligible": true,
+          "quota_error": false,
+          "profile_removed": true,
+          "repeat": 1
+        }
+      ],
+      "comparisons": [
+        {
+          "case": "independent_utilities",
+          "comparable": true,
+          "passed": {
+            "codex": 1,
+            "opencode": 1
+          },
+          "runs": {
+            "codex": 1,
+            "opencode": 1
+          },
+          "seconds_median": {
+            "codex": 346.609,
+            "opencode": 293.68
+          },
+          "main_tokens_median": {
+            "codex": 100741,
+            "opencode": 187968
+          },
+          "worker_tokens_median": {
+            "codex": 235086,
+            "opencode": 316555
+          },
+          "total_tokens_median": {
+            "codex": 335827,
+            "opencode": 504523
+          },
+          "opencode_time_change": -0.1527052096165996
+        }
+      ],
+      "stopped_reason": "User requested stop and commit/push current work before the second repeat.",
+      "remaining_schedule": [
+        [
+          "independent_utilities",
+          2,
+          "opencode"
+        ],
+        [
+          "independent_utilities",
+          2,
+          "codex"
+        ]
+      ],
+      "note": "Two exploratory repeats. Different worker models, tokenizers and reasoning settings; tokens are not costs or equal work units.",
+      "interrupted_run": "independent_utilities-2-opencode"
+    },
+    "interruption": {
+      "reason": "User requested stop",
+      "run": "independent_utilities-2-opencode",
+      "phase": "main planning",
+      "eligible": false,
+      "usage": null,
+      "profile_removed": true
+    }
+  },
+  "verification": {
+    "upstream_commits": {
+      "initial": "c786c1b",
+      "fixed": "88728ee"
+    },
+    "usage_and_model_audit": [
+      {
+        "dataset": "comparison",
+        "case": "atomic_import",
+        "backend": "codex",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "atomic_import",
+        "backend": "opencode",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "atomic_import",
+        "backend": "opencode",
+        "repeat": 2,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "atomic_import",
+        "backend": "codex",
+        "repeat": 2,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "paged_listing",
+        "backend": "codex",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 2,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "paged_listing",
+        "backend": "opencode",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "paged_listing",
+        "backend": "opencode",
+        "repeat": 2,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "paged_listing",
+        "backend": "codex",
+        "repeat": 2,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "independent_utilities",
+        "backend": "codex",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 1,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison",
+        "case": "independent_utilities",
+        "backend": "opencode",
+        "repeat": 1,
+        "eligible": false,
+        "usage_checked": false,
+        "model_exports": 0,
+        "worker_invocations": 2,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison-fixed-utilities",
+        "case": "independent_utilities",
+        "backend": "codex",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 0,
+        "worker_invocations": 3,
+        "profiles_removed": true
+      },
+      {
+        "dataset": "comparison-fixed-utilities",
+        "case": "independent_utilities",
+        "backend": "opencode",
+        "repeat": 1,
+        "eligible": true,
+        "usage_checked": true,
+        "model_exports": 1,
+        "worker_invocations": 2,
+        "profiles_removed": true
+      }
+    ],
+    "private_profiles_removed": true
+  },
+  "supplemental_boundaries": {
+    "scope": "Supplemental post-run boundary audit only; not part of the preregistered grader, original eligibility or measured duration. No benchmark outputs were repaired.",
+    "results": [
+      {
+        "run": "paged_listing-1-codex",
+        "passed": true,
+        "checks": [
+          {
+            "check": "huge_limit",
+            "api": "Store",
+            "passed": true,
+            "actual": [
+              "high",
+              "low"
+            ],
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "TaskService",
+            "passed": true,
+            "actual": [
+              "high",
+              "low"
+            ],
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "CLI",
+            "passed": true,
+            "exit_code": 0,
+            "actual": [
+              "high",
+              "low"
+            ],
+            "expected": [
+              "high",
+              "low"
+            ],
+            "overflow_error": false
+          },
+          {
+            "check": "huge_offset",
+            "api": "Store",
+            "passed": true,
+            "actual": [],
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "TaskService",
+            "passed": true,
+            "actual": [],
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "CLI",
+            "passed": true,
+            "exit_code": 0,
+            "actual": [],
+            "expected": [],
+            "overflow_error": false
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "Store",
+            "passed": true,
+            "actual": [],
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "TaskService",
+            "passed": true,
+            "actual": [],
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "CLI",
+            "passed": true,
+            "exit_code": 0,
+            "actual": [],
+            "expected": [],
+            "overflow_error": false
+          }
+        ]
+      },
+      {
+        "run": "paged_listing-1-opencode",
+        "passed": false,
+        "checks": [
+          {
+            "check": "huge_limit",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [
+              "high",
+              "low"
+            ],
+            "overflow_error": true
+          },
+          {
+            "check": "huge_offset",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [],
+            "overflow_error": true
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [],
+            "overflow_error": true
+          }
+        ]
+      },
+      {
+        "run": "paged_listing-2-codex",
+        "passed": false,
+        "checks": [
+          {
+            "check": "huge_limit",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [
+              "high",
+              "low"
+            ],
+            "overflow_error": true
+          },
+          {
+            "check": "huge_offset",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [],
+            "overflow_error": true
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [],
+            "overflow_error": true
+          }
+        ]
+      },
+      {
+        "run": "paged_listing-2-opencode",
+        "passed": false,
+        "checks": [
+          {
+            "check": "huge_limit",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": [
+              "high",
+              "low"
+            ]
+          },
+          {
+            "check": "huge_limit",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [
+              "high",
+              "low"
+            ],
+            "overflow_error": true
+          },
+          {
+            "check": "huge_offset",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "huge_offset",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [],
+            "overflow_error": true
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "Store",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "TaskService",
+            "passed": false,
+            "error": "OverflowError",
+            "expected": []
+          },
+          {
+            "check": "zero_limit_huge_offset",
+            "api": "CLI",
+            "passed": false,
+            "exit_code": 1,
+            "actual": null,
+            "expected": [],
+            "overflow_error": true
+          }
+        ]
+      }
+    ]
+  },
+  "database_initialization_probe": [
+    {
+      "warmed": false,
+      "repeat": 1,
+      "exit_codes": [
+        0,
+        1
+      ],
+      "database_locked": [
+        false,
+        true
+      ]
+    },
+    {
+      "warmed": false,
+      "repeat": 2,
+      "exit_codes": [
+        1,
+        0
+      ],
+      "database_locked": [
+        true,
+        false
+      ]
+    },
+    {
+      "warmed": false,
+      "repeat": 3,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "database_locked": [
+        false,
+        false
+      ]
+    },
+    {
+      "warmed": false,
+      "repeat": 4,
+      "exit_codes": [
+        1,
+        0
+      ],
+      "database_locked": [
+        false,
+        false
+      ]
+    },
+    {
+      "warmed": true,
+      "repeat": 1,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "database_locked": [
+        false,
+        false
+      ]
+    },
+    {
+      "warmed": true,
+      "repeat": 2,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "database_locked": [
+        false,
+        false
+      ]
+    },
+    {
+      "warmed": true,
+      "repeat": 3,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "database_locked": [
+        false,
+        false
+      ]
+    },
+    {
+      "warmed": true,
+      "repeat": 4,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "database_locked": [
+        false,
+        false
+      ]
+    }
+  ],
+  "forced_parallel_preflight": {
+    "status": "completed",
+    "grade_passed": true,
+    "seconds": 26.923652960000005,
+    "worker_seconds_sum": 48.67,
+    "usage": {
+      "input_tokens": 49461,
+      "cached_input_tokens": 13824,
+      "output_tokens": 940,
+      "total_tokens": 50401
+    },
+    "opencode_contexts": [
+      {
+        "session_id": "ses_ef4c6e9c5ffeSJaejOoREh2Uxi",
+        "exported": true,
+        "messages": [
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "tool-calls",
+            "tokens": {
+              "total": 6015,
+              "input": 5917,
+              "output": 87,
+              "reasoning": 11,
+              "cache": {
+                "write": 0,
+                "read": 0
+              }
+            }
+          },
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "tool-calls",
+            "tokens": {
+              "total": 6287,
+              "input": 6081,
+              "output": 205,
+              "reasoning": 1,
+              "cache": {
+                "write": 0,
+                "read": 0
+              }
+            }
+          },
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "tool-calls",
+            "tokens": {
+              "total": 6391,
+              "input": 425,
+              "output": 77,
+              "reasoning": 1,
+              "cache": {
+                "write": 0,
+                "read": 5888
+              }
+            }
+          },
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "stop",
+            "tokens": {
+              "total": 6499,
+              "input": 274,
+              "output": 80,
+              "reasoning": 1,
+              "cache": {
+                "write": 0,
+                "read": 6144
+              }
+            }
+          }
+        ]
+      },
+      {
+        "session_id": "ses_ef4c6e9f9ffe7RoaEic8pqlaPz",
+        "exported": true,
+        "messages": [
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "tool-calls",
+            "tokens": {
+              "total": 6011,
+              "input": 5917,
+              "output": 85,
+              "reasoning": 9,
+              "cache": {
+                "write": 0,
+                "read": 0
+              }
+            }
+          },
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "tool-calls",
+            "tokens": {
+              "total": 6288,
+              "input": 6082,
+              "output": 205,
+              "reasoning": 1,
+              "cache": {
+                "write": 0,
+                "read": 0
+              }
+            }
+          },
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "tool-calls",
+            "tokens": {
+              "total": 6392,
+              "input": 4522,
+              "output": 77,
+              "reasoning": 1,
+              "cache": {
+                "write": 0,
+                "read": 1792
+              }
+            }
+          },
+          {
+            "modelID": "deepseek-ai/deepseek-v4.1-flash",
+            "providerID": "hive-ai",
+            "variant": "max",
+            "finish": "stop",
+            "tokens": {
+              "total": 6518,
+              "input": 6419,
+              "output": 98,
+              "reasoning": 1,
+              "cache": {
+                "write": 0,
+                "read": 0
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "initialization": {
+      "exit_code": 0,
+      "termination": "exited",
+      "seconds": 1.716
+    },
+    "profile_removed": true
+  },
+  "excluded_windows_attempt": {
+    "reason": "Windows sandbox tempfile permission failures and cleanup overhead; interrupted before comparison. Excluded from Linux benchmark.",
+    "credentials_removed": true
+  },
+  "local_artifacts": "bench-runs/hive-worker-linux-20261005",
+  "credentials_removed": true,
+  "automatic_restart_scheduled": false
+}

@@ -32,6 +32,8 @@ The main normally assigns one end-to-end worker, up to three for independent sco
 
 OpenCode workers receive role-specific tool permissions through runtime inline config without editing the project's config: implementation can edit and run commands; research/review cannot edit or run shell commands. These are tool permissions, not an OS sandbox. OpenCode returns a prompted JSON report that the runner validates locally; its JSON event output alone does not enforce the report schema.
 
+Before a parallel OpenCode batch, the runner initializes the shared session store once without a model call, then starts workers in parallel. This avoids the observed fresh-store startup race in CLI 1.18.34. If initialization fails, inspect the batch's `initialization/` artifacts; no workers have started. This does not guarantee coordination with other programs independently opening the same store.
+
 ## Verify and report
 
 - Read `<job-dir>/result/summary.json` first. Report the actual `completed`, `blocked`, or `failed` state. Exit 0 alone and passing worker tests do not prove the requested behavior is correct.
