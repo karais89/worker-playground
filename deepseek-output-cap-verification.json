@@ -1,0 +1,24 @@
+{
+  "timestamp_utc": "2026-10-04T22:44:10.580Z",
+  "cli_exit_code": 0,
+  "response_contains_OK": true,
+  "verified": true,
+  "observations": [
+    {
+      "model": "deepseek-ai/deepseek-v4.1-flash",
+      "reasoning_effort": "max",
+      "max_tokens": 393216,
+      "max_completion_tokens": null,
+      "http_status": 200,
+      "stream_done": true
+    },
+    {
+      "model": "deepseek-ai/deepseek-v4.1-flash",
+      "reasoning_effort": "max",
+      "max_tokens": 393216,
+      "max_completion_tokens": null,
+      "http_status": 200,
+      "stream_done": true
+    }
+  ]
+}
