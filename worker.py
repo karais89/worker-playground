@@ -1,4 +1,4 @@
-"""Small, standard-library Codex CLI worker runner (Python 3.11+)."""
+"""Small, standard-library Codex/OpenCode CLI worker runner (Python 3.11+)."""
 from __future__ import annotations
 
 import argparse
@@ -15,6 +15,8 @@ import sys
 import threading
 import time
 import uuid
+
+import opencode_backend
 
 DEFAULT_MODEL = "gpt-6.1-sol"
 MAIN_REPORT_LIMIT = 6000  # UTF-8 bytes; full reports remain on disk.
@@ -137,7 +139,10 @@ def conflict(a, b):
     return False
 
 
-def build_command(cli, task, model, effort, output: Path, session_id=None):
+def build_command(cli, task, model, effort, output: Path, session_id=None, backend="codex"):
+    opencode_backend.validate_backend(backend, model)
+    if backend == "opencode":
+        return opencode_backend.build_command(cli, task, model, effort, session_id)
     # Keep backend-specific command construction and event decoding in two functions.
     command = [*cli, "--no-daemon", "-C", task["cwd"], "exec"]
     if session_id:
@@ -164,8 +169,10 @@ def task_prompt(task, followup=None):
     ])
 
 
-def parse_events(path: Path):
-    """Decode cumulative SESSION usage. Resume accounting must subtract the prior snapshot."""
+def parse_events(path: Path, backend="codex"):
+    """Codex usage is session cumulative; OpenCode usage is per invocation."""
+    if backend == "opencode":
+        return opencode_backend.parse_events(path)
     session_id, messages, commands, errors, usages = None, [], [], [], []
     malformed, completed = 0, 0
     if not path.exists():
@@ -345,25 +352,39 @@ def validate_report(report):
 
 
 def execute_task(task, output, cli, model, effort, timeout, cancel=None, session_id=None, followup=None, env=None,
-                 previous_usage=None, excluded=()):
+                 previous_usage=None, excluded=(), backend="codex"):
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / "task.json", task)
     write_json(output / "schema.json", REPORT_SCHEMA)
-    command = build_command(cli, task, model, effort, output, session_id)
+    command = build_command(cli, task, model, effort, output, session_id, backend)
     write_json(output / "command.json", command)
     prompt = task_prompt(task, followup)
+    process_env = env
+    if backend == "opencode":
+        prompt += ("\nReturn ONLY one JSON object as your final response, without narration or Markdown. "
+                   "It must match this JSON Schema:\n" + json.dumps(REPORT_SCHEMA))
+        process_env = opencode_backend.prepare_env(env, task["role"])
     (output / "prompt.txt").write_text(prompt, encoding="utf-8")
     excluded = (*excluded, output.resolve())
     before = snapshot(Path(task["cwd"]), task["scope"], excluded)
-    execution = run_process(command, task["cwd"], prompt, output, timeout, cancel, env)
-    events = parse_events(output / "events.jsonl")
-    usage = usage_delta(events["usage"], previous_usage) if session_id else events["usage"]
+    execution = run_process(command, task["cwd"], prompt, output, timeout, cancel, process_env)
+    events = parse_events(output / "events.jsonl", backend)
+    if backend == "opencode":
+        usage = events["usage"]  # OpenCode events contain this invocation's steps, not session totals.
+        cumulative = opencode_backend.add_usage(usage, previous_usage) if session_id else usage
+        report = opencode_backend.final_report(events["messages"], REPORT_SCHEMA)
+        if report is not None:
+            write_json(output / "final.json", report)
+    else:
+        usage = usage_delta(events["usage"], previous_usage) if session_id else events["usage"]
+        cumulative = events["usage"]
     after = snapshot(Path(task["cwd"]), task["scope"], excluded)
     changed = save_diff(before, after, output)
-    try:
-        report = read_json(output / "final.json")
-    except (OSError, ValueError):
-        report = None
+    if backend == "codex":
+        try:
+            report = read_json(output / "final.json")
+        except (OSError, ValueError):
+            report = None
     valid = validate_report(report)
     identity_ok = not session_id or events["session_id"] == session_id
     ok = (execution["termination"] == "exited" and execution["exit_code"] == 0
@@ -372,14 +393,15 @@ def execute_task(task, output, cli, model, effort, timeout, cancel=None, session
                   summary=report["summary"][:1200] if valid else "No valid final report; inspect artifacts.",
                   issues=report["issues"] if valid else [], observed_changed_files=changed,
                   worker_claims=report, observed_commands=events["commands"], execution=execution,
-                  usage=usage, cumulative_usage=events["usage"], measurement_complete=usage is not None,
+                  backend=backend, usage=usage, cumulative_usage=cumulative, measurement_complete=usage is not None,
                   session_identity_ok=identity_ok, artifacts=str(output),
                   runtime_errors=events["errors"])
     write_json(output / "report.json", result)
     write_json(output / "session.json", dict(session_id=events["session_id"], task=task,
-                                              model=model, effort=effort, cli=cli,
+                                              model=model, effort=effort, cli=cli, backend=backend,
                                               codex_home=(env if env is not None else os.environ).get("CODEX_HOME"),
-                                              cumulative_usage=events["usage"],
+                                              opencode_profile=opencode_backend.profile_identity(env) if backend == "opencode" else None,
+                                              cumulative_usage=cumulative,
                                               previous_session_id=session_id))
     return result
 
@@ -388,7 +410,14 @@ def resume_task(prior, output, followup, timeout, *, env=None, _held_roots=(), _
     session = read_json(prior / "session.json")
     if not session.get("session_id"):
         raise ValueError("prior execution has no resumable session")
-    if session.get("codex_home") != (env if env is not None else os.environ).get("CODEX_HOME"):
+    backend = session.get("backend", "codex")  # Read artifacts produced before backend selection existed.
+    opencode_backend.validate_backend(backend, session["model"])
+    if backend == "opencode" and session.get("opencode_profile") != opencode_backend.profile_identity(env):
+        raise ValueError("resume must use the same OpenCode profile environment as the original run")
+    if backend == "opencode":
+        opencode_backend.resolve_cli(session["cli"])
+        opencode_backend.prepare_env(env, session["task"]["role"])
+    if backend == "codex" and session.get("codex_home") != (env if env is not None else os.environ).get("CODEX_HOME"):
         raise ValueError("resume must use the same CODEX_HOME as the original run")
     if session.get("resumed_to"):
         raise ValueError("resume the newest result instead: " + session["resumed_to"])
@@ -411,7 +440,7 @@ def resume_task(prior, output, followup, timeout, *, env=None, _held_roots=(), _
         result = execute_task(session["task"], output, session["cli"], session["model"],
                               session["effort"], timeout, session_id=session["session_id"],
                               followup=followup, previous_usage=session.get("cumulative_usage"),
-                              excluded=excluded, env=env)
+                              excluded=excluded, env=env, backend=backend)
         if result["execution"]["termination"] == "launch_failed":
             # No subprocess existed, so the old session and accounting remain untouched.
             session.pop("resumed_to")
@@ -433,14 +462,19 @@ def total_usage(results):
 
 def task_summary(result):
     return {key: result.get(key) for key in ("id", "role", "status", "summary", "observed_changed_files",
-                                           "observed_commands", "issues", "usage", "artifacts")}
+                                           "observed_commands", "issues", "usage", "artifacts", "backend")}
 
 
-def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concurrency=3, timeout=600, env=None,
-              _held_roots=()):
+def run_batch(tasks, output, cli=None, model=None, effort="high", concurrency=3, timeout=600, env=None,
+              _held_roots=(), backend="codex"):
     if not 1 <= concurrency <= 3 or timeout <= 0:
         raise ValueError("concurrency must be 1..3 and timeout must be positive")
-    cli = cli or ["codex"]
+    model = DEFAULT_MODEL if model is None and backend == "codex" else model
+    opencode_backend.validate_backend(backend, model)
+    cli = cli or [backend]
+    if backend == "opencode":
+        cli = opencode_backend.resolve_cli(cli)
+        opencode_backend.prepare_env(env, "implement")  # Fail before starting any tasks on invalid config.
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / "tasks.json", {"tasks": tasks})
@@ -463,7 +497,7 @@ def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concu
                             continue
                         pending.remove(task)
                         future = pool.submit(execute_task, task, output / task["id"], cli, model,
-                                             effort, timeout, cancel, env=env, excluded=(output,))
+                                             effort, timeout, cancel, env=env, excluded=(output,), backend=backend)
                         running[future] = task
                     done, _ = wait(running, return_when=FIRST_COMPLETED)
                     for future in done:
@@ -472,7 +506,7 @@ def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concu
                             results[task["id"]] = future.result()
                         except Exception as error:
                             results[task["id"]] = dict(id=task["id"], status="failed", usage=None,
-                                                       summary=str(error), artifacts=str(output / task["id"]))
+                                                       summary=str(error), backend=backend, artifacts=str(output / task["id"]))
                             write_json(output / task["id"] / "report.json", results[task["id"]])
             except KeyboardInterrupt:
                 cancel.set()
@@ -483,7 +517,7 @@ def run_batch(tasks, output, cli=None, model=DEFAULT_MODEL, effort="high", concu
     ordered = [results[t["id"]] for t in tasks]
     summary = dict(status="completed" if all(r["status"] == "completed" for r in ordered) and not violations else "failed",
                    tasks=[task_summary(r) for r in ordered],
-                   usage=total_usage(ordered), scope_violations=violations, artifacts=str(output))
+                   usage=total_usage(ordered), scope_violations=violations, artifacts=str(output), backend=backend)
     write_json(output / "summary.json", summary)
     return summary
 
@@ -493,10 +527,12 @@ def main(argv=None):
     sub = parser.add_subparsers(dest="action", required=True)
     run = sub.add_parser("run", help="run a JSON task list")
     run.add_argument("tasks", type=Path)
-    run.add_argument("--model", default=DEFAULT_MODEL)
-    run.add_argument("--effort", choices=["low", "medium", "high", "xhigh", "max"], default="high")
+    run.add_argument("--model", help="Codex model (default: gpt-6.1-sol); explicit provider/model required for OpenCode")
+    run.add_argument("--effort", default="high", help="Codex reasoning effort or OpenCode provider-specific variant")
+    run.add_argument("--backend", choices=opencode_backend.BACKENDS, default="codex")
     run.add_argument("--concurrency", type=int, default=3)
     run.add_argument("--codex", default="codex", help="Codex executable path")
+    run.add_argument("--opencode", default="opencode", help="OpenCode executable path")
     resume = sub.add_parser("resume", help="resume one prior task artifact directory")
     resume.add_argument("task_result", type=Path)
     resume.add_argument("followup", type=Path)
@@ -507,8 +543,9 @@ def main(argv=None):
     try:
         output = (args.output or Path(os.environ.get("CLI_WORKER_OUTPUT", "runs")) / (time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])).resolve()
         if args.action == "run":
-            result = run_batch(load_tasks(args.tasks.resolve()), output, [args.codex], args.model,
-                               args.effort, args.concurrency, args.timeout)
+            cli = [args.codex if args.backend == "codex" else args.opencode]
+            result = run_batch(load_tasks(args.tasks.resolve()), output, cli, args.model,
+                               args.effort, args.concurrency, args.timeout, backend=args.backend)
         else:
             prior = args.task_result.resolve()
             result = resume_task(prior, output, args.followup.read_text(encoding="utf-8-sig"), args.timeout)

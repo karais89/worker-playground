@@ -1,6 +1,6 @@
 # CLI Worker Playground
 
-A small Python coordinator for Codex CLI: delegate a task, review the result, and resume the same workers for one correction round. No server or agent framework. Requires Python 3.11+, Git and an authenticated Codex CLI. Tested against CLI 0.160.0; model availability depends on your account. MIT licensed.
+A small Python coordinator with a Codex CLI main and selectable Codex or OpenCode CLI workers: delegate a task, review the result, and resume the same workers for one correction round. No server or agent framework. Requires Python 3.11+, Git and an authenticated Codex CLI; OpenCode workers additionally require authenticated OpenCode. Codex integration targets CLI 0.160.0, OpenCode integration targets CLI 1.18.34; model availability depends on your provider/account. MIT licensed.
 
 ## Install as a Codex skill / 스킬 설치
 
@@ -41,6 +41,7 @@ These checks require no model calls or credentials. Live scripts under `benchmar
 작은 모의 앱의 단독 6회·팀 6회 비교에서 메인 총 토큰은 44.7% 줄었고 양쪽 결과 모두 외부 검사를 통과했습니다. 전체 토큰은 1.79배, 메인 비캐시 입력+출력은 9.2% 늘었으므로 비용 절감이나 대형 프로젝트 성능으로 일반화하지 않습니다. 이 수치는 아래 리뷰 근거 지침 보완 전 결과입니다. [프로젝트 시뮬레이션](SIMULATION.md)과 [이전 비교 결과](BENCHMARK.md)에 조건과 한계를 기록했습니다.
 
 - `worker.py`: Codex CLI 워커 실행·병렬 처리·세션 재개·결과 및 사용량 기록
+- `opencode_backend.py`: OpenCode CLI 명령·역할별 권한·JSON 이벤트·최종 보고서 검증·토큰 정규화
 - `team.py`: 요청만 보고 위임 → 워커 배치 → 읽기 전용 검토 → 필요하면 같은 워커를 한 번 재개하고 최종 검토. 아주 작은 작업은 첫 턴에서 직접 완료
 - `bench.py`: 같은 메인 모델의 단독 실행과 워커 사용 실행 비교
 
@@ -59,6 +60,22 @@ python team.py task.txt --cwd C:/path/to/project --main-model gpt-6-astra --work
 ```
 
 메인을 Sol로 바꾸려면 `--main-model gpt-6.1-sol`로 지정합니다. 양쪽 effort 기본값은 `high`입니다.
+
+### OpenCode 워커 선택
+
+메인은 항상 Codex CLI입니다. 워커의 CLI는 `--worker-backend codex|opencode`로 선택하며 생략하면 기존 Codex 동작을 유지합니다. OpenCode를 선택할 때는 `opencode models`에서 확인한 정확한 `provider/model`을 `--worker-model`로 지정해야 합니다. 아래 모델명은 형식 예시이므로 실제 사용하는 모델로 바꾸세요.
+
+```powershell
+python team.py task.txt --cwd C:/path/to/project --worker-backend opencode --worker-model provider/model --output runs/opencode-team-01
+```
+
+`--codex`는 메인과 Codex 워커의 실행 파일, `--opencode`는 OpenCode 워커의 실행 파일을 지정합니다. Windows npm 설치는 발견한 shim 옆의 native `opencode.exe`를 사용하며, 찾지 못하면 직접 `.exe` 경로를 지정해야 합니다. 셸을 거치지 않고 프롬프트를 UTF-8 stdin으로 전달하므로 긴 지시문과 경로 공백을 보존합니다.
+
+`--worker-effort`는 OpenCode의 `--variant`로 전달하며 기본값은 `high`입니다. 지원하는 variant는 공급자와 모델에 따라 다릅니다. variant를 지원하지 않는 모델에는 `--worker-effort ""`를 사용해 옵션을 생략합니다. 인증은 각 CLI의 기존 설정을 사용하며 Codex 인증 파일을 OpenCode로 복사하지 않습니다.
+
+OpenCode 역할별 권한은 `OPENCODE_CONFIG_CONTENT`에 실행 중에만 추가합니다. 구현 워커는 파일 편집과 셸 실행이 가능하고, 조사·리뷰 워커는 둘 다 차단합니다. 서브에이전트·스킬 호출은 차단하며 프로젝트 설정 파일은 수정하지 않습니다. OpenCode 도구 권한은 OS 파일시스템 샌드박스가 아니며, 구현 워커의 셸 실행을 작업 폴더에 강하게 격리하지는 않습니다. 기존 실행 후 scope 검사도 그대로 적용합니다.
+
+OpenCode의 `--format json`은 실행 이벤트 형식입니다. 최종 보고서는 프롬프트에 포함된 스키마를 따르도록 요청하고 마지막 완료 메시지의 JSON을 로컬에서 검증합니다. 잘못된 스키마·실행 오류·토큰 한도로 잘린 응답은 실패로 처리하며 자동으로 다른 모델을 사용하지 않습니다. 사용량 누락은 `null`이며 해당 워커는 자동 재수정 대상이 아닙니다. 현재 OpenCode 연동 검증은 모의 CLI 통합 테스트를 포함하며 실제 모델 실행 여부는 별도 검증 결과에 따릅니다.
 
 1. 메인은 위임할 때 파일을 읽거나 명령을 실행하지 않고 요청만으로 작업을 배정합니다. 기본은 조사·구현·테스트를 끝까지 맡는 워커 한 명이며, 요청에서 독립성이 명확한 경우에만 최대 3명으로 나눕니다. 파일 위치가 불명확하면 한 워커에게 `scope=["."]`를 줍니다.
 2. Python이 워커 배치를 실행합니다. 실행 대기는 Python이 처리하므로 메인이 로그를 반복 조회할 필요가 없습니다.
@@ -101,9 +118,17 @@ python team.py task.txt --cwd C:/path/to/project --main-model gpt-6-astra --work
 python worker.py run tasks.json --model gpt-6.1-sol --effort high --output runs/change-01
 ```
 
+OpenCode 워커를 직접 실행하려면:
+
+```powershell
+python worker.py run tasks.json --backend opencode --model provider/model --output runs/opencode-change-01
+```
+
 독립적인 scope는 최대 3개까지 동시에 실행합니다. 파일 범위가 겹치고 하나라도 구현 역할이면 입력 순서대로 실행하므로 위 예제의 리뷰는 구현 뒤에 시작합니다. 겹치지 않는 파일이라도 논리적 의존 관계가 있으면 별도 배치로 실행하세요.
 
 `research`, `review`는 read-only, `implement`는 workspace-write 샌드박스로 실행합니다. 역할 선택과 작업 분해는 메인이 담당합니다. Python 실행기는 작업 목록을 스케줄링할 뿐, 추가 모델을 호출해 분류하지 않습니다.
+
+위 샌드박스 이름은 Codex 워커 기준입니다. OpenCode 워커는 앞서 설명한 역할별 도구 권한을 사용합니다.
 
 최대 동시 실행 수와 개별 워커 제한 시간은 `--concurrency 1..3`, `--timeout 600`으로 조절합니다. 실패한 워커가 있어도 다른 워커 결과는 보존하며 전체 실행은 실패 코드로 끝납니다. 출력 폴더는 매번 새 경로를 사용합니다.
 
@@ -116,6 +141,8 @@ python worker.py resume runs/change-01/parser followup.txt --output runs/change-
 ```
 
 저장한 정확한 세션 ID, 모델, effort, cwd로 재개합니다. 동일한 `CODEX_HOME`에서 실행해야 합니다. 다음 후속 지시는 최신 결과 폴더인 `runs/change-02-parser`를 대상으로 합니다. 오래된 결과를 다시 재개하면 중복 집계를 피하기 위해 거부합니다. 같은 세션을 이 실행기 밖에서 재개하면 사용량 차이에 외부 작업이 섞일 수 있으므로, 측정하는 세션은 실행기로만 이어가세요.
+
+OpenCode 워커도 같은 `resume` 명령을 사용합니다. 저장된 backend·실행 파일·모델·variant·역할을 자동으로 유지하며 `--backend`를 다시 지정하지 않습니다. 처음 실행한 OpenCode 프로필 환경(`HOME`, `USERPROFILE`, `XDG_*`, `OPENCODE_CONFIG*`)을 유지해야 합니다. 프로필 설정 원문은 세션 파일에 저장하지 않고 지문만 기록합니다. 이전 버전에서 생성한 backend 필드 없는 세션은 Codex로 재개합니다.
 
 CLI 프로세스 자체가 시작되지 못한 `launch_failed`는 원본 세션을 소비하지 않습니다. 원인을 해결한 뒤 원본 결과 폴더에서 새 출력 경로로 재시도할 수 있습니다. 실행이 시작된 뒤의 실패는 사용량과 세션 상태가 불확실할 수 있으므로 자동 재시도하지 않습니다.
 
@@ -140,6 +167,8 @@ CLI 프로세스 자체가 시작되지 못한 `launch_failed`는 원본 세션�
 `worker_claims`는 모델의 자기 보고입니다. 명령 종료 코드는 `observed_commands`, 파일 변경은 `observed_changed_files`와 구분합니다. 워커의 `completed`만으로 코드 품질을 판정하지 마세요.
 
 Codex의 `turn.completed.usage`는 **세션 누적값**입니다. 최초 실행에서는 그대로 사용하고, 재개에서는 이전 누적값을 빼서 이번 호출의 `usage`를 기록합니다. `cumulative_usage`도 별도로 보존합니다. 이 동작과 관련된 [Codex 이슈](https://github.com/openai/codex/issues/16213)를 참고했습니다.
+
+OpenCode의 `step_finish`는 **호출별 단계 사용량**입니다. 모든 단계의 입력(비캐시 + 캐시 읽기 + 캐시 생성)과 출력(일반 출력 + 추론)을 합산하고, 재개분은 이전 값에서 빼지 않습니다. 누적값은 실행기가 직접 합산합니다. 이 정규화는 CLI 1.18.34의 토큰 구조를 기준으로 합니다. OpenCode CLI 이벤트에서 누락되는 내부 호출이나 공급자가 보고하지 않는 사용량까지 완전하게 측정한다는 보장은 없습니다. 기존 벤치마크 스크립트의 격리 프로필·실험은 Codex 전용이며 OpenCode를 대상으로 확장하지 않았습니다.
 
 - 총 토큰 = 입력 + 출력. 캐시 입력은 입력의 일부이고 추론 출력은 출력의 일부이므로 다시 더하지 않습니다.
 - 입력, 캐시 입력, 출력, 확인 가능한 추론 출력과 재개 차이를 따로 기록합니다.

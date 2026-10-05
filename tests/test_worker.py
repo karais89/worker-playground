@@ -122,6 +122,18 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(retried["status"], "completed")
         self.assertEqual(retried["usage"]["total_tokens"], 24)
 
+    def test_legacy_session_without_backend_resumes_as_codex(self):
+        self.batch([self.task()])
+        path=self.root / "out/a/session.json"
+        session=worker.read_json(path)
+        session.pop("backend")
+        session.pop("opencode_profile")
+        worker.write_json(path,session)
+        result=worker.resume_task(path.parent,self.root / "legacy-resume","continue",10)
+        self.assertEqual(result["status"],"completed")
+        self.assertEqual(result["backend"],"codex")
+        self.assertEqual(result["usage"]["total_tokens"],24)
+
     def test_main_handoff_has_total_byte_limit_and_full_report_pointer(self):
         batch = dict(status="failed", artifacts=str(self.root / "out"), tasks=[
             dict(id="large", status="failed", summary="한글\\\"" * 1000,

@@ -15,6 +15,7 @@ FILES = {
     "scripts/run_team.py": ROOT / "skills" / NAME / "scripts/run_team.py",
     "scripts/runtime/team.py": ROOT / "team.py",
     "scripts/runtime/worker.py": ROOT / "worker.py",
+    "scripts/runtime/opencode_backend.py": ROOT / "opencode_backend.py",
     "LICENSE": ROOT / "LICENSE",
 }
 

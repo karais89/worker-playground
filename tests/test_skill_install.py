@@ -25,6 +25,7 @@ class SkillInstallTests(unittest.TestCase):
                 return runtime_available and self in {
                     PureWindowsPath(r'C:\cli-worker-team\scripts\runtime\team.py'),
                     PureWindowsPath(r'C:\cli-worker-team\scripts\runtime\worker.py'),
+                    PureWindowsPath(r'C:\cli-worker-team\scripts\runtime\opencode_backend.py'),
                 }
 
         launcher_spec = importlib.util.spec_from_file_location(
@@ -68,6 +69,12 @@ class SkillInstallTests(unittest.TestCase):
                                     cwd=tmp, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn('--worker-model', result.stdout)
+            self.assertIn('--worker-backend', result.stdout)
+            self.assertIn('--opencode', result.stdout)
+            runtime = subprocess.run([sys.executable, str(target / 'scripts/runtime/worker.py'), 'run', '--help'],
+                                     cwd=tmp, env=env, capture_output=True, text=True)
+            self.assertEqual(runtime.returncode, 0, runtime.stderr)
+            self.assertIn('--backend', runtime.stdout)
 
     def test_existing_skill_is_preserved(self):
         with tempfile.TemporaryDirectory() as tmp:

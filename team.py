@@ -63,13 +63,20 @@ def invoke(cli, cwd, output, prompt, schema, model, effort, timeout, env, sessio
     return dict(valid=valid, execution=execution, events=events, final=final)
 
 
-def run_team(prompt, cwd, output, cli=None, main_model="gpt-6-astra", worker_model=worker.DEFAULT_MODEL,
-             effort="high", worker_effort="high", timeout=600, env=None):
+def run_team(prompt, cwd, output, cli=None, main_model="gpt-6-astra", worker_model=None,
+             effort="high", worker_effort="high", timeout=600, env=None, *, worker_backend="codex", worker_cli=None):
+    worker_model = worker.DEFAULT_MODEL if worker_model is None and worker_backend == "codex" else worker_model
+    worker.opencode_backend.validate_backend(worker_backend, worker_model)
+    if worker_backend == "opencode":
+        worker_cli = worker.opencode_backend.resolve_cli(worker_cli or ["opencode"])
+        worker.opencode_backend.prepare_env(env, "implement")
     with worker.directory_lock(worker.git_root(cwd)):
-        return _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker_effort, timeout, env)
+        return _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker_effort, timeout, env,
+                         worker_backend, worker_cli)
 
 
-def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker_effort, timeout, env):
+def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker_effort, timeout, env,
+              worker_backend, worker_cli):
     cwd, output = Path(cwd).resolve(), Path(output).resolve()
     if timeout <= 0:
         raise ValueError("timeout must be positive")
@@ -102,21 +109,21 @@ def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker
             or (raw and direct_report is not None) or (raw == [] and not worker.validate_report(direct_report))):
         result = dict(status="failed", summary="Main planning failed; inspect plan artifacts.",
                       main_usage=plan["events"]["usage"], worker_usage=None, actual_delegation=False,
-                      main_valid=False, artifacts=str(output))
+                      main_valid=False, worker_backend=worker_backend, artifacts=str(output))
         worker.write_json(output / "summary.json", result)
         return result
     if not raw:
         result = dict(status=direct_report["status"], summary=direct_report["summary"][:1200],
                       main_valid=True, main_session_id=plan["events"]["session_id"],
                       main_usage=plan["events"]["usage"], worker_usage=None, actual_delegation=False,
-                      worker_status=None, main_report=direct_report, artifacts=str(output))
+                      worker_status=None, worker_backend=worker_backend, main_report=direct_report, artifacts=str(output))
         worker.write_json(output / "summary.json", result)
         return result
     worker.write_json(output / "tasks.json", {"tasks": [dict(t, cwd=str(cwd)) for t in raw]})
     tasks = worker.load_tasks(output / "tasks.json")
-    batch = worker.run_batch(tasks, output / "workers", cli=cli, model=worker_model,
+    batch = worker.run_batch(tasks, output / "workers", cli=worker_cli or cli, model=worker_model,
                              effort=worker_effort, timeout=timeout, env=env,
-                             _held_roots=(worker.git_root(cwd),))
+                             _held_roots=(worker.git_root(cwd),), backend=worker_backend)
     # One bounded feedback round; each selected worker keeps its original session,
     # model, permissions and scope. The coordinator never repairs code itself.
     usage_parts = [{"usage": batch["usage"]}]
@@ -219,6 +226,7 @@ def _run_team(prompt, cwd, output, cli, main_model, worker_model, effort, worker
                   repair_invocations=repair_count,
                   actual_delegation=bool(batch), worker_status=batch["status"] if batch else None,
                   main_report=report, artifacts=str(output))
+    result["worker_backend"] = worker_backend
     worker.write_json(output / "summary.json", result)
     return result
 
@@ -228,17 +236,21 @@ def main(argv=None):
     parser.add_argument("prompt", type=Path, help="UTF-8 task file")
     parser.add_argument("--cwd", type=Path, default=Path.cwd())
     parser.add_argument("--main-model", default="gpt-6-astra")
-    parser.add_argument("--worker-model", default=worker.DEFAULT_MODEL)
+    parser.add_argument("--worker-model", help="Codex default: gpt-6.1-sol; OpenCode requires provider/model")
+    parser.add_argument("--worker-backend", choices=worker.opencode_backend.BACKENDS, default="codex")
     parser.add_argument("--effort", default="high")
     parser.add_argument("--worker-effort", default="high")
     parser.add_argument("--codex", default="codex")
+    parser.add_argument("--opencode", default="opencode", help="OpenCode worker executable path")
     parser.add_argument("--timeout", type=float, default=600)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     output = args.output or Path("runs") / ("team-" + time.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:8])
     try:
         result = run_team(args.prompt.read_text(encoding="utf-8-sig"), args.cwd, output, [args.codex],
-                          args.main_model, args.worker_model, args.effort, args.worker_effort, args.timeout)
+                          args.main_model, args.worker_model, args.effort, args.worker_effort, args.timeout,
+                          worker_backend=args.worker_backend,
+                          worker_cli=[args.opencode] if args.worker_backend == "opencode" else None)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0 if result["status"] == "completed" and result.get("worker_status") in (None, "completed") else 1
     except (ValueError, OSError) as error:

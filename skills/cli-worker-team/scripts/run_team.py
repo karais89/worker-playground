@@ -9,7 +9,7 @@ def main():
     runtime = bundled
     if not (bundled / "team.py").is_file() and len(script.parents) > 3:
         runtime = script.parents[3]
-    if not all((runtime / name).is_file() for name in ("team.py", "worker.py")):
+    if not all((runtime / name).is_file() for name in ("team.py", "worker.py", "opencode_backend.py")):
         raise SystemExit("Runtime missing. Install from the repository with: python scripts/install_skill.py")
     sys.path.insert(0, str(runtime))
     from team import main as run
