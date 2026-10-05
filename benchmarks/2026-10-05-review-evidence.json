@@ -1,0 +1,1535 @@
+{
+  "date": "2026-10-05",
+  "initial_candidate": {
+    "manifest": {
+      "schedule": [
+        [
+          "atomic_import",
+          true,
+          "original"
+        ],
+        [
+          "paged_listing",
+          false,
+          "original"
+        ],
+        [
+          "independent_utilities",
+          true,
+          "original"
+        ],
+        [
+          "atomic_import",
+          false,
+          "original"
+        ],
+        [
+          "paged_listing",
+          true,
+          "original"
+        ],
+        [
+          "independent_utilities",
+          false,
+          "original"
+        ],
+        [
+          "paged_listing",
+          true,
+          "unfixed_variant"
+        ],
+        [
+          "independent_utilities",
+          false,
+          "verified_csv"
+        ]
+      ],
+      "controls": [
+        {
+          "case": "atomic_import",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "atomic_import",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "paged_listing",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "paged_listing",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "independent_utilities",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "independent_utilities",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "paged_listing",
+          "variant": "unfixed_variant",
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "independent_utilities",
+          "variant": "verified_csv",
+          "smoke_passed": true,
+          "external_passed": true
+        }
+      ],
+      "source_commit": "cbe58d2a77706c9ead42afe9569e192a9ac9f459",
+      "source_sha256": {
+        "team.py": "1ed46e93b02ca799fb4c597d9bf9443e1ce82c65a8ed97ef8488d39584c49657",
+        "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+        "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+        "benchmarks/review_quality.py": "f1d4d6afc28117710c77cab7fc73d726195c7803b4d2e855d7e981ec1877d5a5",
+        "benchmarks/review_evidence.py": "24c9826d48be00affdf4780cedf084417849ce5ddca973275e66c7cf2c18328e",
+        "benchmarks/project_cases.py": "c5fd7cccf311a9fe17ffe88510e3202e330d8f3bd5264a87b74348e163e3a738",
+        "benchmarks/validate_project_cases.py": "a1ca261c5bd6ce8ec527b6a44b6c703aebeeb2a2e65ccac0170a721f7cf9f9a8"
+      },
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "cli": "codex-cli 0.160.0",
+      "method": "Six original staged cases, one withheld unfixed variant, one verified CSV control; fresh sessions; no solo comparison"
+    },
+    "runs": [
+      {
+        "id": "q01",
+        "case": "atomic_import",
+        "variant": "original",
+        "faulty": true,
+        "acceptance_passed": true,
+        "before_passed": false,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 91986,
+          "cached_input_tokens": 59008,
+          "output_tokens": 1288,
+          "reasoning_output_tokens": 92,
+          "total_tokens": 93274,
+          "uncached_input_tokens": 32978
+        },
+        "worker_usage": {
+          "input_tokens": 129427,
+          "cached_input_tokens": 117376,
+          "output_tokens": 4070,
+          "total_tokens": 133497
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "The atomic import requirement remains unmet. import_json commits each record inside its loop, so importing [{\"title\":\"new\"},{}] saves \"new\" before validation fails. A later duplicate likewise leaves earlier records committed and visible to another connection. test_atomic_import.py currently covers only empty imports.",
+          "changed_files": [],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "Confirmed defect: taskdesk/service.py commits after every INSERT. Failed imports therefore retain earlier records, violating all-or-nothing behavior.",
+            "The observed test command passed, but the inspected tests contain no regressions for failed-import atomicity, duplicate conflicts, or second-connection visibility."
+          ],
+          "followups": [
+            {
+              "id": "atomic-json-import",
+              "prompt": "Complete the original implementation task; the first result made no changes. Confirmed defect: TaskService.import_json commits each INSERT inside the loop. For input [{\"title\":\"new\"},{}], the expected result is a validation error with no new records; the code commits \"new\" before raising. Later duplicates within a batch or against existing data have the same partial-commit problem. Fix atomicity while preserving previously committed tasks, validation, public APIs, successful/empty imports, and CLI success JSON/error exit 2. Extend the existing root-level test_atomic_import.py with meaningful regressions for these failure scenarios, preservation of committed tasks, and visibility from a second connection, including during an import. Verify CLI compatibility. Preserve existing tests/ files byte-for-byte, use only the standard library, and keep changes within the project. Run all existing and new tests and fix failures. Return changed files and execution evidence with commands, exit codes, and expected versus actual outcomes. Do not commit, change Git configuration, or launch AI CLIs/subagents."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Verified that import_json now commits the whole batch or rolls it back on failure. Regressions cover validation failures, duplicate titles, preservation of committed tasks, second-connection visibility, successful/empty imports, and CLI JSON/error exit 2. All 12 tests passed; existing tests/ files remain unchanged.",
+          "changed_files": [
+            "taskdesk/service.py",
+            "test_atomic_import.py"
+          ],
+          "checks": [
+            {
+              "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "SHA-256 verification of existing tests/ source files",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v1/q01"
+      },
+      {
+        "id": "q02",
+        "case": "paged_listing",
+        "variant": "original",
+        "faulty": false,
+        "acceptance_passed": true,
+        "before_passed": true,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 73364,
+          "cached_input_tokens": 43008,
+          "output_tokens": 1024,
+          "reasoning_output_tokens": 209,
+          "total_tokens": 74388,
+          "uncached_input_tokens": 30356
+        },
+        "worker_usage": {
+          "input_tokens": 25160,
+          "cached_input_tokens": 12288,
+          "output_tokens": 135,
+          "total_tokens": 25295
+        },
+        "initial_review": {
+          "status": "completed",
+          "summary": "Reviewed code confirms sorting, pagination, filtering, validation, CLI flags, and unchanged JSON output. Usage and test_listing.py are present; existing tests/ files are unchanged. The worker’s test command exited successfully.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Reviewed code confirms sorting, pagination, filtering, validation, CLI flags, and unchanged JSON output. Usage and test_listing.py are present; existing tests/ files are unchanged. The worker’s test command exited successfully.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 0,
+        "raw_artifacts": "bench-runs/review-evidence-v1/q02"
+      },
+      {
+        "id": "q03",
+        "case": "independent_utilities",
+        "variant": "original",
+        "faulty": true,
+        "acceptance_passed": false,
+        "before_passed": false,
+        "after_passed": true,
+        "extra_checks": {
+          "passed": false,
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/home/bench/review-evidence-20261005/bench-runs/review-evidence-v1/q03/project/taskdesk/settings.py\", line 35, in load_settings\n    result['report']['page_size'] = size\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\nTypeError: 'NoneType' object does not support item assignment\n"
+        },
+        "status": "blocked",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 116591,
+          "cached_input_tokens": 80128,
+          "output_tokens": 2850,
+          "reasoning_output_tokens": 1121,
+          "total_tokens": 119441,
+          "uncached_input_tokens": 36463
+        },
+        "worker_usage": {
+          "input_tokens": 203106,
+          "cached_input_tokens": 171264,
+          "output_tokens": 5817,
+          "total_tokens": 208923
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "CSV implementation appears correct, but settings ignores an explicit empty environment. Both observed test runs passed six tests; broader required behavior remains unverified.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "Confirmed defect: taskdesk/settings.py uses `env = env or os.environ`. With process TASKDESK_PAGE_SIZE=8, load_settings(env={}) uses 8; it must ignore process variables and retain the default page size.",
+            "Existing tests/ files have no diff. New tests exist at the project root, but cover only empty/comma CSV output and two environment values."
+          ],
+          "followups": [
+            {
+              "id": "settings-merge",
+              "prompt": "Correct the confirmed explicit-empty-environment defect in taskdesk/settings.py: env={} must ignore process variables, while env=None uses them. Add comprehensive tests within your original scope, tests/test_settings.py, for recursive merging, non-dictionary replacement, non-object root rejection, independent nested copies, preservation of defaults/input mappings, process versus explicit environment behavior, valid bounds 1/1000, and invalid integer/range values. Document any needed API clarification in the module. Preserve all pre-existing tests/ files byte-for-byte. Run all existing and new tests, fix failures caused by your changes, and report commands and expected/actual regression results. Do not commit or change CLI files."
+            },
+            {
+              "id": "csv-export",
+              "prompt": "The inspected CSV implementation appears to meet the requirements, but current root tests cover only empty input and a comma. Within your original scope, add tests/test_csv_export.py verifying a one-pass iterable, multiple-task ordering, quotes, embedded newlines, Unicode, exact newline line endings/header, unchanged inputs, and preserved to_json behavior. Adjust taskdesk/reporting.py only if verification exposes a defect. Preserve all pre-existing tests/ files byte-for-byte. Run all existing and new tests, fix failures caused by your changes, and report commands/results. Do not commit or change CLI files."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "blocked",
+          "summary": "The empty-environment defect is fixed, and the observed full-suite run passed 26 tests. One required settings combination remains unresolved.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py",
+            "tests/test_csv_export.py",
+            "tests/test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "python -m unittest tests.test_settings.SettingsTests.test_explicit_empty_environment_ignores_process",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "For JSON {\"report\": null} with env={\"TASKDESK_PAGE_SIZE\": \"8\"}, merging produces report=None, then the override executes result['report']['page_size'] = 8. This code path cannot apply the required valid override. Tests cover non-dictionary replacement and environment overrides separately, but do not reproduce their combination. No execution evidence resolves this case, and no feedback rounds remain.",
+            "CSV behavior and documentation were inspected. Existing tests/ files have no diff; worker hash checks also passed."
+          ],
+          "followups": []
+        },
+        "repair_invocations": 2,
+        "raw_artifacts": "bench-runs/review-evidence-v1/q03"
+      }
+    ],
+    "audit": [
+      {
+        "case": "q01",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q02",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 0,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q03",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 2,
+        "resumed_workers": 2,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      }
+    ],
+    "stopped_reason": "Candidate failed q03 extra check; q04 deliberately interrupted before changing prompt. Original summary and partial q04 logs preserved.",
+    "remaining_schedule": [
+      [
+        "atomic_import",
+        false,
+        "original"
+      ],
+      [
+        "paged_listing",
+        true,
+        "original"
+      ],
+      [
+        "independent_utilities",
+        false,
+        "original"
+      ],
+      [
+        "paged_listing",
+        true,
+        "unfixed_variant"
+      ],
+      [
+        "independent_utilities",
+        false,
+        "verified_csv"
+      ]
+    ]
+  },
+  "final_candidate_initial_batch": {
+    "manifest": {
+      "schedule": [
+        [
+          "atomic_import",
+          true,
+          "original"
+        ],
+        [
+          "paged_listing",
+          false,
+          "original"
+        ],
+        [
+          "independent_utilities",
+          true,
+          "original"
+        ],
+        [
+          "atomic_import",
+          false,
+          "original"
+        ],
+        [
+          "paged_listing",
+          true,
+          "original"
+        ],
+        [
+          "independent_utilities",
+          false,
+          "original"
+        ],
+        [
+          "paged_listing",
+          true,
+          "unfixed_variant"
+        ],
+        [
+          "independent_utilities",
+          false,
+          "verified_csv"
+        ]
+      ],
+      "controls": [
+        {
+          "case": "atomic_import",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "atomic_import",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "paged_listing",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "paged_listing",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "independent_utilities",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "independent_utilities",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "paged_listing",
+          "variant": "unfixed_variant",
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "independent_utilities",
+          "variant": "verified_csv",
+          "smoke_passed": true,
+          "external_passed": true
+        }
+      ],
+      "source_commit": "cbe58d2a77706c9ead42afe9569e192a9ac9f459",
+      "source_sha256": {
+        "team.py": "b74fb6c45589c4568f57017f47d985dc8d181c1cb928f8a7f6e19d4b4df1a35a",
+        "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+        "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+        "benchmarks/review_quality.py": "f1d4d6afc28117710c77cab7fc73d726195c7803b4d2e855d7e981ec1877d5a5",
+        "benchmarks/review_evidence.py": "24c9826d48be00affdf4780cedf084417849ce5ddca973275e66c7cf2c18328e",
+        "benchmarks/project_cases.py": "c5fd7cccf311a9fe17ffe88510e3202e330d8f3bd5264a87b74348e163e3a738",
+        "benchmarks/validate_project_cases.py": "a1ca261c5bd6ce8ec527b6a44b6c703aebeeb2a2e65ccac0170a721f7cf9f9a8"
+      },
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "cli": "codex-cli 0.160.0",
+      "method": "Six original staged cases, one withheld unfixed variant, one verified CSV control; fresh sessions; no solo comparison"
+    },
+    "runs": [
+      {
+        "id": "q01",
+        "case": "atomic_import",
+        "variant": "original",
+        "faulty": true,
+        "acceptance_passed": true,
+        "before_passed": false,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 92309,
+          "cached_input_tokens": 59264,
+          "output_tokens": 1318,
+          "reasoning_output_tokens": 155,
+          "total_tokens": 93627,
+          "uncached_input_tokens": 33045
+        },
+        "worker_usage": {
+          "input_tokens": 157148,
+          "cached_input_tokens": 114944,
+          "output_tokens": 3843,
+          "total_tokens": 160991
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "The worker made no changes. Inspection confirms import_json still commits each record individually, so atomicity remains broken.",
+          "changed_files": [],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "Confirmed defect: taskdesk/service.py commits inside the import loop. Importing [{\"title\":\"new\"},{\"title\":\" \"}] saves \"new\" before validation fails; the required result is no imported records.",
+            "The same code path saves earlier records before duplicate-title failures within the batch or against existing data. Those committed records become visible to another connection.",
+            "test_atomic_import.py exists but only tests empty imports. The observed passing command ran five existing tests; it does not establish rollback or cross-connection isolation."
+          ],
+          "followups": [
+            {
+              "id": "atomic-json-import",
+              "prompt": "Complete the original implementation task; the initial result only ran tests and made no changes. Inspection confirms TaskService.import_json in taskdesk/service.py commits inside its record loop. Fix atomicity for validation failures and duplicate titles within the batch and against existing records, preserving previously committed tasks, successful/empty imports, validation, public APIs, and CLI success JSON/error exit 2. Extend the existing root test_atomic_import.py with regressions covering these failures after an earlier valid record, retained committed tasks, and second-connection visibility both during an import and after failure. Include successful import persistence and CLI success/error checks. Account for title trimming when checking duplicates. Use standard-library facilities only. Preserve existing tests/ files byte-for-byte. Run all existing and new tests and fix relevant failures. Return changed files, observed commands/results, and concrete expected-versus-actual evidence for atomicity and connection visibility. Keep changes within this project; do not commit, change Git configuration, or launch AI CLIs/native subagents."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Reviewed the fix: imports now use one transaction, rolling back validation and duplicate-title failures while retaining committed tasks. Regressions verify second-connection isolation, successful/empty imports, persistence, and CLI JSON/error exit 2. All 12 tests passed; existing tests/ files passed byte-for-byte checksum verification.",
+          "changed_files": [
+            "taskdesk/service.py",
+            "test_atomic_import.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s . -v",
+              "exit_code": 0
+            },
+            {
+              "command": "sha256sum -c (original tests/ checksums)",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2/q01"
+      },
+      {
+        "id": "q02",
+        "case": "paged_listing",
+        "variant": "original",
+        "faulty": false,
+        "acceptance_passed": true,
+        "before_passed": true,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 115978,
+          "cached_input_tokens": 62336,
+          "output_tokens": 1609,
+          "reasoning_output_tokens": 239,
+          "total_tokens": 117587,
+          "uncached_input_tokens": 53642
+        },
+        "worker_usage": {
+          "input_tokens": 133961,
+          "cached_input_tokens": 109696,
+          "output_tokens": 6610,
+          "total_tokens": 140571
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "The implementation matches the requested behavior on inspection, and existing tests are unchanged. Verification is incomplete: test_listing.py covers only priority sorting with limit=1 and limit=0; CLI behavior and key option interactions remain untested.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "No confirmed implementation defect. The observed passing command does not verify filtering before pagination, priority ties, uncapped offsets, invalid options, CLI exit codes, or unchanged JSON and stored records."
+          ],
+          "followups": [
+            {
+              "id": "task-list-sorting-pagination",
+              "prompt": "Within your original implement scope, extend root-level test_listing.py to verify the missing required behaviors without modifying existing tests/ files. Cover Store and TaskService defaults, priority ties ordered by id, filtering combined with sorting/limit/offset, limit=None with a nonzero offset, zero limit, and offsets past the end. For example, insert tasks with (status, priority) values (open,0), (done,5), (open,5), (open,5), (open,2): listing open tasks by priority with limit=2, offset=1 must return ids 4 and 5. Verify negative limit/offset and unsupported sort raise ValueError through TaskService. Exercise the actual CLI with a temporary database: supported flag combinations must return the expected rows and unchanged JSON fields; invalid sort and negative bounds must exit 2. Verify listing leaves stored records unchanged. These are missing checks, not confirmed runtime defects; report expected versus actual results and fix any reproduced failures. Run all existing and new tests, verify pre-existing tests/ files remain byte-for-byte unchanged, and return concrete command results and changed files. Do not commit or change Git configuration."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Added sorting and pagination across Store, TaskService, and CLI, documented usage, and verified boundary cases, filtering, validation, JSON output, and unchanged stored records. All 13 tests passed; existing tests remain byte-for-byte unchanged.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --exit-code HEAD -- tests/",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2/q02"
+      },
+      {
+        "id": "q03",
+        "case": "independent_utilities",
+        "variant": "original",
+        "faulty": true,
+        "acceptance_passed": true,
+        "before_passed": false,
+        "after_passed": true,
+        "extra_checks": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "CSV CR/CRLF/quote round-trip and null-report override passed\n",
+          "stderr": ""
+        },
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 102981,
+          "cached_input_tokens": 85504,
+          "output_tokens": 2579,
+          "reasoning_output_tokens": 544,
+          "total_tokens": 105560,
+          "uncached_input_tokens": 17477
+        },
+        "worker_usage": {
+          "input_tokens": 224351,
+          "cached_input_tokens": 188800,
+          "output_tokens": 6729,
+          "total_tokens": 231080
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "CSV implementation appears correct. Settings has two confirmed defects: env={} falls back to os.environ, and a page-size override fails when JSON replaces report with a non-dictionary. Existing tests remain unchanged, but new tests cover too few required behaviors.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s . (csv-export worker)",
+              "exit_code": 0
+            },
+            {
+              "command": "python -m unittest discover -s . (settings-loading worker)",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "With process TASKDESK_PAGE_SIZE=8, load_settings(env={}) incorrectly returns page_size=8: `env = env or os.environ` ignores the explicit empty mapping.",
+            "For JSON {\"report\": null} and env={\"TASKDESK_PAGE_SIZE\":\"8\"}, merging preserves null, then `result['report']['page_size'] = size` raises TypeError. Both non-dictionary replacement and the environment override must work together.",
+            "Observed commands passed, but current new tests do not verify CSV quoting beyond commas, order, input preservation, recursive merging, environment isolation, invalid JSON roots, or nested independence."
+          ],
+          "followups": [
+            {
+              "id": "csv-export",
+              "prompt": "Review the existing taskdesk/reporting.py and root test_csv_export.py; implementation appears to meet the CSV requirements. Within your original scope, add tests/test_csv_export.py covering a strictly one-pass iterable, multiple-row order, empty header, exact LF record endings, and round-trip titles containing commas, quotes, embedded newlines and Unicode. Verify Task inputs remain unchanged and to_json retains its behavior. Preserve all pre-existing tests/ files byte-for-byte. Document the API in docs/csv_export.md. Do not edit root test files or README.md, which are outside your assigned scope. Run python -m unittest discover -s . including all existing and new tests, fix attributable failures, and report commands/results and changed files."
+            },
+            {
+              "id": "settings-loading",
+              "prompt": "Inspect and correct taskdesk/settings.py within your original scope. Confirmed defect 1: `env = env or os.environ` makes explicit env={} read process variables. Reproduce with process TASKDESK_PAGE_SIZE=8: load_settings(env={}) should retain default page_size=20. Confirmed defect 2: supported non-dictionary replacement interacts incorrectly with the override: JSON {\"report\":null} plus env={\"TASKDESK_PAGE_SIZE\":\"8\"} reaches assignment through None and raises TypeError. Reproduce expected versus actual, then make the override establish report.page_size=8; cover representative scalar/list replacements too. Add tests/test_settings.py for recursive merging, non-dictionary replacements, non-object JSON root ValueError, env=None versus explicit empty mapping, valid boundary overrides 1/1000, invalid integer text and out-of-range values, nested independence across calls, and preservation of DEFAULTS and input mappings. Document these behaviors in docs/settings.md. Preserve pre-existing tests/ files byte-for-byte and leave root test files/README.md untouched because they are outside your scope. Run python -m unittest discover -s . including all existing and new tests, fix attributable failures, and report reproduction results, commands/results and changed files."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Implemented and documented both APIs. Reviewed CSV quoting, one-pass iteration, recursive settings merging, environment overrides, and input preservation. Both settings defects are fixed; all 22 tests passed, and pre-existing tests remain unchanged.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py",
+            "tests/test_csv_export.py",
+            "tests/test_settings.py",
+            "docs/csv_export.md",
+            "docs/settings.md"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 2,
+        "raw_artifacts": "bench-runs/review-evidence-v2/q03"
+      },
+      {
+        "id": "q04",
+        "case": "atomic_import",
+        "variant": "original",
+        "faulty": false,
+        "acceptance_passed": true,
+        "before_passed": true,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 127007,
+          "cached_input_tokens": 89728,
+          "output_tokens": 1719,
+          "reasoning_output_tokens": 424,
+          "total_tokens": 128726,
+          "uncached_input_tokens": 37279
+        },
+        "worker_usage": {
+          "input_tokens": 129037,
+          "cached_input_tokens": 107008,
+          "output_tokens": 4478,
+          "total_tokens": 133515
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "The current import uses one connection transaction, but required failure regressions and cross-connection/CLI verification are missing. The worker only ran the five existing tests.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/service.py",
+            "test_atomic_import.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "Confirmed missing coverage: test_atomic_import.py tests only an empty import. It does not exercise a valid record followed by invalid input, duplicate titles within a batch, or collision with existing data. Those failures must preserve previously committed tasks and leave no imported records visible from another connection.",
+            "CLI success JSON and error exit 2 are present in the inspected code, but the observed test run does not verify them. No runtime atomicity defect is confirmed from inspection."
+          ],
+          "followups": [
+            {
+              "id": "atomic-import",
+              "prompt": "Complete the original task within your implement scope. The current service.py diff wraps direct INSERTs in one connection transaction; inspect and assess that implementation rather than assuming a fix is still needed. Add regressions in the existing root test_atomic_import.py for a valid record followed by validation failure, duplicate titles within a batch (including titles equal after trimming), and duplicate titles against previously committed data after an earlier valid record. Verify failed imports preserve existing task values and leave no batch records on either the importing connection or a second connection; include a check that the second connection cannot see an inserted prefix while import is in progress. Verify successful/empty imports and CLI success JSON/error exit 2. Reproduce each required scenario and report expected versus actual behavior; fix any demonstrated failure before returning. Preserve all pre-existing tests/ files byte-for-byte, use only the standard library, and keep changes within this project. Run all existing and new tests and report exact commands/results and changed files. Do not commit, change Git configuration, launch AI CLIs, or run native subagents."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "JSON imports now use one transaction. Regressions verify rollback on validation errors and duplicate titles, preservation of committed tasks, second-connection visibility, successful/empty imports, and CLI JSON/error exit 2. All 15 tests passed; existing tests/ files remain byte-for-byte unchanged.",
+          "changed_files": [
+            "taskdesk/service.py",
+            "test_atomic_import.py",
+            "README.md"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s . -v",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check && git status --short && git diff --stat && git diff -- tests/",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2/q04"
+      },
+      {
+        "id": "q05",
+        "case": "paged_listing",
+        "variant": "original",
+        "faulty": true,
+        "acceptance_passed": false,
+        "before_passed": false,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "failed",
+        "main_valid": false,
+        "main_usage": null,
+        "worker_usage": {
+          "input_tokens": 183003,
+          "cached_input_tokens": 138368,
+          "output_tokens": 8600,
+          "total_tokens": 191603
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "Inspection confirmed that pagination ignores every offset. The observed test command passed, but the new test does not exercise offsets or most required interactions.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/cli.py",
+            "taskdesk/service.py",
+            "taskdesk/storage.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "Confirmed defect: Store.list_tasks binds OFFSET to literal 0. With two tasks, offset=1 must return only the second task and offset=2 must return empty; both currently return all tasks. This also affects service and CLI calls, filtered results, priority sorting, and calls without a limit.",
+            "Missing verification: test_listing.py only checks priority sorting with limit=1 and limit=0. The successful command does not verify offset behavior, priority ties, filtering before pagination, validation, CLI behavior, JSON compatibility, or nonmutation. Existing tests have no diff."
+          ],
+          "followups": [
+            {
+              "id": "task-list-sorting-pagination",
+              "prompt": "Within your original implementation scope, fix the confirmed offset defect: taskdesk/storage.py currently binds literal 0 as OFFSET instead of the supplied offset. Add meaningful coverage in the existing root-level test_listing.py for Store and TaskService defaults, priority descending with id-ascending ties, status filtering before sorting/pagination, positive offsets with and without a limit, offsets at/past the end, zero limit, negative limit/offset and unsupported sort raising ValueError through the service, CLI flags and invalid-input exit 2, unchanged JSON row format, and nonmutation. Include combined status/priority/limit/offset scenarios. Preserve existing tests/ files byte-for-byte. Clarify README usage with default id-ascending ordering, absent-limit behavior, and pagination semantics. Run all existing and new tests, fix failures, and return observed commands with exit codes and a concise account of verified behavior. Do not commit, change Git configuration, launch AI CLIs, or use native subagents."
+            }
+          ]
+        },
+        "final_review": null,
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2/q05"
+      }
+    ],
+    "audit": [
+      {
+        "case": "q01",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q02",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q03",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 2,
+        "resumed_workers": 2,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q04",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q05",
+        "main_valid": false,
+        "full_audit_passed": false,
+        "reason": "Incomplete main invocation; not treated as a measured success"
+      }
+    ],
+    "stopped_reason": "CLI credits or usage limit exhausted",
+    "remaining_schedule": [
+      [
+        "independent_utilities",
+        false,
+        "original"
+      ],
+      [
+        "paged_listing",
+        true,
+        "unfixed_variant"
+      ],
+      [
+        "independent_utilities",
+        false,
+        "verified_csv"
+      ]
+    ]
+  },
+  "final_candidate_continuation": {
+    "manifest": {
+      "schedule": [
+        [
+          "paged_listing",
+          true,
+          "original"
+        ],
+        [
+          "independent_utilities",
+          false,
+          "original"
+        ],
+        [
+          "paged_listing",
+          true,
+          "unfixed_variant"
+        ],
+        [
+          "independent_utilities",
+          false,
+          "verified_csv"
+        ]
+      ],
+      "start_case": 5,
+      "controls": [
+        {
+          "case": "atomic_import",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "atomic_import",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "paged_listing",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "paged_listing",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "independent_utilities",
+          "faulty": false,
+          "smoke_passed": true,
+          "external_passed": true
+        },
+        {
+          "case": "independent_utilities",
+          "faulty": true,
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "paged_listing",
+          "variant": "unfixed_variant",
+          "smoke_passed": true,
+          "external_passed": false
+        },
+        {
+          "case": "independent_utilities",
+          "variant": "verified_csv",
+          "smoke_passed": true,
+          "external_passed": true
+        }
+      ],
+      "source_commit": "cbe58d2a77706c9ead42afe9569e192a9ac9f459",
+      "source_sha256": {
+        "team.py": "b74fb6c45589c4568f57017f47d985dc8d181c1cb928f8a7f6e19d4b4df1a35a",
+        "worker.py": "f89c73ef9dad272d4776451560b1e38bf57f76cbfbe13c81312ec867cd794792",
+        "bench.py": "2e8db2755d4d4cba23ae5310abd087ab8247725a85003c709ad1060fd65bed0e",
+        "benchmarks/review_quality.py": "f1d4d6afc28117710c77cab7fc73d726195c7803b4d2e855d7e981ec1877d5a5",
+        "benchmarks/review_evidence.py": "b1b5afd4f254c3a8b4f72d3742c0aa8064dd3ee61293463fbbdc94331ab4e855",
+        "benchmarks/project_cases.py": "c5fd7cccf311a9fe17ffe88510e3202e330d8f3bd5264a87b74348e163e3a738",
+        "benchmarks/validate_project_cases.py": "a1ca261c5bd6ce8ec527b6a44b6c703aebeeb2a2e65ccac0170a721f7cf9f9a8"
+      },
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "cli": "codex-cli 0.160.0",
+      "method": "Six original staged cases, one withheld unfixed variant, one verified CSV control; fresh sessions; no solo comparison"
+    },
+    "runs": [
+      {
+        "id": "q05",
+        "case": "paged_listing",
+        "variant": "original",
+        "faulty": true,
+        "acceptance_passed": true,
+        "before_passed": false,
+        "after_passed": true,
+        "extra_checks": null,
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 118449,
+          "cached_input_tokens": 81024,
+          "output_tokens": 1631,
+          "reasoning_output_tokens": 216,
+          "total_tokens": 120080,
+          "uncached_input_tokens": 37425
+        },
+        "worker_usage": {
+          "input_tokens": 126984,
+          "cached_input_tokens": 86784,
+          "output_tokens": 3173,
+          "total_tokens": 130157
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "Review found a confirmed pagination defect: Store.list_tasks always binds offset 0. Existing tests pass but do not cover offsets or CLI integration.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/cli.py",
+            "taskdesk/service.py",
+            "taskdesk/storage.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff -- tests/",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "taskdesk/storage.py:29 ignores the supplied offset. With tasks [a,b], list_tasks(limit=1, offset=1) returns a instead of b; offset=99 returns rows instead of empty. This affects Store, service, and CLI, including filtered and priority-sorted lists.",
+            "test_listing.py only verifies priority sorting with limit=1 and limit=0. Required pagination interactions, service validation, CLI exit codes, and unchanged JSON/storage behavior lack execution evidence. Existing tests/ have no Git diff."
+          ],
+          "followups": [
+            {
+              "id": "task-list-sorting-pagination",
+              "prompt": "Correct the confirmed offset defect in taskdesk/storage.py: SQL parameters currently bind offset 0 regardless of the argument. Verify Store, service, and CLI honor positive offsets, including no limit, bounded limits, offsets past the end, and status filtering combined with priority sorting. Extend the existing root test_listing.py with meaningful coverage of default id ordering, priority ties ordered by id, filtering before pagination, zero limit, uncapped results, service ValueError for unsupported sort and negative limit/offset, CLI exit 2 for those invalid values, and successful CLI JSON rows retaining the existing format. Verify listing does not mutate stored tasks. Preserve every existing tests/ file byte-for-byte and use only the standard library. Run all existing and new tests and fix failures before returning. Report actual commands and results, including the offset regression's expected versus actual results after correction. Do not commit, change Git configuration, launch AI CLIs or native subagents, or leave this project's scope."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Implemented and reviewed sorting and pagination across Store, service, and CLI. Fixed the offset regression, documented usage, and added test_listing.py. All 12 tests pass; existing tests remain unchanged. JSON format and stored tasks are preserved.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/storage.py",
+            "taskdesk/service.py",
+            "taskdesk/cli.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check && git diff --exit-code -- tests/ && sha256sum tests/__init__.py tests/test_baseline.py",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2-continuation/q05"
+      },
+      {
+        "id": "q06",
+        "case": "independent_utilities",
+        "variant": "original",
+        "faulty": false,
+        "acceptance_passed": true,
+        "before_passed": true,
+        "after_passed": true,
+        "extra_checks": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "CSV CR/CRLF/quote round-trip and null-report override passed\n",
+          "stderr": ""
+        },
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 169911,
+          "cached_input_tokens": 129408,
+          "output_tokens": 2555,
+          "reasoning_output_tokens": 367,
+          "total_tokens": 172466,
+          "uncached_input_tokens": 40503
+        },
+        "worker_usage": {
+          "input_tokens": 225487,
+          "cached_input_tokens": 196096,
+          "output_tokens": 6642,
+          "total_tokens": 232129
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "Both APIs and README documentation exist, and existing tests/ files are unchanged. Workers observed six passing tests, but coverage is incomplete and settings overrides fail when JSON replaces report with a non-dictionary.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "Confirmed settings defect: JSON {\"report\": null} with env={\"TASKDESK_PAGE_SIZE\":\"8\"} reaches result['report']['page_size'] with report=None. The required environment override should produce report.page_size=8; the current code raises TypeError. Other non-dictionary report replacements have the same incompatible assignment path.",
+            "CSV tests currently cover only an empty header and one comma-containing task. Settings tests cover only override 8 and invalid 0. Required interactions and preservation behavior lack execution evidence.",
+            "Unverified CSV concern: a carriage return inside a title may escape quoting with lineterminator='\\n'. Worker reproduction is needed before treating this as a defect."
+          ],
+          "followups": [
+            {
+              "id": "csv-export",
+              "prompt": "Complete verification within your original reporting.py and tests/test_csv_export.py scope; root test_csv_export.py already exists, so leave it unchanged and add coverage in your assigned test file. Verify multiple-task order, a strictly one-pass iterable, exact newline record endings, comma/quote/LF/Unicode round-tripping, unchanged Task inputs, and preserved to_json behavior. Reproduce CSV round-tripping for Task(1, 'a\\rb', 'open', 2) using csv.reader with StringIO(newline=''); report expected versus actual results and fix quoting if it fails. Preserve every pre-existing tests/ file byte-for-byte. Run all existing and new tests with python -m unittest discover -s . and fix relevant failures. Return changed files and execution results."
+            },
+            {
+              "id": "settings-merge",
+              "prompt": "Fix the interaction between non-dictionary JSON replacements and TASKDESK_PAGE_SIZE within taskdesk/settings.py. For JSON {\"report\": null}, {\"report\": []}, and {\"report\": \"custom\"}, a valid environment override must successfully set report.page_size; without an override, preserve the JSON replacement. Add regression and requirement coverage in your assigned tests/test_settings.py; leave existing root test_settings.py unchanged. Cover recursive merging, non-dictionary replacement, non-object root ValueError, independent nested defaults/results, unchanged environment mappings, env=None using process environment versus env={} ignoring it, override precedence, boundaries 1 and 1000, and invalid noninteger/out-of-range values. Preserve every pre-existing tests/ file byte-for-byte. Run all existing and new tests with python -m unittest discover -s . and fix relevant failures. Return changed files and execution results."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Implemented and documented both APIs. Reviewed code and regression tests; the settings override defect is fixed, and CSV reproduction succeeded. All 22 existing and new tests passed. Pre-existing tests remain byte-for-byte unchanged; no CLI changes were made.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py",
+            "tests/test_csv_export.py",
+            "tests/test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "SHA-256 verification of pre-existing test files",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 2,
+        "raw_artifacts": "bench-runs/review-evidence-v2-continuation/q06"
+      },
+      {
+        "id": "q07",
+        "case": "paged_listing",
+        "variant": "unfixed_variant",
+        "faulty": true,
+        "acceptance_passed": true,
+        "before_passed": false,
+        "after_passed": false,
+        "extra_checks": null,
+        "status": "blocked",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 114203,
+          "cached_input_tokens": 62848,
+          "output_tokens": 1505,
+          "reasoning_output_tokens": 109,
+          "total_tokens": 115708,
+          "uncached_input_tokens": 51355
+        },
+        "worker_usage": {
+          "input_tokens": 111757,
+          "cached_input_tokens": 67968,
+          "output_tokens": 1964,
+          "total_tokens": 113721
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "Confirmed an offset defect. Existing and new tests passed, but they do not cover nonzero offsets or CLI behavior. Existing tests/ files are unchanged.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/cli.py",
+            "taskdesk/service.py",
+            "taskdesk/storage.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "taskdesk/storage.py binds offset + (1 if offset else 0), skipping an extra row for every positive offset. With IDs [1,2,3], list_tasks(offset=1) must return [2,3], but this code requests SQL OFFSET 2 and returns [3]. This also affects priority sorting, status-filtered pagination, and the CLI.",
+            "test_listing.py only checks priority sorting with limit=1 and limit=0. The successful test command does not verify the defective pagination path or CLI validation."
+          ],
+          "followups": [
+            {
+              "id": "task-list-sorting-pagination",
+              "prompt": "Correct the confirmed positive-offset defect in Store.list_tasks: it currently binds offset + (1 if offset else 0). For IDs [1,2,3], offset=1 must return [2,3]. Verify the correction through Store, TaskService, and CLI. Expand the existing root-level test_listing.py to cover default id ordering, priority ties resolved by id, status filtering before sorting/pagination, positive offsets with both sorts and with/without a limit, zero limit, offsets at/past the end, and negative bounds/unsupported sort raising ValueError through the service and CLI exit 2. Include CLI JSON row-format and stored-data preservation checks. Preserve all existing tests/ files byte-for-byte, use only the standard library, and keep changes within this project. Run all existing and new tests and fix failures. Return actual changed files and verification commands/results; the previous summary claimed no changes despite existing modifications. Do not commit, change Git configuration, launch AI CLIs, or use native subagents."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "blocked",
+          "summary": "Sorting and CLI flags are present, but pagination remains incorrect. The worker reproduced failures and made no corrections. Existing tests/ files remain unchanged.",
+          "changed_files": [
+            "README.md",
+            "taskdesk/cli.py",
+            "taskdesk/service.py",
+            "taskdesk/storage.py",
+            "test_listing.py"
+          ],
+          "checks": [
+            {
+              "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "Inline unittest checks across Store, TaskService, and CLI",
+              "exit_code": 1
+            },
+            {
+              "command": "git diff --exit-code -- tests/",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "taskdesk/storage.py:29 adds 1 to every positive offset. For IDs [1,2,3], offset=1 returns [3] instead of [2,3]. Execution reproduced 15 failures across Store, service, and CLI, including priority sorting and status-filtered pagination.",
+            "test_listing.py still lacks regression coverage for positive offsets and CLI behavior. The five passing repository tests do not establish correct pagination.",
+            "Corrections were not applied; no feedback rounds remain."
+          ],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2-continuation/q07"
+      },
+      {
+        "id": "q08",
+        "case": "independent_utilities",
+        "variant": "verified_csv",
+        "faulty": false,
+        "acceptance_passed": true,
+        "before_passed": true,
+        "after_passed": true,
+        "extra_checks": {
+          "passed": true,
+          "exit_code": 0,
+          "stdout": "CSV CR/CRLF/quote round-trip and null-report override passed\n",
+          "stderr": ""
+        },
+        "status": "completed",
+        "main_valid": true,
+        "main_usage": {
+          "input_tokens": 117417,
+          "cached_input_tokens": 80256,
+          "output_tokens": 1928,
+          "reasoning_output_tokens": 389,
+          "total_tokens": 119345,
+          "uncached_input_tokens": 37161
+        },
+        "worker_usage": {
+          "input_tokens": 211780,
+          "cached_input_tokens": 180864,
+          "output_tokens": 11493,
+          "total_tokens": 223273
+        },
+        "initial_review": {
+          "status": "blocked",
+          "summary": "Implementation and documentation exist, but required behavior lacks adequate verification. The reported successful test run also needs reconciliation with the CSV boundary test.",
+          "changed_files": [
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "README.md",
+            "test_csv_export.py",
+            "test_settings.py"
+          ],
+          "checks": [
+            {
+              "command": "/bin/bash -lc 'python -m unittest discover -s .'",
+              "exit_code": 0
+            }
+          ],
+          "issues": [
+            "CSV tests omit order, quotes, LF-containing fields, Unicode, input preservation, and to_json preservation. Settings tests omit recursive merging, replacement values, independent copies, non-object roots, process-environment selection, and most override validation.",
+            "Unverified CSV concern: csv.writer uses lineterminator='\\n' with default quoting, which may leave bare carriage returns unquoted. The existing bare-CR round-trip test requires reproduction against the current files.",
+            "Unverified settings concern: int(env['TASKDESK_PAGE_SIZE']) may raise TypeError for None or accept fractional numeric values through truncation, despite the integer-or-ValueError requirement."
+          ],
+          "followups": [
+            {
+              "id": "library-improvements",
+              "prompt": "Complete verification and any necessary corrections within your original implementation scope. First reproduce the current test_csv_export.CsvBoundaryTests bare-CR/CRLF round-trip cases and report expected versus actual results; reconcile these with the previously observed successful discovery run. Fix incorrect CSV quoting if reproduced, retaining LF record endings. Also reproduce explicit overrides None, 1.5, and True: the requirement is an integer 1..1000 or ValueError; report actual outcomes and correct violations. Expand the new tests to verify all requested behaviors: CSV empty header, genuinely one-pass iteration, multiple-task order, commas/quotes/LF/Unicode round trips, input preservation and unchanged to_json; settings recursive object merging, non-dictionary replacements, independent mutable results and DEFAULTS, non-object JSON roots, env=None using a patched process environment, env={} ignoring it, bounds 1 and 1000, invalid strings and out-of-range values, and preservation of caller mappings. Include interaction between a non-dictionary report setting and a valid environment override, which must establish report.page_size. Document replacement semantics and ValueError conditions alongside the existing API documentation. Preserve pre-existing tests/ files byte-for-byte and make no CLI changes. Run all existing and new tests after corrections and provide commands with exit codes, reproduction outcomes, and changed files. Do not commit or change Git configuration."
+            }
+          ]
+        },
+        "final_review": {
+          "status": "completed",
+          "summary": "Implemented and documented both APIs. Reviewed CSV quoting, one-pass ordering, settings merging, environment overrides, and input preservation. All 21 tests passed; existing tests and CLI files remain unchanged.",
+          "changed_files": [
+            "taskdesk/reporting.py",
+            "taskdesk/settings.py",
+            "test_csv_export.py",
+            "test_settings.py",
+            "README.md"
+          ],
+          "checks": [
+            {
+              "command": "python -m unittest discover -s .",
+              "exit_code": 0
+            },
+            {
+              "command": "python -m unittest test_csv_export.CsvBoundaryTests",
+              "exit_code": 0
+            },
+            {
+              "command": "git diff --check",
+              "exit_code": 0
+            }
+          ],
+          "issues": [],
+          "followups": []
+        },
+        "repair_invocations": 1,
+        "raw_artifacts": "bench-runs/review-evidence-v2-continuation/q08"
+      }
+    ],
+    "audit": [
+      {
+        "case": "q05",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q06",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 2,
+        "resumed_workers": 2,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q07",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      },
+      {
+        "case": "q08",
+        "main_session_preserved": true,
+        "final_cumulative_once": true,
+        "worker_sessions_scope_model_environment_preserved": true,
+        "usage_deltas_match": true,
+        "no_scope_violations": true,
+        "initial_workers": 1,
+        "resumed_workers": 1,
+        "model_effort_match": true,
+        "main_read_only_no_file_changes": true,
+        "planning_commands_zero": true
+      }
+    ],
+    "stopped_reason": null,
+    "remaining_schedule": []
+  },
+  "reconnection_check": {
+    "id": "connection",
+    "role": "research",
+    "status": "completed",
+    "summary": "ready",
+    "issues": [],
+    "observed_changed_files": [],
+    "worker_claims": {
+      "status": "completed",
+      "summary": "ready",
+      "changed_files": [],
+      "checks": [],
+      "issues": []
+    },
+    "observed_commands": [],
+    "execution": {
+      "exit_code": 0,
+      "termination": "exited",
+      "seconds": 8.976
+    },
+    "usage": {
+      "input_tokens": 11638,
+      "cached_input_tokens": 0,
+      "output_tokens": 48,
+      "reasoning_output_tokens": 17,
+      "total_tokens": 11686,
+      "uncached_input_tokens": 11638
+    },
+    "cumulative_usage": {
+      "input_tokens": 11638,
+      "cached_input_tokens": 0,
+      "output_tokens": 48,
+      "reasoning_output_tokens": 17,
+      "total_tokens": 11686,
+      "uncached_input_tokens": 11638
+    },
+    "measurement_complete": true,
+    "session_identity_ok": true,
+    "artifacts": "/home/bench/review-evidence-20261005/bench-runs/evidence-reconnect/worker",
+    "runtime_errors": []
+  },
+  "assessment": {
+    "acceptance_cases_passed": 8,
+    "expected_completed": 7,
+    "expected_blocked": 1,
+    "seeded_defects_detected_and_repaired": 3,
+    "original_six_cases_passed": 6,
+    "csv_false_block_observed": false,
+    "unresolved_variant_correctly_blocked": true,
+    "selected_case_artifacts": [
+      "bench-runs/review-evidence-v2/q01",
+      "bench-runs/review-evidence-v2/q02",
+      "bench-runs/review-evidence-v2/q03",
+      "bench-runs/review-evidence-v2/q04",
+      "bench-runs/review-evidence-v2-continuation/q05",
+      "bench-runs/review-evidence-v2-continuation/q06",
+      "bench-runs/review-evidence-v2-continuation/q07",
+      "bench-runs/review-evidence-v2-continuation/q08"
+    ],
+    "infrastructure_failures_preserved": 1,
+    "interrupted_candidate_cases_preserved": 1,
+    "final_candidate_product_hashes_unchanged_between_batches": true,
+    "working_copy_comparison": "Windows CRLF normalized to LF before matching Linux source hashes",
+    "note": "Development regression, not an unbiased quality/cost benchmark. A quota-failed q05 is preserved and rerun fresh after a successful reconnection; no session continuation or zero usage imputation."
+  },
+  "local_checks": {
+    "windows_unit_tests": 40,
+    "linux_unit_tests": 40,
+    "grader_positive_negative_controls_passed_both_platforms": true
+  }
+}
