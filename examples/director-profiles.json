@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "profiles": [
+    {
+      "id": "sol",
+      "backend": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "roles": ["research", "implement", "review"],
+      "description": "Configured Codex child worker; use when the operator prefers the same model as the head. Not a native subagent and not a separate subscription allowance.",
+      "enabled": true
+    },
+    {
+      "id": "glm",
+      "backend": "opencode",
+      "model": "provider/REPLACE_GLM_MODEL",
+      "effort": "",
+      "roles": ["research", "implement", "review"],
+      "description": "Optional GLM route. Replace with an exact ID from opencode models, check its variant, then enable. No performance ranking is asserted.",
+      "enabled": false
+    },
+    {
+      "id": "deepseek",
+      "backend": "opencode",
+      "model": "provider/REPLACE_DEEPSEEK_MODEL",
+      "effort": "",
+      "roles": ["research", "implement", "review"],
+      "description": "Optional DeepSeek route. Replace with an exact ID from opencode models, check its variant, then enable. No performance ranking is asserted.",
+      "enabled": false
+    }
+  ]
+}
