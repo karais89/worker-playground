@@ -25,6 +25,8 @@ def main():
         raise SystemExit('Run has not finished; refusing partial analysis.')
     rows = [row.copy() for row in result['rows'] if not row['warmup']]
     for row in rows:
+        # Failed requests may have no output file; retain them but exclude their metrics.
+        row['eligible'] = False
         if not row.get('output_file'):
             continue
         output = (directory / row['output_file']).read_text(encoding='utf-8')
